@@ -1,0 +1,3 @@
+[submodule "QuantumDeepField_molecule"]
+	path = QuantumDeepField_molecule
+	url = https://github.com/masashitsubaki/QuantumDeepField_molecule.git
