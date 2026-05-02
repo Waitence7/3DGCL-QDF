@@ -1,0 +1,62 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "3dgcl"
+version = "0.2.0"
+description = "3D Graph Contrastive Learning for molecules (DIG) + shared env for QuantumDeepField_molecule"
+readme = "README.md"
+license = "GPL-3.0-only"
+requires-python = ">=3.10,<3.13"
+dependencies = [
+  # Shared with QuantumDeepField_molecule/train (torch + numpy + scipy only there)
+  "numpy>=1.23,<2",
+  "scipy>=1.9",
+  "pandas>=1.5",
+  "sympy>=1.11",
+  "networkx>=3.0",
+  "tqdm>=4.65",
+  "matplotlib>=3.7",
+  "scikit-learn>=1.2",
+  "tensorboard>=2.14",
+  "ipython>=8.12",
+  "jupyter>=1.0",
+  "ipykernel>=6.29",
+  "rdkit>=2023.9.1",
+  "typed-argument-parser>=1.5,<2",
+  # 3DGCL notebooks / dig.sslgraph
+  "torch>=2.2,<2.3",
+  "torch-geometric>=2.5,<2.8",
+  "torch-scatter",
+  "torch-sparse",
+  "torch-cluster",
+]
+
+[project.optional-dependencies]
+mayavi = [
+  "mayavi",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["dig*"]
+
+# CPU PyTorch avoids missing CUDA toolkit DLL issues on Windows by default.
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+# PyTorch Geometric binary wheels must match torch major.minor + CPU/CUDA.
+[[tool.uv.index]]
+name = "pyg-cpu"
+url = "https://data.pyg.org/whl/torch-2.2.0+cpu.html"
+format = "flat"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+torch-scatter = { index = "pyg-cpu" }
+torch-sparse = { index = "pyg-cpu" }
+torch-cluster = { index = "pyg-cpu" }

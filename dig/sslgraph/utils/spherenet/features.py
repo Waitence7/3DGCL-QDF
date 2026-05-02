@@ -15,8 +15,6 @@ try:
 except ImportError:
     sym = None
 
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
 def Jn(r, n):
     return np.sqrt(np.pi / (2 * r)) * sp.jv(n + 0.5, r)
 
@@ -307,7 +305,7 @@ def xyz_to_dat(pos, edge_index, num_nodes, use_torsion = False):
     b = torch.cross(pos_ji, pos_jk).norm(dim=-1) # sin_angle * |pos_ji| * |pos_jk|
     angle = torch.atan2(b, a)
             
-    idx_batch = torch.arange(len(idx_i),device=device)
+    idx_batch = torch.arange(len(idx_i), device=idx_i.device)
     idx_k_n = adj_t[idx_j].storage.col()
     repeat = num_triplets
     num_triplets_t = num_triplets.repeat_interleave(repeat)[mask]

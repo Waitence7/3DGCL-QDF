@@ -1,3 +1,32 @@
+Metadata-Version: 2.4
+Name: 3dgcl
+Version: 0.2.0
+Summary: 3D Graph Contrastive Learning for molecules (DIG) + shared env for QuantumDeepField_molecule
+License-Expression: GPL-3.0-only
+Requires-Python: <3.13,>=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: numpy<2,>=1.23
+Requires-Dist: scipy>=1.9
+Requires-Dist: pandas>=1.5
+Requires-Dist: sympy>=1.11
+Requires-Dist: networkx>=3.0
+Requires-Dist: tqdm>=4.65
+Requires-Dist: matplotlib>=3.7
+Requires-Dist: scikit-learn>=1.2
+Requires-Dist: tensorboard>=2.14
+Requires-Dist: ipython>=8.12
+Requires-Dist: jupyter>=1.0
+Requires-Dist: ipykernel>=6.29
+Requires-Dist: rdkit>=2023.9.1
+Requires-Dist: typed-argument-parser<2,>=1.5
+Requires-Dist: torch<2.3,>=2.2
+Requires-Dist: torch-geometric<2.8,>=2.5
+Requires-Dist: torch-scatter
+Requires-Dist: torch-sparse
+Requires-Dist: torch-cluster
+Provides-Extra: mayavi
+Requires-Dist: mayavi; extra == "mayavi"
+
 # 3D Graph Contrastive Learning for Molecular Property Prediction
 Official Code Repository for the paper "3D Graph Contrastive Learning for Molecular Property Prediction": [link](https://academic.oup.com/bioinformatics/article/39/6/btad371/7192173?utm_source=advanceaccess&utm_campaign=bioinformatics&utm_medium=email&login=true)
 
@@ -31,17 +60,8 @@ This repository includes `pyproject.toml` and `uv.lock` so you can install CPU P
 
 ```powershell
 uv sync
-# Register a Jupyter kernel that always uses this project's .venv (avoids conda/base mixing).
-uv run python -m ipykernel install --user --name 3dgcl --display-name "Python (3dgcl uv)"
-
 uv run jupyter notebook examples/sslgraph/pretrain.ipynb
 ```
-
-After opening the notebook, choose kernel **Python (3dgcl uv)**. If PyTorch raises `_cuda` / `_C` errors, you are almost certainly on the wrong interpreter (conda `base` + another Python can break torch DLL init on Windows).
-
-The first notebook cell asserts that `sys.executable` lives under `.venv`, clears any **stale cached `torch` modules** (`sys.modules`) after a failed import, and on Windows registers extra DLL directories for CPU wheels when conda `Library\\bin` is present.
-
-If you still hit `_C` / `_cuda` errors, use **Kernel → Restart**, then run the first cell once before others.
 
 `numpy` is capped below 2 for compatibility with RDKit binaries. CPU PyTorch is used by default to avoid missing CUDA runtime DLL errors on Windows. The same env also satisfies [`QuantumDeepField_molecule`](https://github.com/masashitsubaki/QuantumDeepField_molecule) training scripts (`torch`, `numpy`, `scipy` only).
 

@@ -16,6 +16,7 @@ from dig.threedgraph.dataset.dataset import scaffold_split
 from dig.threedgraph.dataset import MoleculeNet
 from dig.threedgraph.dataset import QM9, QM
 from dig.sslgraph.utils.seed import setup_seed
+from dig.sslgraph.utils.device import empty_accel_cache
 from dig.sslgraph.utils.cosine_annealing_with_warmup import CosineAnnealingWarmUpRestarts
 #from dig.sslgraph.utils.parallel import DataParallelModel, DataParallelCriterion
 from dig.sslgraph.utils import Encoder
@@ -504,7 +505,7 @@ class Finetune(object):
             list_test_trues, list_test_preds, list_test_smiles = [], [], []
             for batch_size in batch_lst:
                 gc.collect()
-                torch.cuda.empty_cache()
+                empty_accel_cache()
                 for cutoff in cutoff_lst:
                     for num_layers in num_layers_lst:
                         for num_filters in num_filters_lst:
@@ -560,8 +561,7 @@ class Finetune(object):
         with torch.no_grad():
             for data in loader:
                 y.append(data.y.numpy())
-                #data.to(self.device)
-                data = data.cuda()
+                data = data.to(self.device)
                 embed = model(data)
                 ret.append(embed.cpu().numpy())
 

@@ -11,6 +11,7 @@ from tqdm import trange, tqdm
 from dig.threedgraph.dataset.dataset import scaffold_split
 from dig.threedgraph.dataset import MoleculeNet, QM
 from dig.sslgraph.utils.seed import setup_seed
+from dig.sslgraph.utils.device import empty_accel_cache
 from dig.sslgraph.utils.cosine_annealing_with_warmup import CosineAnnealingWarmUpRestarts
 
 from torch_geometric.loader import DataLoader
@@ -102,7 +103,7 @@ class Pretrain(object):
     def evaluate(self, learning_model, encoder, fold_seed=None):
         pretrain_loader = DataLoader(self.pretrain_dataset, self.batch_size, shuffle=True)
         gc.collect()
-        torch.cuda.empty_cache()
+        empty_accel_cache()
         if self.p_optim == 'StepLR':
             p_optimizer = Adam(encoder.parameters(), lr=self.p_lr, weight_decay=self.p_weight_decay)
             p_scheduler = StepLR(p_optimizer, step_size=self.p_lr_decay_step_size, gamma=self.p_lr_decay_factor)
@@ -116,5 +117,5 @@ class Pretrain(object):
         #p_optimizer = self.get_optim(self.p_optim)(encoder.parameters(), lr=self.p_lr, weight_decay=self.p_weight_decay)
         encoder = next(learning_model.train(encoder, pretrain_loader, p_optimizer, p_scheduler, self.p_epoch), None)
         gc.collect()
-        torch.cuda.empty_cache()
+        empty_accel_cache()
         return encoder               

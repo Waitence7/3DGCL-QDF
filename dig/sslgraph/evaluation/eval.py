@@ -15,6 +15,8 @@ from sklearn.metrics import accuracy_score, roc_auc_score, mean_squared_error
 from sklearn.model_selection import GridSearchCV
 from scipy.stats import pearsonr
 
+from dig.sslgraph.utils.device import pick_torch_device
+
 from rdkit import Chem
 from rdkit.Chem.Scaffolds import MurckoScaffold
 import torch
@@ -156,7 +158,7 @@ class GraphUnsupervised(object):
         self.n_folds = n_folds
         self.out_dim = out_dim
         if device is None:
-            self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+            self.device = pick_torch_device()
         elif isinstance(device, int):
             self.device = torch.device('cuda:%d'%device)
         else:

@@ -1,0 +1,13 @@
+{
+  "shell_port": 56007,
+  "iopub_port": 56008,
+  "stdin_port": 56009,
+  "control_port": 56011,
+  "hb_port": 56010,
+  "ip": "127.0.0.1",
+  "key": "8a2e9360-d49d45d102ba42a5a03ba61a",
+  "transport": "tcp",
+  "signature_scheme": "hmac-sha256",
+  "kernel_name": "python3",
+  "jupyter_session": "C:\\DGCL\\3DGCL\\examples\\sslgraph\\pretrain.ipynb"
+}

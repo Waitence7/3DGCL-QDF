@@ -1,0 +1,13 @@
+{
+  "base_url": "/",
+  "hostname": "localhost",
+  "password": false,
+  "pid": 29436,
+  "port": 8888,
+  "root_dir": "C:\\DGCL\\3DGCL",
+  "secure": false,
+  "sock": "",
+  "token": "755fb88e94806ee489672bc213a0a7518d4010e550227f09",
+  "url": "http://localhost:8888/",
+  "version": "2.17.0"
+}

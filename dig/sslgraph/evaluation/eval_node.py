@@ -5,6 +5,8 @@ import torch.nn as nn
 from torch_geometric.data import DataLoader
 from sklearn import preprocessing
 
+from dig.sslgraph.utils.device import pick_torch_device
+
 
 class LogReg(nn.Module):
     def __init__(self, ft_in, nb_classes):
@@ -75,7 +77,7 @@ class NodeUnsupervised(object):
         self.log_interval = log_interval
         self.num_classes = full_dataset.num_classes
         if device is None:
-            self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+            self.device = pick_torch_device()
         elif isinstance(device, int):
             self.device = torch.device('cuda:%d'%device)
         else:
