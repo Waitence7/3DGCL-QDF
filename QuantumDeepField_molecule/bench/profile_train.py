@@ -79,6 +79,12 @@ def main():
                         help="Data loader backend. 'npy' = original MyDataset (one .npy per molecule); "
                              "'shard' = new MyDatasetShard backed by the Rust mmap reader. "
                              "Both implementations are kept; this flag only selects which is used.")
+    parser.add_argument("--pad-impl", choices=["python", "rust", "rust-pad-only"], default="python",
+                        help="LCAO host-side helpers. 'python' = original model.pad / model.list_to_batch; "
+                             "'rust' = patch both with the Rust block-diag and concat helpers; "
+                             "'rust-pad-only' = patch only model.pad. "
+                             "The original methods are not modified; this flag only swaps the bound "
+                             "instance attributes for the duration of the run.")
     args = parser.parse_args()
 
     device = pick_device()
@@ -144,6 +150,14 @@ def main():
 
     n_params = sum(p.numel() for p in model.parameters())
     print(f"Model params: {n_params:,}")
+
+    print(f"LCAO helpers (--pad-impl): {args.pad_impl}")
+    if args.pad_impl != "python":
+        from model_patches import apply_rust_lcao
+        if args.pad_impl == "rust":
+            apply_rust_lcao(model, what=("pad", "list_to_batch"))
+        elif args.pad_impl == "rust-pad-only":
+            apply_rust_lcao(model, what=("pad",))
 
     # Optional fine-grained LCAO breakdown by wrapping the model's sub-methods.
     # The original methods are kept (we just record total time in a dict).

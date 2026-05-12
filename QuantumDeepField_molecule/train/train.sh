@@ -32,5 +32,12 @@ iteration=50
 # num_workers=0
 num_workers=0
 
+# Data / host LCAO (forwarded to train.py):
+#   TRAIN_LOADER=npy|shard   (default npy = one .npy per molecule)
+#   TRAIN_PAD_IMPL=python|rust|rust-pad-only   (default python)
+TRAIN_LOADER="${TRAIN_LOADER:-npy}"
+TRAIN_PAD_IMPL="${TRAIN_PAD_IMPL:-python}"
+
 setting=$dataset--$basis_set--radius$radius--grid_interval$grid_interval--dim$dim--layer_functional$layer_functional--hidden_HK$hidden_HK--layer_HK$layer_HK--$operation--batch_size$batch_size--lr$lr--lr_decay$lr_decay--step_size$step_size--iteration$iteration
-python train.py $dataset $basis_set $radius $grid_interval $dim $layer_functional $hidden_HK $layer_HK $operation $batch_size $lr $lr_decay $step_size $iteration $setting $num_workers
+python train.py $dataset $basis_set $radius $grid_interval $dim $layer_functional $hidden_HK $layer_HK $operation $batch_size $lr $lr_decay $step_size $iteration $setting $num_workers \
+  --loader "$TRAIN_LOADER" --pad-impl "$TRAIN_PAD_IMPL"

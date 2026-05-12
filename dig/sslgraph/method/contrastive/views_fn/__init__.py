@@ -3,6 +3,7 @@ from .structure import EdgePerturbation, Diffusion, DiffusionWithSample
 from .sample import UniformSample, RWSample
 from .combination import RandomView, Sequential, StableBiasedRandomView
 from .translation import NodeTranslation
+from .mmff_fast import FastRandomMMFFView
 
 __all__ = [
     "RandomView",
@@ -14,5 +15,6 @@ __all__ = [
     "DiffusionWithSample",
     "UniformSample",
     "RWSample",
-    "NodeTranslation"
+    "NodeTranslation",
+    "FastRandomMMFFView",
 ]

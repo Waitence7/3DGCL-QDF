@@ -10,13 +10,18 @@ Usage (from repo root):
 
     .\.venv\Scripts\python.exe QuantumDeepField_molecule\bench\profile_preprocess.py \
         --dataset QM9under14atoms_atomizationenergy_eV --split train --limit 500
+
+Rust backend (requires ``qdf_io`` built via maturin):
+
+    .\.venv\Scripts\python.exe QuantumDeepField_molecule\bench\profile_preprocess.py \
+        --dataset QM9under14atoms_atomizationenergy_eV --split train --limit 500 \
+        --backend rust --rust-batch-size 64
 """
 
 from __future__ import annotations
 
 import argparse
 import cProfile
-import os
 import pstats
 import sys
 import tempfile
@@ -39,57 +44,6 @@ def load_dataset_blocks(path: Path) -> list[str]:
     return text.split("\n\n")
 
 
-def parse_molecule(block: str, with_property: bool) -> tuple[str, list[str], np.ndarray | None]:
-    lines = block.strip().split("\n")
-    idx = lines[0]
-    if with_property:
-        atom_xyzs = lines[1:-1]
-        prop = np.array([[float(p) for p in lines[-1].split()]], dtype=np.float32)
-    else:
-        atom_xyzs = lines[1:]
-        prop = None
-    return idx, atom_xyzs, prop
-
-
-def build_orbitals(atom_xyzs: list[str], inner: int, outer: int):
-    atoms: list[str] = []
-    atomic_numbers: list[list[int]] = []
-    atomic_coords: list[list[float]] = []
-    atomic_orbital_names: list[str] = []
-    orbital_coords: list[list[float]] = []
-    quantum_numbers: list[int] = []
-    n_electrons = 0
-    for atom_xyz in atom_xyzs:
-        atom, x, y, z = atom_xyz.split()
-        atoms.append(atom)
-        atomic_number = pp.atomicnumber_dict[atom]
-        atomic_numbers.append([atomic_number])
-        n_electrons += atomic_number
-        xyz = [float(v) for v in (x, y, z)]
-        atomic_coords.append(xyz)
-        if atomic_number <= 2:
-            aqs = [(atom + "1s" + str(i), 1) for i in range(outer)]
-        else:
-            aqs = (
-                [(atom + "1s" + str(i), 1) for i in range(inner)]
-                + [(atom + "2s" + str(i), 2) for i in range(outer)]
-                + [(atom + "2p" + str(i), 2) for i in range(outer)]
-            )
-        for name, q in aqs:
-            atomic_orbital_names.append(name)
-            orbital_coords.append(xyz)
-            quantum_numbers.append(q)
-    return (
-        atoms,
-        np.array(atomic_numbers),
-        np.array(atomic_coords),
-        atomic_orbital_names,
-        orbital_coords,
-        quantum_numbers,
-        n_electrons,
-    )
-
-
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--dataset", default="QM9under14atoms_atomizationenergy_eV")
@@ -103,6 +57,19 @@ def main():
                         help="Skip np.save to isolate compute cost.")
     parser.add_argument("--cprofile", action="store_true",
                         help="Also dump a cProfile top-25 report.")
+    parser.add_argument(
+        "--backend",
+        choices=["numpy", "rust"],
+        default="numpy",
+        help="Which geometry backend to benchmark. 'numpy' mirrors train/preprocess.py; "
+             "'rust' benchmarks qdf_io.preprocess_batch_rust in Rayon batches.",
+    )
+    parser.add_argument(
+        "--rust-batch-size",
+        type=int,
+        default=64,
+        help="Molecule batch size for --backend rust.",
+    )
     args = parser.parse_args()
 
     dataset_dir = QDF_ROOT / "dataset" / args.dataset
@@ -116,9 +83,6 @@ def main():
     n_molecules = len(blocks)
     print(f"Dataset: {args.dataset}/{args.split}.txt  -> {n_molecules} molecules profiled")
 
-    inner_outer = [int(b) for b in args.basis_set[:-1].replace("-", "")]
-    inner, outer = inner_outer[0], sum(inner_outer[1:])
-
     has_property = args.split in {"train", "val", "test"} and args.dataset.endswith("_eV")
     orbital_dict = defaultdict(lambda: len(orbital_dict))
 
@@ -129,68 +93,128 @@ def main():
     t0 = time.perf_counter()
     sphere = pp.create_sphere(args.radius, args.grid_interval)
     timings["sphere_once"] += time.perf_counter() - t0
+    sphere64 = np.ascontiguousarray(sphere, dtype=np.float64)
 
-    save_dir = Path(tempfile.mkdtemp(prefix="qdf_bench_"))
+    save_dir_ctx = tempfile.TemporaryDirectory(prefix="qdf_bench_")
+    save_dir = Path(save_dir_ctx.name)
     print(f"Temp save dir: {save_dir}")
 
+    if args.backend == "rust":
+        try:
+            import qdf_io  # noqa: WPS433
+        except Exception as e:  # pragma: no cover
+            sys.exit(
+                "backend=rust requires the qdf_io native extension. "
+                "Build it from QuantumDeepField_molecule/qdf_io with:\n"
+                "  maturin develop --release\n"
+                f"Original import error: {e}"
+            )
+        if args.rust_batch_size < 1:
+            sys.exit("--rust-batch-size must be >= 1")
+
     def run_loop():
-        for block in blocks:
-            idx, atom_xyzs, prop = parse_molecule(block, has_property)
+        rust_buf: list[dict] = []
+
+        def flush_rust_chunk(buf: list[dict]) -> None:
+            t = time.perf_counter()
+            ac_list = [np.ascontiguousarray(m["atomic_coords"]) for m in buf]
+            oc_list = [np.ascontiguousarray(m["orbital_coords"]) for m in buf]
+            an_list = [np.ascontiguousarray(m["atomic_numbers"]) for m in buf]
+            timings["rust_pack_inputs"] += time.perf_counter() - t
 
             t = time.perf_counter()
-            (
-                _atoms,
-                atomic_numbers,
-                atomic_coords,
-                atomic_orbital_names,
-                orbital_coords,
-                quantum_numbers,
-                n_electrons,
-            ) = build_orbitals(atom_xyzs, inner, outer)
-            timings["parse_and_orbitals"] += time.perf_counter() - t
-            timings_count["parse_and_orbitals"] += 1
+            outs = qdf_io.preprocess_batch_rust(ac_list, oc_list, an_list, sphere64)
+            timings["rust_preprocess_batch"] += time.perf_counter() - t
+            timings_count["rust_preprocess_batch"] += 1
 
-            t = time.perf_counter()
-            atomic_orbitals = pp.create_orbitals(atomic_orbital_names, orbital_dict)
-            timings["create_orbitals"] += time.perf_counter() - t
+            for mol, (dm_orb, pot, n_field) in zip(buf, outs, strict=True):
+                idx = mol["idx"]
+                atomic_orbitals = mol["atomic_orbitals"]
+                quantum_numbers = mol["quantum_numbers"]
+                n_electrons = mol["N_electrons"]
+                property_values = mol["property_values"]
 
-            t = time.perf_counter()
-            field_coords = pp.create_field(sphere, atomic_coords)
-            timings["create_field"] += time.perf_counter() - t
-
-            t = time.perf_counter()
-            distance_matrix_atoms = pp.create_distancematrix(field_coords, atomic_coords)
-            timings["distmat_atoms"] += time.perf_counter() - t
-
-            t = time.perf_counter()
-            potential = pp.create_potential(distance_matrix_atoms, atomic_numbers)
-            timings["potential"] += time.perf_counter() - t
-
-            t = time.perf_counter()
-            distance_matrix_orbs = pp.create_distancematrix(field_coords, orbital_coords)
-            timings["distmat_orbitals"] += time.perf_counter() - t
-
-            t = time.perf_counter()
-            quantum_numbers_arr = np.array([quantum_numbers], dtype=np.float32)
-            n_electrons_arr = np.array([[n_electrons]], dtype=np.float32)
-            n_field = len(field_coords)
-            data = [
-                idx,
-                atomic_orbitals.astype(np.int64),
-                distance_matrix_orbs.astype(np.float32),
-                quantum_numbers_arr,
-                n_electrons_arr,
-                n_field,
-            ]
-            if has_property and prop is not None:
-                data += [prop, potential.astype(np.float32)]
-            data = np.array(data, dtype=object)
-            timings["assemble"] += time.perf_counter() - t
-
-            if not args.no_save:
                 t = time.perf_counter()
-                np.save(save_dir / f"{idx}.npy", data)
-                timings["np_save"] += time.perf_counter() - t
+                data = [
+                    idx,
+                    atomic_orbitals,
+                    np.asarray(dm_orb, dtype=np.float32),
+                    quantum_numbers.astype(np.float32),
+                    n_electrons.astype(np.float32),
+                    int(n_field),
+                ]
+                if has_property and property_values is not None:
+                    data += [property_values.astype(np.float32), np.asarray(pot, dtype=np.float32)]
+                data = np.array(data, dtype=object)
+                timings["assemble"] += time.perf_counter() - t
+
+                if not args.no_save:
+                    t = time.perf_counter()
+                    np.save(save_dir / f"{idx}.npy", data)
+                    timings["np_save"] += time.perf_counter() - t
+
+        for block in blocks:
+            t = time.perf_counter()
+            mol = pp._parse_molecule_block(
+                block, args.basis_set, orbital_dict, property=has_property
+            )
+            timings["parse_molecule"] += time.perf_counter() - t
+            timings_count["parse_molecule"] += 1
+
+            if args.backend == "numpy":
+                idx = mol["idx"]
+                atomic_coords = mol["atomic_coords"]
+                orbital_coords = mol["orbital_coords"]
+                atomic_numbers = mol["atomic_numbers"]
+                atomic_orbitals = mol["atomic_orbitals"]
+                quantum_numbers = mol["quantum_numbers"]
+                n_electrons = mol["N_electrons"]
+                property_values = mol["property_values"]
+
+                t = time.perf_counter()
+                field_coords = pp.create_field(sphere, atomic_coords)
+                timings["create_field"] += time.perf_counter() - t
+
+                t = time.perf_counter()
+                distance_matrix_atoms = pp.create_distancematrix(field_coords, atomic_coords)
+                timings["distmat_atoms"] += time.perf_counter() - t
+
+                t = time.perf_counter()
+                potential = pp.create_potential(distance_matrix_atoms, atomic_numbers)
+                timings["potential"] += time.perf_counter() - t
+
+                t = time.perf_counter()
+                distance_matrix_orbs = pp.create_distancematrix(field_coords, orbital_coords)
+                timings["distmat_orbitals"] += time.perf_counter() - t
+
+                t = time.perf_counter()
+                n_field = len(field_coords)
+                data = [
+                    idx,
+                    atomic_orbitals,
+                    distance_matrix_orbs.astype(np.float32),
+                    quantum_numbers.astype(np.float32),
+                    n_electrons.astype(np.float32),
+                    n_field,
+                ]
+                if has_property and property_values is not None:
+                    data += [property_values.astype(np.float32), potential.astype(np.float32)]
+                data = np.array(data, dtype=object)
+                timings["assemble"] += time.perf_counter() - t
+
+                if not args.no_save:
+                    t = time.perf_counter()
+                    np.save(save_dir / f"{idx}.npy", data)
+                    timings["np_save"] += time.perf_counter() - t
+                continue
+
+            rust_buf.append(mol)
+            if len(rust_buf) >= args.rust_batch_size:
+                flush_rust_chunk(rust_buf)
+                rust_buf.clear()
+
+        if args.backend == "rust" and rust_buf:
+            flush_rust_chunk(rust_buf)
 
     if args.cprofile:
         prof = cProfile.Profile()
@@ -208,6 +232,9 @@ def main():
     print("\n--- Per-step totals (seconds) ---")
     sphere_once = timings.pop("sphere_once")
     print(f"sphere_once           : {sphere_once*1000:8.3f} ms (once per dataset)")
+    print(f"backend               : {args.backend}")
+    if args.backend == "rust":
+        print(f"rust_batch_size       : {args.rust_batch_size}")
     rows = sorted(timings.items(), key=lambda kv: -kv[1])
     sum_steps = sum(timings.values())
     for name, secs in rows:
@@ -226,12 +253,9 @@ def main():
         f" {total_wall * 130_000 / n_molecules / 60:.1f} minutes (single thread)"
     )
 
-    if not args.no_save:
-        import shutil
-        try:
-            shutil.rmtree(save_dir)
-        except OSError:
-            pass
+    # Temp directory cleans itself up via the context manager; no separate
+    # shutil.rmtree call is needed and we never touch the real dataset dir.
+    save_dir_ctx.cleanup()
 
 
 if __name__ == "__main__":

@@ -132,9 +132,56 @@ def write_shard(
     n_output = int(first[6].shape[1]) if has_property else 0
 
     n = len(files)
-    flags = FLAG_HAS_PROPERTY if has_property else 0
+    _flags = FLAG_HAS_PROPERTY if has_property else 0  # used by the fallback writer below
+
+    # Prefer the Rust ShardWriter when the native extension is available:
+    # it handles the binary layout (header / index table / per-record packing
+    # and 8-byte alignment) without going through Python's per-field
+    # ``struct.pack`` + ``write_all``. Falls back to the pure-Python writer
+    # below when the extension has not been built yet.
+    try:
+        from qdf_io import ShardWriter as _RustShardWriter  # type: ignore
+    except Exception:
+        _RustShardWriter = None
 
     dst_path.parent.mkdir(parents=True, exist_ok=True)
+    if _RustShardWriter is not None:
+        t0 = time.perf_counter()
+        writer = _RustShardWriter(str(dst_path), n, bool(has_property), int(n_output))
+        for i, path in enumerate(files):
+            if progress and (i % 1000 == 0 or i == n - 1):
+                pct = 100.0 * (i + 1) / n
+                print(f"  shard write [{i + 1:>6}/{n}] {pct:5.1f}%  {path.name}")
+            rec = np.load(path, allow_pickle=True)
+            idx_str = str(rec[0])
+            atomic_orbitals = np.ascontiguousarray(rec[1], dtype=np.int64)
+            distance_matrix = np.ascontiguousarray(rec[2], dtype=np.float32)
+            quantum_numbers = np.ascontiguousarray(rec[3], dtype=np.float32)
+            n_electrons = np.ascontiguousarray(rec[4], dtype=np.float32)
+            n_field_int = int(rec[5])
+            if has_property:
+                property_values = np.ascontiguousarray(rec[6], dtype=np.float32)
+                potential = np.ascontiguousarray(rec[7], dtype=np.float32)
+                if potential.ndim == 1:
+                    potential = potential.reshape(n_field_int, 1)
+            else:
+                property_values = None
+                potential = None
+            writer.append_molecule(
+                idx_str,
+                atomic_orbitals,
+                distance_matrix,
+                quantum_numbers,
+                n_electrons,
+                n_field_int,
+                property_values,
+                potential,
+            )
+        info = writer.finalize()
+        info["elapsed_sec"] = time.perf_counter() - t0
+        return info
+
+    # ----- Pure-Python fallback (kept so writing does not require Rust) ----- #
     t0 = time.perf_counter()
 
     # Two-pass write: we don't know offsets until we lay out the records, so
@@ -233,7 +280,7 @@ def write_shard(
         f.write(struct.pack("<I", VERSION))
         f.write(struct.pack("<Q", n))
         f.write(struct.pack("<I", n_output))
-        f.write(struct.pack("<I", flags))
+        f.write(struct.pack("<I", _flags))
         f.write(struct.pack("<Q", index_table_offset))
         f.write(struct.pack("<Q", data_section_offset))
         f.write(struct.pack("<Q", file_size))

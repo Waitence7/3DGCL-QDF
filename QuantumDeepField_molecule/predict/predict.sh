@@ -21,4 +21,16 @@ setting=$dataset_trained--$basis_set--radius$radius--grid_interval$grid_interval
 # Dataset for prediction.
 dataset_predict=yourdataset_property_unit  # Extrapolation.
 
-python predict.py $dataset_trained $basis_set $radius $grid_interval $dim $layer_functional $hidden_HK $layer_HK $operation $batch_size $lr $lr_decay $step_size $iteration $setting $num_workers $dataset_predict
+# Optional Rust toggles. Defaults preserve the original behaviour
+# (npy loader + Python LCAO helpers). Override via env vars:
+#   PREDICT_LOADER=shard PREDICT_PAD_IMPL=rust-pad-only ./predict.sh
+loader_arg=()
+pad_impl_arg=()
+if [ -n "${PREDICT_LOADER}" ]; then
+    loader_arg=(--loader "${PREDICT_LOADER}")
+fi
+if [ -n "${PREDICT_PAD_IMPL}" ]; then
+    pad_impl_arg=(--pad-impl "${PREDICT_PAD_IMPL}")
+fi
+
+python predict.py $dataset_trained $basis_set $radius $grid_interval $dim $layer_functional $hidden_HK $layer_HK $operation $batch_size $lr $lr_decay $step_size $iteration $setting $num_workers $dataset_predict "${loader_arg[@]}" "${pad_impl_arg[@]}"

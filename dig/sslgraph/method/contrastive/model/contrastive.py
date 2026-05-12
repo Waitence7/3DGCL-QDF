@@ -146,7 +146,9 @@ class Contrastive(nn.Module):
                                         #E0=views[0].min_energy, E1=views[0].energy, E2=views[1].energy)
                     loss.backward()
                     optimizer.step()
-                    epoch_loss += loss
+                    # detach so we don't keep the per-batch autograd graph alive
+                    # for the whole epoch (was previously accumulating into epoch_loss).
+                    epoch_loss += loss.detach()
                     scheduler.step()
                 losses.append(epoch_loss)
                 

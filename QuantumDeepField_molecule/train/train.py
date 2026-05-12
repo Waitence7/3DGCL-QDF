@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import sys
 from pathlib import Path
 import pickle
 import timeit
@@ -274,6 +275,24 @@ if __name__ == "__main__":
     parser.add_argument('iteration', type=int)
     parser.add_argument('setting')
     parser.add_argument('num_workers', type=int)
+    parser.add_argument(
+        '--loader',
+        choices=['npy', 'shard'],
+        default='npy',
+        help="Training data source. 'npy' = one .npy file per molecule (original "
+             "MyDataset). 'shard' = single mmap'd train_<field>_shard.bin beside "
+             "the preprocessed directory (requires qdf_io + preprocess --output-format "
+             "shard or both, or bench/convert_to_shard.py).",
+    )
+    parser.add_argument(
+        '--pad-impl',
+        dest='pad_impl',
+        choices=['python', 'rust', 'rust-pad-only'],
+        default='python',
+        help="Host-side LCAO helpers. 'python' = class-defined pad/list_to_batch. "
+             "'rust' / 'rust-pad-only' = optional qdf_io-backed instance patches "
+             "(see train/model_patches.py).",
+    )
     args = parser.parse_args()
 
     dataset = args.dataset
@@ -295,6 +314,8 @@ if __name__ == "__main__":
     iteration = args.iteration
     setting = args.setting
     num_workers = args.num_workers
+    loader = args.loader
+    pad_impl = args.pad_impl
 
     torch.manual_seed(1729)
 
@@ -313,9 +334,40 @@ if __name__ == "__main__":
     project_root = os.path.dirname(os.path.dirname(__file__))
     dir_dataset = os.path.join(project_root, 'dataset', dataset) + os.sep
     field = '_'.join([basis_set, radius + 'sphere', grid_interval + 'grid/'])
-    dataset_train = MyDataset(dir_dataset + 'train_' + field)
-    dataset_val = MyDataset(dir_dataset + 'val_' + field)
-    dataset_test = MyDataset(dir_dataset + 'test_' + field)
+    train_dir = os.path.join(dir_dataset, 'train_' + field.rstrip('/\\'))
+    val_dir = os.path.join(dir_dataset, 'val_' + field.rstrip('/\\'))
+    test_dir = os.path.join(dir_dataset, 'test_' + field.rstrip('/\\'))
+
+    if loader == 'npy':
+        for d, _ in ((train_dir, 'train'), (val_dir, 'val'), (test_dir, 'test')):
+            if not os.path.isdir(d):
+                sys.exit(
+                    f"Missing preprocessed directory for --loader npy: {d}\n"
+                    f"Run train/preprocess.sh (or preprocess.py) first."
+                )
+        dataset_train = MyDataset(train_dir)
+        dataset_val = MyDataset(val_dir)
+        dataset_test = MyDataset(test_dir)
+    else:
+        from dataset_shard import MyDatasetShard, default_shard_path
+
+        train_shard = default_shard_path(train_dir)
+        val_shard = default_shard_path(val_dir)
+        test_shard = default_shard_path(test_dir)
+        for sp, _ in (
+            (train_shard, 'train'),
+            (val_shard, 'val'),
+            (test_shard, 'test'),
+        ):
+            if not sp.is_file():
+                sys.exit(
+                    f"Missing shard for --loader shard: {sp}\n"
+                    f"Build with train/preprocess.py --output-format shard (or both), "
+                    f"or QuantumDeepField_molecule/bench/convert_to_shard.py."
+                )
+        dataset_train = MyDatasetShard(train_shard)
+        dataset_val = MyDatasetShard(val_shard)
+        dataset_test = MyDatasetShard(test_shard)
     dataloader_train = mydataloader(dataset_train, batch_size, num_workers, shuffle=True)
     dataloader_val = mydataloader(dataset_val, batch_size, num_workers)
     dataloader_test = mydataloader(dataset_test, batch_size, num_workers)
@@ -335,6 +387,15 @@ if __name__ == "__main__":
     model = QuantumDeepField(device, N_orbitals,
                             dim, layer_functional, operation, N_output,
                             hidden_HK, layer_HK).to(device)
+
+    print(f"Data loader: {loader}   LCAO host (--pad-impl): {pad_impl}")
+    if pad_impl != 'python':
+        from model_patches import apply_rust_lcao
+
+        if pad_impl == 'rust':
+            apply_rust_lcao(model, what=('pad', 'list_to_batch'))
+        elif pad_impl == 'rust-pad-only':
+            apply_rust_lcao(model, what=('pad',))
 
     trainer = Trainer(model, lr, lr_decay, step_size)
     tester = Tester(model)

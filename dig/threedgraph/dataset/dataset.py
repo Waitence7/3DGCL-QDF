@@ -35,7 +35,58 @@ def to_scaffold(smiles, chirality=True):
     return scaffold
 
 
-def key_split(dataset, keys, lengths=None, key_lengths=None):
+def _try_dig_io():
+    try:
+        import dig_io  # type: ignore
+
+        if dig_io.is_available():
+            return dig_io
+    except Exception:
+        pass
+    return None
+
+
+def key_split(dataset, keys, lengths=None, key_lengths=None, impl: str = 'python'):
+    """Bucket-split a dataset by per-sample ``keys`` (e.g. scaffold ids).
+
+    ``impl='python'`` (default) is the original Torch implementation. ``'rust'``
+    delegates the stable sort + key-boundary rounding to ``dig_io`` while the
+    torch-based key permutation stays in Python, so results match the upstream
+    code bit-for-bit for the same global RNG seed.
+    """
+
+    keys = torch.as_tensor(keys)
+    key_set, keys = torch.unique(keys, return_inverse=True)
+    perm = torch.randperm(len(key_set))
+    keys = perm[keys]
+
+    if key_lengths is not None:
+        assert lengths is None
+        key2count = keys.bincount()
+        key_offset = 0
+        lengths = []
+        for key_length in key_lengths:
+            lengths.append(key2count[key_offset: key_offset + key_length].sum().item())
+            key_offset += key_length
+
+    rust = _try_dig_io() if impl == 'rust' else None
+    if rust is not None:
+        import numpy as np
+        permuted = np.ascontiguousarray(keys.numpy(), dtype=np.int64)
+        ints = [int(l) for l in lengths]
+        # ``scaffold_bucket_sort`` returns indices (stable argsort) + offsets
+        # (with the same boundary-rounding the original Python does).
+        indexes_np, offsets_np = rust.scaffold_bucket_sort(permuted, ints)
+        indexes = indexes_np.tolist()
+        offsets = offsets_np.tolist()
+        offsets[-1] = len(dataset)
+        return [
+            torch_data.Subset(dataset, indexes[offsets[i]: offsets[i + 1]])
+            for i in range(len(lengths))
+        ]
+
+    # Original Python path.
+    indexes = keys.argsort().tolist()
 
     def round_to_boundary(i):
         for j in range(min(i, len(dataset) - i)):
@@ -48,33 +99,16 @@ def key_split(dataset, keys, lengths=None, key_lengths=None):
         else:
             return len(dataset)
 
-    keys = torch.as_tensor(keys)
-    key_set, keys = torch.unique(keys, return_inverse=True)
-    perm = torch.randperm(len(key_set))
-    keys = perm[keys]
-    indexes = keys.argsort().tolist()
-
-    if key_lengths is not None:
-        assert lengths is None
-        key2count = keys.bincount()
-        key_offset = 0
-        lengths = []
-        for key_length in key_lengths:
-            lengths.append(key2count[key_offset: key_offset + key_length].sum().item())
-            key_offset += key_length
-
     offset = 0
     offsets = [offset]
     for length in lengths:
         offset = round_to_boundary(offset + length)
         offsets.append(offset)
     offsets[-1] = len(dataset)
-    #print('offsets', offsets)
     return [torch_data.Subset(dataset, indexes[offsets[i]: offsets[i + 1]]) for i in range(len(lengths))]
-    #return [Data(dataset, indexes[offsets[i]: offsets[i + 1]]) for i in range(len(lengths))]
 
 
-def scaffold_split(dataset, seed):
+def scaffold_split(dataset, seed, impl: str = 'python'):
     """
     Randomly split a dataset into new datasets with non-overlapping scaffolds.
     Parameters:
@@ -104,7 +138,7 @@ def scaffold_split(dataset, seed):
     #print(train_cutoff)
     #print(valid_cutoff)
     #print(test_cutoff)
-    return key_split(dataset, keys, lengths)
+    return key_split(dataset, keys, lengths, impl=impl)
 
 
 def ordered_scaffold_split(dataset, lengths, chirality=True):

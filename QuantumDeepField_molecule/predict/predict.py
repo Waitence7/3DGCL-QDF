@@ -32,6 +32,22 @@ if __name__ == "__main__":
     parser.add_argument('setting')
     parser.add_argument('num_workers', type=int)
     parser.add_argument('dataset_predict')
+    # Optional Rust toggles. Defaults preserve the original behaviour.
+    parser.add_argument(
+        '--loader', choices=['npy', 'shard'], default='npy',
+        help=(
+            "Data loader backend. 'npy' (default) = original train.MyDataset; "
+            "'shard' = MyDatasetShard backed by qdf_io mmap reader."
+        ),
+    )
+    parser.add_argument(
+        '--pad-impl', choices=['python', 'rust', 'rust-pad-only'], default='python',
+        help=(
+            "LCAO host-side helpers. 'python' (default) keeps the original "
+            "QuantumDeepField.pad / list_to_batch; the others monkey-patch the "
+            "instance with Rust block-diag/concat helpers."
+        ),
+    )
     args = parser.parse_args()
     dataset_trained = args.dataset_trained
     basis_set = args.basis_set
@@ -69,7 +85,21 @@ if __name__ == "__main__":
     dir_predict = '../dataset/' + dataset_predict + '/'
 
     field = '_'.join([basis_set, radius + 'sphere', grid_interval + 'grid/'])
-    dataset_test = train.MyDataset(dir_predict + 'test_' + field)
+    test_dir = dir_predict + 'test_' + field
+    if args.loader == 'npy':
+        dataset_test = train.MyDataset(test_dir)
+    else:
+        # Lazy import keeps the original `npy` path independent of qdf_io.
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'train'))
+        from dataset_shard import MyDatasetShard, default_shard_path
+        shard_path = default_shard_path(test_dir)
+        if not os.path.exists(shard_path):
+            raise FileNotFoundError(
+                f"Shard not found: {shard_path}\n"
+                "Build it first with bench/convert_to_shard.py, or pass --loader npy."
+            )
+        dataset_test = MyDatasetShard(shard_path)
+    print(f"Loader backend: {args.loader}")
     dataloader_test = train.mydataloader(dataset_test, batch_size=batch_size,
                                          num_workers=num_workers)
 
@@ -84,6 +114,17 @@ if __name__ == "__main__":
                                    hidden_HK, layer_HK).to(device)
     model.load_state_dict(torch.load('../pretrained_model/model--' + setting,
                                      map_location=device))
+
+    print(f"LCAO helpers (--pad-impl): {args.pad_impl}")
+    if args.pad_impl != 'python':
+        # Monkey-patch instance methods; original class is untouched.
+        sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', 'train'))
+        from model_patches import apply_rust_lcao
+        if args.pad_impl == 'rust':
+            apply_rust_lcao(model, what=('pad', 'list_to_batch'))
+        elif args.pad_impl == 'rust-pad-only':
+            apply_rust_lcao(model, what=('pad',))
+
     tester = train.Tester(model)
 
     print('Start predicting for', dataset_predict, 'dataset.\n'

@@ -40,14 +40,18 @@ def main() -> int:
     dataset_dir = QDF_ROOT / "dataset" / args.dataset
 
     summaries = []
+    n_already_done = 0
+    n_missing = 0
     for split in args.splits:
         npy_dir = dataset_dir / f"{split}_{field}"
         if not npy_dir.exists():
             print(f"[skip] {npy_dir} not found (run preprocess.py first?)")
+            n_missing += 1
             continue
         shard_path = default_shard_path(npy_dir)
         if shard_path.exists() and not args.overwrite:
             print(f"[skip] {shard_path.name} already exists (use --overwrite to rebuild)")
+            n_already_done += 1
             continue
         print(f"[write] {npy_dir.name} -> {shard_path.name}")
         info = write_shard(npy_dir, shard_path)
@@ -59,6 +63,11 @@ def main() -> int:
         summaries.append((split, info))
 
     if not summaries:
+        # Nothing was written this call. Distinguish "all already converted"
+        # (success, idempotent re-run) from "no input dirs at all" (error).
+        if n_already_done > 0 and n_missing == 0:
+            print("\nAll requested shards are already up to date. Use --overwrite to rebuild.")
+            return 0
         return 1
     print("\nDone.")
     return 0

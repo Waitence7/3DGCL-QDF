@@ -1,0 +1,152 @@
+{
+  "ts": "0512_1508",
+  "a_label": "baseline (PyG views)",
+  "b_label": "optimized (MMFF_FAST + bf16)",
+  "a_overrides": {
+    "MMFFRANDOM_FAST": null,
+    "PRETRAIN_AMP": null
+  },
+  "b_overrides": {
+    "MMFFRANDOM_FAST": "1",
+    "PRETRAIN_AMP": "bf16"
+  },
+  "args": {
+    "dataset": "esol",
+    "root": "dataset/",
+    "batch_size": 400,
+    "warmup": 1,
+    "epochs": 1,
+    "max_iters": 3,
+    "interval": 0.15,
+    "out_dir": "",
+    "no_plot": false,
+    "a_label": "baseline (PyG views)",
+    "b_label": "optimized (MMFF_FAST + bf16)",
+    "a_clear": [],
+    "b_set": []
+  },
+  "run_a": {
+    "device": "xpu:0",
+    "torch_version": "2.9.1+xpu",
+    "view_impl_0": "RandomView",
+    "env_effective": {
+      "DATALOADER_NUM_WORKERS": null,
+      "MMFFRANDOM_FAST": null,
+      "PIN_MEMORY": null,
+      "PRETRAIN_AMP": null
+    },
+    "totals": {
+      "data": 0.08098239998798817,
+      "to_dev": 0.008615699945949018,
+      "views": 1.8243699999293312,
+      "fwd": 0.4901202000910416,
+      "bwd": 0.3547637000447139,
+      "step": 0.003604199970141053,
+      "wall": 2.762739999918267,
+      "n_iter": 3.0,
+      "n_graphs": 1128.0,
+      "n_nodes": 28919.0
+    },
+    "epochs_measured": 1,
+    "per_epoch": [
+      {
+        "data": 0.08098239998798817,
+        "to_dev": 0.008615699945949018,
+        "views": 1.8243699999293312,
+        "fwd": 0.4901202000910416,
+        "bwd": 0.3547637000447139,
+        "step": 0.003604199970141053,
+        "n_iter": 3.0,
+        "n_graphs": 1128.0,
+        "n_nodes": 28919.0,
+        "wall": 2.762739999918267
+      }
+    ],
+    "dataset": "esol",
+    "n_dataset": 1128,
+    "batch_size": 400,
+    "outer_wall_s": 8.601788199972361,
+    "resource_summary": {
+      "wall_s": 8.15545329998713,
+      "peak_rss_mb": 5235.53125,
+      "mean_rss_mb": 4091.635127314815,
+      "mean_cpu_pct": 89.65982981631221,
+      "peak_cpu_pct": 100.0,
+      "mean_xpu_pct": 71.06078403747571,
+      "peak_xpu_pct": 171.8671492122822,
+      "n_samples": 54
+    }
+  },
+  "run_b": {
+    "device": "xpu:0",
+    "torch_version": "2.9.1+xpu",
+    "view_impl_0": "FastRandomMMFFView",
+    "env_effective": {
+      "DATALOADER_NUM_WORKERS": null,
+      "MMFFRANDOM_FAST": "1",
+      "PIN_MEMORY": null,
+      "PRETRAIN_AMP": "bf16"
+    },
+    "totals": {
+      "data": 0.059166799881495535,
+      "to_dev": 0.00577550008893013,
+      "views": 0.0034341999562457204,
+      "fwd": 0.4963385999435559,
+      "bwd": 0.39594890002626926,
+      "step": 0.0032935001654550433,
+      "wall": 0.9641570000676438,
+      "n_iter": 3.0,
+      "n_graphs": 1128.0,
+      "n_nodes": 28919.0
+    },
+    "epochs_measured": 1,
+    "per_epoch": [
+      {
+        "data": 0.059166799881495535,
+        "to_dev": 0.00577550008893013,
+        "views": 0.0034341999562457204,
+        "fwd": 0.4963385999435559,
+        "bwd": 0.39594890002626926,
+        "step": 0.0032935001654550433,
+        "n_iter": 3.0,
+        "n_graphs": 1128.0,
+        "n_nodes": 28919.0,
+        "wall": 0.9641570000676438
+      }
+    ],
+    "dataset": "esol",
+    "n_dataset": 1128,
+    "batch_size": 400,
+    "outer_wall_s": 2.8024524999782443,
+    "resource_summary": {
+      "wall_s": 2.7694077000487596,
+      "peak_rss_mb": 5760.265625,
+      "mean_rss_mb": 5634.913411458333,
+      "mean_cpu_pct": 100.0,
+      "peak_cpu_pct": 100.0,
+      "mean_xpu_pct": 93.15986532381471,
+      "peak_xpu_pct": 188.62836237000104,
+      "n_samples": 18
+    }
+  },
+  "summary_a": {
+    "wall_s": 8.15545329998713,
+    "peak_rss_mb": 5235.53125,
+    "mean_rss_mb": 4091.635127314815,
+    "mean_cpu_pct": 89.65982981631221,
+    "peak_cpu_pct": 100.0,
+    "mean_xpu_pct": 71.06078403747571,
+    "peak_xpu_pct": 171.8671492122822,
+    "n_samples": 54
+  },
+  "summary_b": {
+    "wall_s": 2.7694077000487596,
+    "peak_rss_mb": 5760.265625,
+    "mean_rss_mb": 5634.913411458333,
+    "mean_cpu_pct": 100.0,
+    "peak_cpu_pct": 100.0,
+    "mean_xpu_pct": 93.15986532381471,
+    "peak_xpu_pct": 188.62836237000104,
+    "n_samples": 18
+  }
+}

@@ -15,4 +15,15 @@ grid_interval=0.3
 # Dataset for prediction.
 dataset_predict=yourdataset_property_unit  # Extrapolation.
 
-python preprocess.py $dataset_trained $basis_set $radius $grid_interval $dataset_predict
+# Geometry backend (forwarded to train/preprocess.py):
+#   PREPROCESS_BACKEND=numpy   (default)
+#   PREPROCESS_BACKEND=rust
+PREPROCESS_BACKEND="${PREPROCESS_BACKEND:-numpy}"
+PREPROCESS_RUST_BATCH_SIZE="${PREPROCESS_RUST_BATCH_SIZE:-64}"
+# npy | shard | both (default npy)
+PREPROCESS_OUTPUT_FORMAT="${PREPROCESS_OUTPUT_FORMAT:-npy}"
+
+python preprocess.py "$dataset_trained" "$basis_set" "$radius" "$grid_interval" "$dataset_predict" \
+  --backend "$PREPROCESS_BACKEND" \
+  --rust-batch-size "$PREPROCESS_RUST_BATCH_SIZE" \
+  --output-format "$PREPROCESS_OUTPUT_FORMAT"

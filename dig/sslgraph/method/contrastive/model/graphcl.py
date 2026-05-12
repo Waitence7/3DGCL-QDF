@@ -1,6 +1,8 @@
 from .contrastive import Contrastive
 from dig.sslgraph.method.contrastive.views_fn import NodeAttrMask, EdgePerturbation, \
-    UniformSample, RWSample, RandomView, StableBiasedRandomView, NodeTranslation
+    UniformSample, RWSample, RandomView, StableBiasedRandomView, NodeTranslation, \
+    FastRandomMMFFView
+from dig.sslgraph.method.contrastive.views_fn.mmff_fast import env_enabled as _mmff_fast_env
 import random
 import torch.nn as nn
 
@@ -75,9 +77,17 @@ class GraphCL(Contrastive):
                
             elif aug == 'MMFFrandom':
                 method = random.sample(['MMFF1', 'MMFF2', 'MMFF3', 'MMFF4'], 2)
-                canditates = [NodeTranslation(method=method[0], device=self.device),
-                              NodeTranslation(method=method[1], device=self.device)]
-                views_fn.append(RandomView(canditates))
+                # ``impl='fast'`` (or env MMFFRANDOM_FAST=1) skips PyG
+                # ``to_data_list``/``from_data_list`` and gathers ``pos``/``energy``
+                # via a single ``index_select`` on the already-batched slabs.
+                # The default 'python' path preserves the original behaviour.
+                _impl = getattr(args, 'mmffrandom_impl', 'python')
+                if _impl == 'fast' or (_impl in (None, '', 'python') and _mmff_fast_env()):
+                    views_fn.append(FastRandomMMFFView(method))
+                else:
+                    canditates = [NodeTranslation(method=method[0], device=self.device),
+                                  NodeTranslation(method=method[1], device=self.device)]
+                    views_fn.append(RandomView(canditates))
 
             elif aug == 'MMFFrandom_stablebiased':
                 # Most often keep data.pos (min-MMFF / stable); else random among two MMFF slots.

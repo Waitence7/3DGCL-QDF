@@ -13,7 +13,7 @@ import os
 from tqdm import trange, tqdm
 
 from dig.threedgraph.dataset.dataset import scaffold_split
-from dig.threedgraph.dataset import MoleculeNet
+from dig.threedgraph.dataset import MoleculeNet, MoleculeNetShard, default_shard_path
 from dig.threedgraph.dataset._torch_io import load_pt_trusted
 from dig.threedgraph.dataset import QM9, QM
 from dig.sslgraph.utils.seed import setup_seed
@@ -129,12 +129,39 @@ def eval_reg(model, device, loader, mae=False, target='y'):
     return loss, y_true, y_scores, smiles
 
 
+def _select_molnet(name, loader: str):
+    """Return either the upstream ``MoleculeNet`` (loader='pt') or the
+    ``MoleculeNetShard`` mmap wrapper (loader='shard'). Defaults preserve the
+    original behaviour."""
+    if loader == 'shard':
+        shard_path = default_shard_path('dataset/', name)
+        if not shard_path.is_file():
+            print(
+                f"[Finetune] loader='shard' requested but {shard_path} not built; "
+                f"falling back to MoleculeNet(pt). Run "
+                f"examples/sslgraph/convert_dataset_to_shard.py --name {name} first."
+            )
+        else:
+            try:
+                return MoleculeNetShard(root='dataset/', name=name)
+            except Exception as e:  # native missing / corrupt shard / etc.
+                print(
+                    f"[Finetune] loader='shard' failed ({type(e).__name__}: {e}); "
+                    f"falling back to MoleculeNet(pt)."
+                )
+    return MoleculeNet(root='dataset/', name=name)
+
+
 class Finetune(object):
     
     def __init__(self, args, log_interval=1): #, **kwargs):  #reduction='sum'
-        
+        loader = getattr(args, 'loader', 'pt')
+        if loader not in ('pt', 'shard'):
+            raise ValueError(f"args.loader must be 'pt' or 'shard'; got {loader!r}")
+        self.loader = loader
+
         if args.dataset == 'esol':
-            self.dataset = MoleculeNet(root='dataset/', name='esol')  # regression
+            self.dataset = _select_molnet('esol', loader)  # regression
             rng = np.random.default_rng(args.seed)
             idx = rng.permutation(len(self.dataset)).tolist()
             self.dataset = self.dataset[idx]
@@ -143,41 +170,41 @@ class Finetune(object):
             self.mae = False
             self.out_dim = 1
         elif args.dataset == 'freesolv':
-            self.dataset = MoleculeNet(root='dataset/', name='freesolv')  # regression
+            self.dataset = _select_molnet('freesolv', loader)  # regression
             self.task_type = 'reg'
             self.mae = False
             self.out_dim = 1
         elif args.dataset == 'lipo':
-            self.dataset = MoleculeNet(root='dataset/', name='lipo')  # regression
+            self.dataset = _select_molnet('lipo', loader)  # regression
             self.task_type = 'reg'
             self.mae = False
             self.out_dim = 1
         elif args.dataset == 'hiv':
-            self.dataset = MoleculeNet(root='dataset/', name='hiv')  # binary
+            self.dataset = _select_molnet('hiv', loader)  # binary
             self.task_type = 'cls'
             self.out_dim = 1
         elif args.dataset == 'bace':
-            self.dataset = MoleculeNet(root='dataset/', name='bace')  # binary
+            self.dataset = _select_molnet('bace', loader)  # binary
             self.task_type = 'cls'
             self.out_dim = 1
         elif args.dataset == 'bbbp':
-            self.dataset = MoleculeNet(root='dataset/', name='bbbp')  # binary
+            self.dataset = _select_molnet('bbbp', loader)  # binary
             self.task_type = 'cls'
             self.out_dim = 1
         elif args.dataset == 'clintox':
-            self.dataset = MoleculeNet(root='dataset/', name='clintox')  # binary
+            self.dataset = _select_molnet('clintox', loader)  # binary
             self.task_type = 'cls'
             self.out_dim = 1
         elif args.dataset == 'tox21':
-            self.dataset = MoleculeNet(root='dataset/', name='tox21')  # multi
+            self.dataset = _select_molnet('tox21', loader)  # multi
             self.task_type = 'cls'
             self.out_dim = 12
         elif args.dataset == 'sider':
-            self.dataset = MoleculeNet(root='dataset/', name='sider')  # multi
+            self.dataset = _select_molnet('sider', loader)  # multi
             self.task_type = 'cls'
             self.out_dim = 27
         elif args.dataset == 'toxcast':
-            self.dataset = MoleculeNet(root='dataset/', name='toxcast')  # multi
+            self.dataset = _select_molnet('toxcast', loader)  # multi
             self.task_type = 'cls'
             self.out_dim = 617
         elif args.dataset == 'qm7':

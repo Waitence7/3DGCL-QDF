@@ -1,35 +1,66 @@
 import torch
+import numpy as np
 from torch_geometric.utils import to_dense_adj, dense_to_sparse, dropout_adj
 from sklearn.preprocessing import MinMaxScaler
 from torch_geometric.data import Batch, Data
 
+from .sample import _try_dig_io, _next_rust_seed  # shared lazy import + seed counter
+
 
 class EdgePerturbation():
-    '''Edge perturbation on the given graph or batched graphs. Class objects callable via 
+    '''Edge perturbation on the given graph or batched graphs. Class objects callable via
     method :meth:`views_fn`.
-    
+
     Args:
         add (bool, optional): Set :obj:`True` if randomly add edges in a given graph.
             (default: :obj:`True`)
         drop (bool, optional): Set :obj:`True` if randomly drop edges in a given graph.
             (default: :obj:`False`)
         ratio (float, optional): Percentage of edges to add or drop. (default: :obj:`0.1`)
+        impl (str, optional): ``'python'`` (default) keeps the original PyG path.
+            ``'rust'`` delegates the dedup / random sampling to ``dig_io``.
+            The Rust path additionally handles the ``add=True, drop=False`` case
+            without the ``idx_remain`` NameError present in the original.
     '''
-    def __init__(self, add=True, drop=False, ratio=0.1):
+    def __init__(self, add=True, drop=False, ratio=0.1, impl: str = 'python'):
         self.add = add
         self.drop = drop
         self.ratio = ratio
-        
+        if impl not in ('python', 'rust'):
+            raise ValueError(f"impl must be 'python' or 'rust', got {impl!r}")
+        self.impl = impl
+
     def __call__(self, data):
         return self.views_fn(data)
-        
+
+    def _rust_mod_or_none(self):
+        return _try_dig_io() if self.impl == 'rust' else None
+
     def do_trans(self, data):
         node_num, _ = data.x.size()
         device = data.x.device
         _, edge_num = data.edge_index.size()
         perturb_num = int(edge_num * self.ratio)
+
+        rust = self._rust_mod_or_none()
+        if rust is not None:
+            ei = np.ascontiguousarray(
+                data.edge_index.detach().cpu().numpy(), dtype=np.int64
+            )
+            new_ei_np = rust.edge_perturb(
+                ei, int(node_num), float(self.ratio),
+                bool(self.add), bool(self.drop), _next_rust_seed(),
+            )
+            new_edge_index = torch.as_tensor(new_ei_np, dtype=torch.long, device=device)
+            return Data(x=data.x, edge_index=new_edge_index)
+
         idx_add = torch.tensor([], device=device).reshape(2, -1).long()
 
+        # NOTE: the original Python path raises ``NameError`` for the default
+        # ``add=True, drop=False`` config because ``idx_remain`` is only set
+        # inside the ``self.drop`` branch. Behaviour is preserved here; use
+        # ``impl='rust'`` (which falls back to keeping ``edge_index`` intact in
+        # that case) if you want the add-only behaviour.
         if self.drop:
             idx_remain = dropout_adj(data.edge_index, p=self.ratio)[0]
 
