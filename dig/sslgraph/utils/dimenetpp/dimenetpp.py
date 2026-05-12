@@ -3,7 +3,7 @@ from torch import nn
 from torch.nn import Linear, Embedding
 from torch_geometric.nn.acts import swish
 from torch_geometric.nn.inits import glorot_orthogonal
-from torch_geometric.nn import radius_graph
+from ..geo_ops import radius_graph_device_safe
 from torch_scatter import scatter
 from math import sqrt
 
@@ -340,7 +340,7 @@ class DimeNetPP(torch.nn.Module):
         z, pos, batch = batch_data.z, batch_data.pos, batch_data.batch
         if self.energy_and_force:
             pos.requires_grad_()
-        edge_index = radius_graph(pos, r=self.cutoff, batch=batch)
+        edge_index = radius_graph_device_safe(pos, self.cutoff, batch=batch)
         num_nodes=z.size(0)
         dist, angle, i, j, idx_kj, idx_ji = xyz_to_dat(pos, edge_index, num_nodes, use_torsion=False)
 

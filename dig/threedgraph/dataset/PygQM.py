@@ -7,6 +7,8 @@ from sklearn.utils import shuffle
 import numpy as np
 
 import torch
+
+from ._torch_io import load_pt_trusted
 from torch_geometric.data import (Dataset, DataLoader, InMemoryDataset, Data, download_url, extract_gz)
 import rdkit.Chem.AllChem as AllChem
 
@@ -85,7 +87,7 @@ class QM(InMemoryDataset):
         self.name = name.lower()
         assert self.name in self.names.keys()
         super().__init__(root, transform, pre_transform, pre_filter)
-        self.data, self.slices = torch.load(self.processed_paths[0])
+        self.data, self.slices = load_pt_trusted(self.processed_paths[0])
 
     @property
     def raw_dir(self):

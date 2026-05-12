@@ -13,8 +13,9 @@ from torch_geometric.nn.conv import MessagePassing
 from torch_geometric.utils import remove_self_loops, add_self_loops
 from torch_geometric.nn.inits import glorot, zeros
 from torch_scatter import scatter
-from torch_geometric.nn import radius_graph
 from typing import Optional, Tuple
+
+from .geo_ops import radius_graph_device_safe
 #from .spherenet import SphereNet
 
 class Encoder(torch.nn.Module):
@@ -245,7 +246,9 @@ class SchNet(torch.nn.Module):
 
     def forward(self, batch_data):
         z, pos, batch = batch_data.z, batch_data.pos, batch_data.batch
-        edge_index = radius_graph(pos, r=self.cutoff, batch=batch, max_num_neighbors=100)
+        edge_index = radius_graph_device_safe(
+            pos, self.cutoff, batch=batch, max_num_neighbors=100
+        )
         row, col = edge_index
         dist = (pos[row] - pos[col]).norm(dim=-1)
         dist_emb = self.dist_emb(dist)

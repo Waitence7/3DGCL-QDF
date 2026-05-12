@@ -124,7 +124,7 @@ class Contrastive(nn.Module):
                 epoch_loss = 0.0
                 t.set_description('Pretraining: epoch %d' % (epoch+1))
                 for data in data_loader:
-                    optimizer.zero_grad()
+                    optimizer.zero_grad(set_to_none=True)
                     data = data.to(self.device)
                     if None in self.views_fn: 
                         # For view fn that returns multiple views

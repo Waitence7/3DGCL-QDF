@@ -12,11 +12,6 @@ jupyter>=1.0
 ipykernel>=6.29
 rdkit>=2023.9.1
 typed-argument-parser<2,>=1.5
-torch<2.3,>=2.2
-torch-geometric<2.8,>=2.5
-torch-scatter
-torch-sparse
-torch-cluster
 
 [mayavi]
 mayavi

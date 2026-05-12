@@ -2,17 +2,38 @@ version = 1
 revision = 3
 requires-python = ">=3.10, <3.13"
 resolution-markers = [
-    "python_full_version >= '3.12' and sys_platform == 'win32'",
-    "python_full_version == '3.11.*' and sys_platform == 'win32'",
-    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
-    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
-    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform == 'darwin')",
-    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform == 'darwin')",
-    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')",
-    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform == 'darwin')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version < '3.11' and sys_platform != 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version < '3.11' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version < '3.11' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
+conflicts = [[
+    { package = "3dgcl", group = "cpu" },
+    { package = "3dgcl", group = "xpu" },
+]]
 
 [[package]]
 name = "3dgcl"
@@ -20,31 +41,22 @@ version = "0.2.0"
 source = { editable = "." }
 dependencies = [
     { name = "ipykernel" },
-    { name = "ipython", version = "8.39.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "ipython", version = "9.13.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "ipython", version = "8.39.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "ipython", version = "9.13.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "jupyter" },
     { name = "matplotlib" },
-    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "networkx", version = "3.6.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "networkx", version = "3.6.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "numpy" },
-    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "pandas", version = "3.0.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "pandas", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "pandas", version = "3.0.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "rdkit" },
-    { name = "scikit-learn", version = "1.7.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "scikit-learn", version = "1.8.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "scikit-learn", version = "1.7.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "scikit-learn", version = "1.8.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "sympy" },
     { name = "tensorboard" },
-    { name = "torch", version = "2.2.2", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or sys_platform == 'darwin'" },
-    { name = "torch", version = "2.2.2+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (platform_python_implementation != 'CPython' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
-    { name = "torch-cluster", version = "1.6.3", source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }, marker = "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform == 'darwin')" },
-    { name = "torch-cluster", version = "1.6.3+pt22cpu", source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }, marker = "(python_full_version >= '3.11' and sys_platform == 'darwin') or (python_full_version >= '3.11' and sys_platform == 'linux') or (platform_machine != 'aarch64' and sys_platform == 'linux') or (platform_python_implementation != 'CPython' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
-    { name = "torch-geometric" },
-    { name = "torch-scatter", version = "2.1.2", source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }, marker = "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform == 'darwin')" },
-    { name = "torch-scatter", version = "2.1.2+pt22cpu", source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }, marker = "(python_full_version >= '3.11' and sys_platform == 'darwin') or (python_full_version >= '3.11' and sys_platform == 'linux') or (platform_machine != 'aarch64' and sys_platform == 'linux') or (platform_python_implementation != 'CPython' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
-    { name = "torch-sparse", version = "0.6.18", source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }, marker = "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform == 'darwin')" },
-    { name = "torch-sparse", version = "0.6.18+pt22cpu", source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }, marker = "(python_full_version >= '3.11' and sys_platform == 'darwin') or (python_full_version >= '3.11' and sys_platform == 'linux') or (platform_machine != 'aarch64' and sys_platform == 'linux') or (platform_python_implementation != 'CPython' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
     { name = "tqdm" },
     { name = "typed-argument-parser" },
 ]
@@ -52,6 +64,30 @@ dependencies = [
 [package.optional-dependencies]
 mayavi = [
     { name = "mayavi" },
+]
+
+[package.dev-dependencies]
+cpu = [
+    { name = "torch", version = "2.2.2", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (platform_machine != 'aarch64' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_python_implementation != 'CPython' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu') or (sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "torch", version = "2.2.2+cpu", source = { registry = "https://download.pytorch.org/whl/cpu" }, marker = "(platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "torch-cluster", version = "1.6.3", source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }, marker = "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "torch-cluster", version = "1.6.3+pt22cpu", source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }, marker = "(python_full_version >= '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version < '3.11' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "torch-geometric" },
+    { name = "torch-scatter", version = "2.1.2", source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }, marker = "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "torch-scatter", version = "2.1.2+pt22cpu", source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }, marker = "(python_full_version >= '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version < '3.11' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "torch-sparse", version = "0.6.18", source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }, marker = "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "torch-sparse", version = "0.6.18+pt22cpu", source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }, marker = "(python_full_version >= '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version < '3.11' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+]
+xpu = [
+    { name = "pytorch-triton-xpu", marker = "sys_platform == 'linux' or sys_platform == 'win32'" },
+    { name = "torch", version = "2.9.1+xpu", source = { registry = "https://download.pytorch.org/whl/xpu" } },
+    { name = "torch-cluster", version = "1.6.3", source = { registry = "https://data.pyg.org/whl/torch-2.9.1+cpu.html" }, marker = "(sys_platform == 'darwin' and extra == 'group-5-3dgcl-xpu') or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "torch-cluster", version = "1.6.3+pt29cpu", source = { registry = "https://data.pyg.org/whl/torch-2.9.1+cpu.html" }, marker = "(sys_platform != 'darwin' and extra == 'group-5-3dgcl-xpu') or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "torch-geometric" },
+    { name = "torch-scatter", version = "2.1.2", source = { registry = "https://data.pyg.org/whl/torch-2.9.1+cpu.html" }, marker = "(sys_platform == 'darwin' and extra == 'group-5-3dgcl-xpu') or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "torch-scatter", version = "2.1.2+pt29cpu", source = { registry = "https://data.pyg.org/whl/torch-2.9.1+cpu.html" }, marker = "(sys_platform != 'darwin' and extra == 'group-5-3dgcl-xpu') or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "torch-sparse", version = "0.6.18", source = { registry = "https://data.pyg.org/whl/torch-2.9.1+cpu.html" }, marker = "(sys_platform == 'darwin' and extra == 'group-5-3dgcl-xpu') or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "torch-sparse", version = "0.6.18+pt29cpu", source = { registry = "https://data.pyg.org/whl/torch-2.9.1+cpu.html" }, marker = "(sys_platform != 'darwin' and extra == 'group-5-3dgcl-xpu') or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 
 [package.metadata]
@@ -69,15 +105,27 @@ requires-dist = [
     { name = "scipy", specifier = ">=1.9" },
     { name = "sympy", specifier = ">=1.11" },
     { name = "tensorboard", specifier = ">=2.14" },
-    { name = "torch", specifier = ">=2.2,<2.3", index = "https://download.pytorch.org/whl/cpu" },
-    { name = "torch-cluster", index = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" },
-    { name = "torch-geometric", specifier = ">=2.5,<2.8" },
-    { name = "torch-scatter", index = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" },
-    { name = "torch-sparse", index = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" },
     { name = "tqdm", specifier = ">=4.65" },
     { name = "typed-argument-parser", specifier = ">=1.5,<2" },
 ]
 provides-extras = ["mayavi"]
+
+[package.metadata.requires-dev]
+cpu = [
+    { name = "torch", specifier = ">=2.2,<2.3", index = "https://download.pytorch.org/whl/cpu", conflict = { package = "3dgcl", group = "cpu" } },
+    { name = "torch-cluster", index = "https://data.pyg.org/whl/torch-2.2.0+cpu.html", conflict = { package = "3dgcl", group = "cpu" } },
+    { name = "torch-geometric", specifier = ">=2.5,<2.8" },
+    { name = "torch-scatter", index = "https://data.pyg.org/whl/torch-2.2.0+cpu.html", conflict = { package = "3dgcl", group = "cpu" } },
+    { name = "torch-sparse", index = "https://data.pyg.org/whl/torch-2.2.0+cpu.html", conflict = { package = "3dgcl", group = "cpu" } },
+]
+xpu = [
+    { name = "pytorch-triton-xpu", marker = "sys_platform == 'linux' or sys_platform == 'win32'", specifier = ">=3.5.0,<3.6", index = "https://download.pytorch.org/whl/xpu", conflict = { package = "3dgcl", group = "xpu" } },
+    { name = "torch", specifier = "==2.9.1+xpu", index = "https://download.pytorch.org/whl/xpu", conflict = { package = "3dgcl", group = "xpu" } },
+    { name = "torch-cluster", index = "https://data.pyg.org/whl/torch-2.9.1+cpu.html", conflict = { package = "3dgcl", group = "xpu" } },
+    { name = "torch-geometric", specifier = ">=2.5,<3" },
+    { name = "torch-scatter", index = "https://data.pyg.org/whl/torch-2.9.1+cpu.html", conflict = { package = "3dgcl", group = "xpu" } },
+    { name = "torch-sparse", index = "https://data.pyg.org/whl/torch-2.9.1+cpu.html", conflict = { package = "3dgcl", group = "xpu" } },
+]
 
 [[package]]
 name = "absl-py"
@@ -102,14 +150,14 @@ name = "aiohttp"
 version = "3.13.5"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "aiohappyeyeballs" },
-    { name = "aiosignal" },
+    { name = "aiohappyeyeballs", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "aiosignal", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
     { name = "async-timeout", marker = "python_full_version < '3.11'" },
-    { name = "attrs" },
-    { name = "frozenlist" },
-    { name = "multidict" },
-    { name = "propcache" },
-    { name = "yarl" },
+    { name = "attrs", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "frozenlist", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "multidict", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "propcache", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "yarl", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/77/9a/152096d4808df8e4268befa55fba462f440f14beab85e8ad9bf990516918/aiohttp-3.13.5.tar.gz", hash = "sha256:9d98cc980ecc96be6eb4c1994ce35d28d8b1f5e5208a23b421187d1209dbb7d1", size = 7858271, upload-time = "2026-03-31T22:01:03.343Z" }
 wheels = [
@@ -171,7 +219,7 @@ name = "aiosignal"
 version = "1.4.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "frozenlist" },
+    { name = "frozenlist", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
     { name = "typing-extensions" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/61/62/06741b579156360248d1ec624842ad0edf697050bbaf7c3e46394e106ad1/aiosignal-1.4.0.tar.gz", hash = "sha256:f47eecd9468083c2029cc99945502cb7708b082c232f9aca65da147157b251c7", size = 25007, upload-time = "2025-07-03T22:54:43.528Z" }
@@ -184,7 +232,7 @@ name = "anyio"
 version = "4.13.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
+    { name = "exceptiongroup", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "idna" },
     { name = "typing-extensions" },
 ]
@@ -284,7 +332,7 @@ name = "async-lru"
 version = "2.3.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/e8/1f/989ecfef8e64109a489fff357450cb73fa73a865a92bd8c272170a6922c2/async_lru-2.3.0.tar.gz", hash = "sha256:89bdb258a0140d7313cf8f4031d816a042202faa61d0ab310a0a538baa1c24b6", size = 16332, upload-time = "2026-03-19T01:04:32.413Z" }
 wheels = [
@@ -362,7 +410,7 @@ name = "cffi"
 version = "2.0.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pycparser", marker = "implementation_name != 'PyPy'" },
+    { name = "pycparser", marker = "implementation_name != 'PyPy' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/eb/56/b1ba7935a17738ae8453301356628e8147c79dbb825bcbc73dc7401f9846/cffi-2.0.0.tar.gz", hash = "sha256:44d1b5909021139fe36001ae048dbdde8214afa20200eda0f64c068cac5d5529", size = 523588, upload-time = "2025-09-08T23:24:04.541Z" }
 wheels = [
@@ -494,11 +542,14 @@ name = "contourpy"
 version = "1.3.2"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')",
-    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform == 'darwin')",
+    "python_full_version < '3.11' and sys_platform != 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version < '3.11' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version < '3.11' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 dependencies = [
-    { name = "numpy", marker = "python_full_version < '3.11'" },
+    { name = "numpy", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/66/54/eb9bfc647b19f2009dd5c7f5ec51c4e6ca831725f1aea7a993034f483147/contourpy-1.3.2.tar.gz", hash = "sha256:b6945942715a034c671b7fc54f9588126b0b8bf23db2696e3ca8328f3ff0ab54", size = 13466130, upload-time = "2025-04-15T17:47:53.79Z" }
 wheels = [
@@ -545,17 +596,31 @@ name = "contourpy"
 version = "1.3.3"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.12' and sys_platform == 'win32'",
-    "python_full_version == '3.11.*' and sys_platform == 'win32'",
-    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
-    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
-    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform == 'darwin')",
-    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform == 'darwin')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 dependencies = [
-    { name = "numpy", marker = "python_full_version >= '3.11'" },
+    { name = "numpy", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/58/01/1253e6698a07380cd31a736d248a3f2a50a7c88779a1813da27503cadc2a/contourpy-1.3.3.tar.gz", hash = "sha256:083e12155b210502d0bca491432bb04d56dc3432f95a979b429f2848c3dbe880", size = 13466174, upload-time = "2025-07-26T12:03:12.549Z" }
 wheels = [
@@ -646,6 +711,20 @@ wheels = [
 ]
 
 [[package]]
+name = "dpcpp-cpp-rt"
+version = "2025.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "intel-opencl-rt" },
+    { name = "intel-openmp" },
+    { name = "intel-sycl-rt" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8c/79/04d766ab2585b2e5586dfc5e39fd1a29eb61d415b1538ec5c2d02e7a4995/dpcpp_cpp_rt-2025.2.1-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:e601799b8698342116d165d52b9a86bddd1acca6b3522e656417e5128229f66e", size = 28795, upload-time = "2025-08-13T18:31:52.648Z" },
+    { url = "https://files.pythonhosted.org/packages/42/b9/ce5c467427d8f915b658eb6bc632e5eb078ffcd585558286ec502cc64513/dpcpp_cpp_rt-2025.2.1-py2.py3-none-win_amd64.whl", hash = "sha256:c00329ca42a8ce3686aa9ed416e4e71191d0201fbf67d20cdfc14ab3984e9d14", size = 58374, upload-time = "2025-08-13T18:31:24.398Z" },
+]
+
+[[package]]
 name = "envisage"
 version = "7.0.4"
 source = { registry = "https://pypi.org/simple" }
@@ -666,7 +745,7 @@ name = "exceptiongroup"
 version = "1.3.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/50/79/66800aadf48771f6b62f7eb014e352e5d06856655206165d775e675a02c9/exceptiongroup-1.3.1.tar.gz", hash = "sha256:8b412432c6055b0b7d14c310000ae93352ed6754f70fa8f7c34141f91c4e3219", size = 30371, upload-time = "2025-11-21T23:01:54.787Z" }
 wheels = [
@@ -896,6 +975,15 @@ wheels = [
 ]
 
 [[package]]
+name = "impi-rt"
+version = "2021.16.1"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/e5/44/6867aebd60d8b8bcf8f7e3b1fa781debd4fc3df16bfb1525e732570ea214/impi_rt-2021.16.1-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:0f70499bc42eab6923c0ae8fa6dd409c047d93626d686ac21d04e295b120bb95", size = 84635349, upload-time = "2025-08-13T18:32:10.885Z" },
+    { url = "https://files.pythonhosted.org/packages/cf/7c/b2c3495e0503b5ee4f9e8466e68a563aa346aae293efbb4e2e32cc06dc12/impi_rt-2021.16.1-py2.py3-none-win_amd64.whl", hash = "sha256:475ec5708d926125f39f2a7ceea4a5b6653779c1beae0db20ac7013245f888be", size = 17445878, upload-time = "2025-08-13T18:32:21.305Z" },
+]
+
+[[package]]
 name = "importlib-resources"
 version = "7.1.0"
 source = { registry = "https://pypi.org/simple" }
@@ -905,15 +993,93 @@ wheels = [
 ]
 
 [[package]]
+name = "intel-cmplr-lib-rt"
+version = "2025.2.1"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/1c/a9/a3d904890e2c5ea906db65c90b912553a94da44d4e81f26641b0d124cedb/intel_cmplr_lib_rt-2025.2.1-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:13e53cf4ee3d910db5ed46cf994c99dd391b50d6efb553cf3dd029b866d79a86", size = 47494270, upload-time = "2025-08-13T18:32:03.056Z" },
+    { url = "https://files.pythonhosted.org/packages/af/fc/89aac6ca9d5c92eacbe6619021d9311d7269f47613c6e50f5519c9ed7ce3/intel_cmplr_lib_rt-2025.2.1-py2.py3-none-win_amd64.whl", hash = "sha256:0676b41ace402b5a641851eb3775abf1d712cd412b47e3a5b23b9f8c1f6a9c8d", size = 17840112, upload-time = "2025-08-13T18:31:21.6Z" },
+]
+
+[[package]]
+name = "intel-cmplr-lib-ur"
+version = "2025.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "umf" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/92/18/28198666e0ee1709a471c3e376001146e629214d67553bc9fa3e7bbc9b8e/intel_cmplr_lib_ur-2025.2.1-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:ecc6eba009ead8ea819d931107ba11e2b502f5d8ebbd287e4901074a764f9792", size = 29313080, upload-time = "2025-08-13T18:31:36.833Z" },
+    { url = "https://files.pythonhosted.org/packages/a8/70/938e81f58886fd4e114d5a5480d98c1396e73e40b7650f566ad0c4395311/intel_cmplr_lib_ur-2025.2.1-py2.py3-none-win_amd64.whl", hash = "sha256:497348e3bcb9fa0e079ade2d7cf2c10931e78eb9845285d1b6bb6dcd2764964a", size = 1169341, upload-time = "2025-08-13T18:31:17.978Z" },
+]
+
+[[package]]
+name = "intel-cmplr-lic-rt"
+version = "2025.2.1"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/24/87/c2229d6dbda1a9b949f009c9a0b1f14141b2725bb526964e6e263328935a/intel_cmplr_lic_rt-2025.2.1-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:aeaad4648cc0baaefffb0a0f8c1c2d1de01e5396711c3e69e36fab90030889d8", size = 18909, upload-time = "2025-08-13T18:31:54.25Z" },
+    { url = "https://files.pythonhosted.org/packages/12/c1/a9d132d0f7089aaca377aee9caa8bba8f4616066181d2c1a897655aa071c/intel_cmplr_lic_rt-2025.2.1-py2.py3-none-win_amd64.whl", hash = "sha256:345a31c25b1d059a6f146f61404949d2bd8127b92c86effaec0d7202a9ca735d", size = 49546, upload-time = "2025-08-13T18:31:06.431Z" },
+]
+
+[[package]]
+name = "intel-opencl-rt"
+version = "2025.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "intel-cmplr-lic-rt" },
+    { name = "tbb" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/d4/2d/bb5fdf03f267afa3b9d0e1a6d92ebb487e35aee3462d19b38669b4f8b455/intel_opencl_rt-2025.2.1-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:5f8c5f9c2840ebc0360524f46fb13f28a1c45a98483f78f0c488b3ec4c411d28", size = 193043449, upload-time = "2025-08-13T18:31:45.158Z" },
+    { url = "https://files.pythonhosted.org/packages/96/df/098ba613babaea73ef4fd3ebae91cdbbb740bc42c1509285be4b4215eca7/intel_opencl_rt-2025.2.1-py2.py3-none-win_amd64.whl", hash = "sha256:66c71b51b88a213bc1b05120f20752e28fe9dfb470cdfd433627cd70f6452a60", size = 105012215, upload-time = "2025-08-13T18:31:01.657Z" },
+]
+
+[[package]]
+name = "intel-openmp"
+version = "2025.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "intel-cmplr-lib-ur" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/8a/0a/160013c2e8920e7f4d5bfb0b46dbe9fdd37ff50adcc11a1bad674f22bd78/intel_openmp-2025.2.1-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:4656e8e864998db776dbb6d045067f75c227f78c72943e07e15b0d1d65ff45c2", size = 73411361, upload-time = "2025-08-13T18:31:57.96Z" },
+    { url = "https://files.pythonhosted.org/packages/89/ed/13fed53fcc7ea17ff84095e89e63418df91d4eeefdc74454243d529bf5a3/intel_openmp-2025.2.1-py2.py3-none-win_amd64.whl", hash = "sha256:ac69973d6c489ec3697bb320ccce0b274de4462f463e5ea0f078abbcbb933e09", size = 34021986, upload-time = "2025-08-13T18:31:09.507Z" },
+]
+
+[[package]]
+name = "intel-pti"
+version = "0.13.1"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/78/de/170216cc7776b239ddc4825911a109b10c8396a57bab46c177d8ef404e50/intel_pti-0.13.1-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:926982bd57a1f73ba9e604b12394fbcf8443076c75990cb70b10a47b8e97effe", size = 1122645, upload-time = "2025-08-13T18:30:54.3Z" },
+    { url = "https://files.pythonhosted.org/packages/0e/4a/3625615b094d8400ca4b563dd76a20e30dbfa66b24a822645114926773d2/intel_pti-0.13.1-py2.py3-none-win_amd64.whl", hash = "sha256:b20baa99455a40c4852eb69b256eeab83cb9f80b3ad5af23720ea8ab35f419f0", size = 600985, upload-time = "2025-08-13T18:32:24.239Z" },
+]
+
+[[package]]
+name = "intel-sycl-rt"
+version = "2025.2.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "intel-cmplr-lib-rt" },
+    { name = "intel-cmplr-lib-ur" },
+    { name = "intel-cmplr-lic-rt" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/a0/00/5621dd3aa9e078ebed8b5b73fe86986e4554398466f218b3125f7f76c7a9/intel_sycl_rt-2025.2.1-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:d44dd7e76cf7b624de9106f3d9c3d541f6f20d83e861f724b055867fd351b064", size = 113799221, upload-time = "2025-08-13T18:31:30.774Z" },
+    { url = "https://files.pythonhosted.org/packages/11/71/ee0944c6eebf297b2963bef7ebc712d605982e85374bcafe12b9c467826f/intel_sycl_rt-2025.2.1-py2.py3-none-win_amd64.whl", hash = "sha256:97f6b66550a8211b37d17664efec98268ea59ca9ca3715da883505029e5dc74b", size = 48027561, upload-time = "2025-08-13T18:31:14.181Z" },
+]
+
+[[package]]
 name = "ipykernel"
 version = "7.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "appnope", marker = "sys_platform == 'darwin'" },
+    { name = "appnope", marker = "sys_platform == 'darwin' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "comm" },
     { name = "debugpy" },
-    { name = "ipython", version = "8.39.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "ipython", version = "9.13.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "ipython", version = "8.39.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "ipython", version = "9.13.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "jupyter-client" },
     { name = "jupyter-core" },
     { name = "matplotlib-inline" },
@@ -934,21 +1100,24 @@ name = "ipython"
 version = "8.39.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')",
-    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform == 'darwin')",
+    "python_full_version < '3.11' and sys_platform != 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version < '3.11' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version < '3.11' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 dependencies = [
-    { name = "colorama", marker = "python_full_version < '3.11' and sys_platform == 'win32'" },
-    { name = "decorator", marker = "python_full_version < '3.11'" },
-    { name = "exceptiongroup", marker = "python_full_version < '3.11'" },
-    { name = "jedi", marker = "python_full_version < '3.11'" },
-    { name = "matplotlib-inline", marker = "python_full_version < '3.11'" },
-    { name = "pexpect", marker = "python_full_version < '3.11' and sys_platform != 'emscripten' and sys_platform != 'win32'" },
-    { name = "prompt-toolkit", marker = "python_full_version < '3.11'" },
-    { name = "pygments", marker = "python_full_version < '3.11'" },
-    { name = "stack-data", marker = "python_full_version < '3.11'" },
-    { name = "traitlets", marker = "python_full_version < '3.11'" },
-    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+    { name = "colorama", marker = "(python_full_version < '3.11' and sys_platform == 'win32') or (python_full_version >= '3.11' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "decorator", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "exceptiongroup", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "jedi", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "matplotlib-inline", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "pexpect", marker = "(python_full_version < '3.11' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version >= '3.11' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "prompt-toolkit", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "pygments", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "stack-data", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "traitlets", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/40/18/f8598d287006885e7136451fdea0755af4ebcbfe342836f24deefaed1164/ipython-8.39.0.tar.gz", hash = "sha256:4110ae96012c379b8b6db898a07e186c40a2a1ef5d57a7fa83166047d9da7624", size = 5513971, upload-time = "2026-03-27T10:02:13.94Z" }
 wheels = [
@@ -960,28 +1129,42 @@ name = "ipython"
 version = "9.13.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.12' and sys_platform == 'win32'",
-    "python_full_version == '3.11.*' and sys_platform == 'win32'",
-    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
-    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
-    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform == 'darwin')",
-    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform == 'darwin')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 dependencies = [
-    { name = "colorama", marker = "python_full_version >= '3.11' and sys_platform == 'win32'" },
-    { name = "decorator", marker = "python_full_version >= '3.11'" },
-    { name = "ipython-pygments-lexers", marker = "python_full_version >= '3.11'" },
-    { name = "jedi", marker = "python_full_version >= '3.11'" },
-    { name = "matplotlib-inline", marker = "python_full_version >= '3.11'" },
-    { name = "pexpect", marker = "python_full_version >= '3.11' and sys_platform != 'emscripten' and sys_platform != 'win32'" },
-    { name = "prompt-toolkit", marker = "python_full_version >= '3.11'" },
-    { name = "psutil", marker = "python_full_version >= '3.11'" },
-    { name = "pygments", marker = "python_full_version >= '3.11'" },
-    { name = "stack-data", marker = "python_full_version >= '3.11'" },
-    { name = "traitlets", marker = "python_full_version >= '3.11'" },
-    { name = "typing-extensions", marker = "python_full_version == '3.11.*'" },
+    { name = "colorama", marker = "(python_full_version >= '3.11' and sys_platform == 'win32') or (python_full_version < '3.11' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "decorator", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "ipython-pygments-lexers", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "jedi", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "matplotlib-inline", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "pexpect", marker = "(python_full_version >= '3.11' and sys_platform != 'emscripten' and sys_platform != 'win32') or (python_full_version < '3.11' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "prompt-toolkit", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "psutil", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "pygments", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "stack-data", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "traitlets", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "typing-extensions", marker = "python_full_version == '3.11.*' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/cd/c4/87cda5842cf5c31837c06ddb588e11c3c35d8ece89b7a0108c06b8c9b00a/ipython-9.13.0.tar.gz", hash = "sha256:7e834b6afc99f020e3f05966ced34792f40267d64cb1ea9043886dab0dde5967", size = 4430549, upload-time = "2026-04-24T12:24:55.221Z" }
 wheels = [
@@ -993,7 +1176,7 @@ name = "ipython-pygments-lexers"
 version = "1.1.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pygments", marker = "python_full_version >= '3.11'" },
+    { name = "pygments", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/ef/4c/5dd1d8af08107f88c7f741ead7a40854b8ac24ddf9ae850afbcf698aa552/ipython_pygments_lexers-1.1.1.tar.gz", hash = "sha256:09c0138009e56b6854f9535736f4171d855c8c08a563a0dcd8022f78355c7e81", size = 8393, upload-time = "2025-01-17T11:24:34.505Z" }
 wheels = [
@@ -1006,8 +1189,8 @@ version = "8.1.8"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "comm" },
-    { name = "ipython", version = "8.39.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "ipython", version = "9.13.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "ipython", version = "8.39.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "ipython", version = "9.13.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "jupyterlab-widgets" },
     { name = "traitlets" },
     { name = "widgetsnbextension" },
@@ -1159,8 +1342,8 @@ version = "6.6.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "ipykernel" },
-    { name = "ipython", version = "8.39.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "ipython", version = "9.13.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "ipython", version = "8.39.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "ipython", version = "9.13.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "jupyter-client" },
     { name = "jupyter-core" },
     { name = "prompt-toolkit" },
@@ -1231,10 +1414,10 @@ dependencies = [
     { name = "jupyter-server-terminals" },
     { name = "nbconvert" },
     { name = "nbformat" },
-    { name = "overrides", marker = "python_full_version < '3.12'" },
+    { name = "overrides", marker = "python_full_version < '3.12' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "packaging" },
     { name = "prometheus-client" },
-    { name = "pywinpty", marker = "(os_name == 'nt' and platform_machine != 'aarch64' and sys_platform == 'linux') or (os_name == 'nt' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (os_name == 'nt' and sys_platform != 'darwin' and sys_platform != 'linux')" },
+    { name = "pywinpty", marker = "(os_name == 'nt' and platform_machine != 'aarch64' and sys_platform == 'linux') or (os_name == 'nt' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (os_name == 'nt' and sys_platform != 'darwin' and sys_platform != 'linux') or (os_name == 'nt' and sys_platform == 'linux' and extra != 'group-5-3dgcl-cpu') or (os_name == 'nt' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (os_name != 'nt' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "pyzmq" },
     { name = "send2trash" },
     { name = "terminado" },
@@ -1252,7 +1435,7 @@ name = "jupyter-server-terminals"
 version = "0.5.4"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "pywinpty", marker = "(os_name == 'nt' and platform_machine != 'aarch64' and sys_platform == 'linux') or (os_name == 'nt' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (os_name == 'nt' and sys_platform != 'darwin' and sys_platform != 'linux')" },
+    { name = "pywinpty", marker = "(os_name == 'nt' and platform_machine != 'aarch64' and sys_platform == 'linux') or (os_name == 'nt' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (os_name == 'nt' and sys_platform != 'darwin' and sys_platform != 'linux') or (os_name == 'nt' and sys_platform == 'linux' and extra != 'group-5-3dgcl-cpu') or (os_name == 'nt' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (os_name != 'nt' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "terminado" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/f4/a7/bcd0a9b0cbba88986fe944aaaf91bfda603e5a50bda8ed15123f381a3b2f/jupyter_server_terminals-0.5.4.tar.gz", hash = "sha256:bbda128ed41d0be9020349f9f1f2a4ab9952a73ed5f5ac9f1419794761fb87f5", size = 31770, upload-time = "2026-01-14T16:53:20.213Z" }
@@ -1276,7 +1459,7 @@ dependencies = [
     { name = "notebook-shim" },
     { name = "packaging" },
     { name = "setuptools" },
-    { name = "tomli", marker = "python_full_version < '3.11'" },
+    { name = "tomli", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "tornado" },
     { name = "traitlets" },
 ]
@@ -1450,8 +1633,8 @@ name = "matplotlib"
 version = "3.10.9"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "contourpy", version = "1.3.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "contourpy", version = "1.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "contourpy", version = "1.3.2", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "contourpy", version = "1.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "cycler" },
     { name = "fonttools" },
     { name = "kiwisolver" },
@@ -1511,11 +1694,11 @@ dependencies = [
     { name = "apptools" },
     { name = "configobj" },
     { name = "envisage" },
-    { name = "importlib-resources", marker = "python_full_version < '3.11'" },
+    { name = "importlib-resources", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "numpy" },
     { name = "packaging" },
-    { name = "puremagic", version = "1.30", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12'" },
-    { name = "puremagic", version = "2.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12'" },
+    { name = "puremagic", version = "1.30", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.12' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "puremagic", version = "2.2.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.12' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "pyface" },
     { name = "pygments" },
     { name = "traits" },
@@ -1529,11 +1712,24 @@ name = "mistune"
 version = "3.2.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "typing-extensions", marker = "python_full_version < '3.11'" },
+    { name = "typing-extensions", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/9d/55/d01f0c4b45ade6536c51170b9043db8b2ec6ddf4a35c7ea3f5f559ac935b/mistune-3.2.0.tar.gz", hash = "sha256:708487c8a8cdd99c9d90eb3ed4c3ed961246ff78ac82f03418f5183ab70e398a", size = 95467, upload-time = "2025-12-23T11:36:34.994Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9b/f7/4a5e785ec9fbd65146a27b6b70b6cdc161a66f2024e4b04ac06a67f5578b/mistune-3.2.0-py3-none-any.whl", hash = "sha256:febdc629a3c78616b94393c6580551e0e34cc289987ec6c35ed3f4be42d0eee1", size = 53598, upload-time = "2025-12-23T11:36:33.211Z" },
+]
+
+[[package]]
+name = "mkl"
+version = "2025.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "intel-openmp" },
+    { name = "tbb" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/46/7b/f5b1b84eb0a2a6e145fc31b4e6b1c59690dcb088734197da8f299caf7c67/mkl-2025.2.0-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:974b4e222cc94e8d3b67213a361c8ac25d432cc4fccc5f2f00aa15c4e67cc203", size = 190225238, upload-time = "2025-06-24T13:16:12.866Z" },
+    { url = "https://files.pythonhosted.org/packages/91/ae/025174ee141432b974f97ecd2aea529a3bdb547392bde3dd55ce48fe7827/mkl-2025.2.0-py2.py3-none-win_amd64.whl", hash = "sha256:b6ec153e4a073421dbb52ef99c7be97e66cde0272e4a1e3569b090b6f0130253", size = 153630290, upload-time = "2025-06-24T13:18:06.053Z" },
 ]
 
 [[package]]
@@ -1680,8 +1876,11 @@ name = "networkx"
 version = "3.4.2"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')",
-    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform == 'darwin')",
+    "python_full_version < '3.11' and sys_platform != 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version < '3.11' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version < '3.11' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/fd/1d/06475e1cd5264c0b870ea2cc6fdb3e37177c1e565c43f56ff17a10e3937f/networkx-3.4.2.tar.gz", hash = "sha256:307c3669428c5362aab27c8a1260aa8f47c4e91d3891f48be0141738d8d053e1", size = 2151368, upload-time = "2024-10-21T12:39:38.695Z" }
 wheels = [
@@ -1693,14 +1892,28 @@ name = "networkx"
 version = "3.6.1"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.12' and sys_platform == 'win32'",
-    "python_full_version == '3.11.*' and sys_platform == 'win32'",
-    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
-    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
-    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform == 'darwin')",
-    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform == 'darwin')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/6a/51/63fe664f3908c97be9d2e4f1158eb633317598cfa6e1fc14af5383f17512/networkx-3.6.1.tar.gz", hash = "sha256:26b7c357accc0c8cde558ad486283728b65b6a95d85ee1cd66bafab4c8168509", size = 2517025, upload-time = "2025-12-08T17:02:39.908Z" }
 wheels = [
@@ -1768,6 +1981,101 @@ wheels = [
 ]
 
 [[package]]
+name = "oneccl"
+version = "2021.16.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "impi-rt" },
+    { name = "intel-sycl-rt" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/95/38/e31cc932bd62ede7813dad2062caef6b745550e699766cdf6ba3a8e2ff8e/oneccl-2021.16.1-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:371c2ebd6590216a1cbbeaf0ba70b26e9a275a708993aba43c9ee82a1947a3c6", size = 104428094, upload-time = "2025-08-13T17:22:16.448Z" },
+]
+
+[[package]]
+name = "oneccl-devel"
+version = "2021.16.1"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "oneccl" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f6/05/fd082b1da0fdd8082b99d721fd69a4a954f61639fbe7d024ca93b16e4dc1/oneccl_devel-2021.16.1-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:9154ab9c10e9864464c7163857f87c3de05b80030b4dc4ad9bdbd8084cb85ac2", size = 35075212, upload-time = "2025-08-13T17:22:21.894Z" },
+]
+
+[[package]]
+name = "onemkl-sycl-blas"
+version = "2025.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "dpcpp-cpp-rt" },
+    { name = "intel-opencl-rt" },
+    { name = "mkl" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/ce/c2/b37cf1963b73a3c971efc36d53b97efccaa30f52f1f523a5452d582dbe08/onemkl_sycl_blas-2025.2.0-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:28ad1e49c821f34b57ba217dc64ab6f95d5f8f262b582296d8551d298408fd72", size = 23585330, upload-time = "2025-06-24T13:16:37.562Z" },
+    { url = "https://files.pythonhosted.org/packages/2c/b5/ff5fe87ee3a9c14cc2110d168b3a846b64de3cbf4bdec508bc52ef552dff/onemkl_sycl_blas-2025.2.0-py2.py3-none-win_amd64.whl", hash = "sha256:eda2664fca363fa8231e5a08aa10126b91e199b3f4a5a118e4bc3988fc7e00f5", size = 17318162, upload-time = "2025-06-24T13:17:40.743Z" },
+]
+
+[[package]]
+name = "onemkl-sycl-dft"
+version = "2025.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "dpcpp-cpp-rt" },
+    { name = "intel-opencl-rt" },
+    { name = "mkl" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/f2/5b/5d26447da4cf01abab3020c82924b1661684adb0286a99c692cd1c08461d/onemkl_sycl_dft-2025.2.0-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:1f05b0b8315d7b59867ad512e7e06297b24778d0dcb9deac5201c1982bc8af57", size = 6859958, upload-time = "2025-06-24T13:15:48.466Z" },
+    { url = "https://files.pythonhosted.org/packages/36/c4/43677c327afdd73c1e876f28f6ffb35dc7e53d18e44c5d675597dbdcbfd4/onemkl_sycl_dft-2025.2.0-py2.py3-none-win_amd64.whl", hash = "sha256:8e6ed87138f7064c51059229199d0e090d660dcb30f76a1be91afd27e2e32b4f", size = 6089311, upload-time = "2025-06-24T13:17:33.976Z" },
+]
+
+[[package]]
+name = "onemkl-sycl-lapack"
+version = "2025.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "dpcpp-cpp-rt" },
+    { name = "intel-opencl-rt" },
+    { name = "mkl" },
+    { name = "onemkl-sycl-blas" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/db/2e/6e87e5a96bb16fe757d82de185b2706b2e4d3eb372f5eaa266508fb3c1ed/onemkl_sycl_lapack-2025.2.0-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:2b2395fd1c267db2719b8fff59486b478568f61567b596b6f8c1f7008c4aba4d", size = 10818002, upload-time = "2025-06-24T13:16:04.779Z" },
+    { url = "https://files.pythonhosted.org/packages/f9/cc/494691172771a3335ffd276b9eb699264603789d1234765a5ee9cc1f0740/onemkl_sycl_lapack-2025.2.0-py2.py3-none-win_amd64.whl", hash = "sha256:28b5481f619fda2741741e03ab0d1abc3856c8ad24ea3f3cba2fafa4c20455a1", size = 8432920, upload-time = "2025-06-24T13:17:36.963Z" },
+]
+
+[[package]]
+name = "onemkl-sycl-rng"
+version = "2025.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "dpcpp-cpp-rt" },
+    { name = "intel-opencl-rt" },
+    { name = "mkl" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/bb/c8/81bab1b7838a9229ed078b9628c8e05ce8073045b64c642971bc5ce0cce8/onemkl_sycl_rng-2025.2.0-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:2fb7f8978a26e089cc29d862776cd4acdb66bbc5614cc59fa992d55e073ac093", size = 25350619, upload-time = "2025-06-24T13:16:01.236Z" },
+    { url = "https://files.pythonhosted.org/packages/b3/95/69e81b809c697e99a6338ac99462ac04781526a383f2323b45874ea26eab/onemkl_sycl_rng-2025.2.0-py2.py3-none-win_amd64.whl", hash = "sha256:c63c3786eb5bda4fc0f0412ec649177008af24ae9339a0c91e5c8799807adb51", size = 16770111, upload-time = "2025-06-24T13:17:56.551Z" },
+]
+
+[[package]]
+name = "onemkl-sycl-sparse"
+version = "2025.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "dpcpp-cpp-rt" },
+    { name = "intel-opencl-rt" },
+    { name = "mkl" },
+    { name = "onemkl-sycl-blas" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/51/68/af04fa6a7d8fa5c9c3af4055abab86ed04af24b2cf316dd00f2f16694557/onemkl_sycl_sparse-2025.2.0-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:b122f08aa80d0bc4330b5e218fcf810123c0efbf029b4460912e638b3cd75c5a", size = 22410699, upload-time = "2025-06-24T13:15:43.166Z" },
+    { url = "https://files.pythonhosted.org/packages/00/6a/2925fa8fd795b1f0e7e6224b1e707e46b452da7c299a03bb154de1fe0fa6/onemkl_sycl_sparse-2025.2.0-py2.py3-none-win_amd64.whl", hash = "sha256:bb7cf7ea365d877a4e2f47e8e85d915d22efa80a5b2584d285bda3fc357a6360", size = 18916941, upload-time = "2025-06-24T13:18:15.768Z" },
+]
+
+[[package]]
 name = "overrides"
 version = "7.7.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1790,14 +2098,17 @@ name = "pandas"
 version = "2.3.3"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')",
-    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform == 'darwin')",
+    "python_full_version < '3.11' and sys_platform != 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version < '3.11' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version < '3.11' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 dependencies = [
-    { name = "numpy", marker = "python_full_version < '3.11'" },
-    { name = "python-dateutil", marker = "python_full_version < '3.11'" },
-    { name = "pytz", marker = "python_full_version < '3.11'" },
-    { name = "tzdata", marker = "python_full_version < '3.11'" },
+    { name = "numpy", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "python-dateutil", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "pytz", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "tzdata", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/33/01/d40b85317f86cf08d853a4f495195c73815fdf205eef3993821720274518/pandas-2.3.3.tar.gz", hash = "sha256:e05e1af93b977f7eafa636d043f9f94c7ee3ac81af99c13508215942e64c993b", size = 4495223, upload-time = "2025-09-29T23:34:51.853Z" }
 wheels = [
@@ -1829,19 +2140,33 @@ name = "pandas"
 version = "3.0.2"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.12' and sys_platform == 'win32'",
-    "python_full_version == '3.11.*' and sys_platform == 'win32'",
-    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
-    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
-    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform == 'darwin')",
-    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform == 'darwin')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 dependencies = [
-    { name = "numpy", marker = "python_full_version >= '3.11'" },
-    { name = "python-dateutil", marker = "python_full_version >= '3.11'" },
-    { name = "tzdata", marker = "(python_full_version >= '3.11' and sys_platform == 'emscripten') or (python_full_version >= '3.11' and sys_platform == 'win32')" },
+    { name = "numpy", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "python-dateutil", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "tzdata", marker = "(python_full_version >= '3.11' and sys_platform == 'emscripten') or (python_full_version >= '3.11' and sys_platform == 'win32') or (sys_platform != 'emscripten' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/da/99/b342345300f13440fe9fe385c3c481e2d9a595ee3bab4d3219247ac94e9a/pandas-3.0.2.tar.gz", hash = "sha256:f4753e73e34c8d83221ba58f232433fca2748be8b18dbca02d242ed153945043", size = 4645855, upload-time = "2026-03-31T06:48:30.816Z" }
 wheels = [
@@ -1886,7 +2211,7 @@ name = "pexpect"
 version = "4.9.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "ptyprocess", marker = "(python_full_version < '3.11' and sys_platform == 'emscripten') or (python_full_version < '3.11' and sys_platform == 'win32') or (sys_platform != 'emscripten' and sys_platform != 'win32')" },
+    { name = "ptyprocess" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/42/92/cc564bf6381ff43ce1f4d06852fc19a2f11d180f23dc32d9588bee2f149d/pexpect-4.9.0.tar.gz", hash = "sha256:ee7d41123f3c9911050ea2c2dac107568dc43b2d3b0c7557a33212c398ead30f", size = 166450, upload-time = "2023-11-25T09:07:26.339Z" }
 wheels = [
@@ -2079,12 +2404,22 @@ name = "puremagic"
 version = "1.30"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version == '3.11.*' and sys_platform == 'win32'",
-    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
-    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform == 'darwin')",
-    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')",
-    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform == 'darwin')",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version < '3.11' and sys_platform != 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version < '3.11' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version < '3.11' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/dd/7f/9998706bc516bdd664ccf929a1da6c6e5ee06e48f723ce45aae7cf3ff36e/puremagic-1.30.tar.gz", hash = "sha256:f9ff7ac157d54e9cf3bff1addfd97233548e75e685282d84ae11e7ffee1614c9", size = 314785, upload-time = "2025-07-04T18:48:36.061Z" }
 wheels = [
@@ -2096,10 +2431,17 @@ name = "puremagic"
 version = "2.2.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.12' and sys_platform == 'win32'",
-    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
-    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform == 'darwin')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/24/74/ce5987ab9b8aec4ced06e2723ebb604205c9eb58abdad91453da93166380/puremagic-2.2.0.tar.gz", hash = "sha256:eb4bddf07c177c4b434554b92165b67449f5a51e152b976202d6254498810eef", size = 1189752, upload-time = "2026-04-08T01:39:55.562Z" }
 wheels = [
@@ -2167,6 +2509,22 @@ wheels = [
 ]
 
 [[package]]
+name = "pytorch-triton-xpu"
+version = "3.5.0"
+source = { registry = "https://download.pytorch.org/whl/xpu" }
+dependencies = [
+    { name = "setuptools" },
+]
+wheels = [
+    { url = "https://download-r2.pytorch.org/whl/pytorch_triton_xpu-3.5.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:c169a1de14c19673b17c751290d467fa282fc90fa5da4314b2e5cdab1f553146", upload-time = "2025-10-14T17:16:40Z" },
+    { url = "https://download-r2.pytorch.org/whl/pytorch_triton_xpu-3.5.0-cp310-cp310-win_amd64.whl", hash = "sha256:c83ab007311d9cfb6e809ee5a4587d99a9eef4be720b90da4f1aaa68b45139a0", upload-time = "2025-10-14T17:16:40Z" },
+    { url = "https://download-r2.pytorch.org/whl/pytorch_triton_xpu-3.5.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:013d9dd5d6479bd22983161f462e61c8dbe1d82e6730624a7a8d5945507eaa61", upload-time = "2025-10-14T17:16:40Z" },
+    { url = "https://download-r2.pytorch.org/whl/pytorch_triton_xpu-3.5.0-cp311-cp311-win_amd64.whl", hash = "sha256:debf75348da8e8c7166b4d4a9b91d1508bb8d6581e339f79f7604b2e6746bacd", upload-time = "2025-10-14T17:16:42Z" },
+    { url = "https://download-r2.pytorch.org/whl/pytorch_triton_xpu-3.5.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:afc8cabfbf7ed51fd278d1e0f88d6afc157b0201bad4b99d681e4d542f9e66d4", upload-time = "2025-10-14T17:16:46Z" },
+    { url = "https://download-r2.pytorch.org/whl/pytorch_triton_xpu-3.5.0-cp312-cp312-win_amd64.whl", hash = "sha256:97337a47425f1963a723475bd61037460e84ba01db4f87a1d662c3718ff6c47e", upload-time = "2025-10-14T17:16:55Z" },
+]
+
+[[package]]
 name = "pytz"
 version = "2026.1.post1"
 source = { registry = "https://pypi.org/simple" }
@@ -2230,7 +2588,7 @@ name = "pyzmq"
 version = "27.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "cffi", marker = "implementation_name == 'pypy'" },
+    { name = "cffi", marker = "implementation_name == 'pypy' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/04/0b/3c9baedbdf613ecaa7aa07027780b8867f57b6293b6ee50de316c9f3222b/pyzmq-27.1.0.tar.gz", hash = "sha256:ac0765e3d44455adb6ddbf4417dcce460fc40a05978c08efdf2948072f6db540", size = 281750, upload-time = "2025-09-08T23:10:18.157Z" }
 wheels = [
@@ -2430,14 +2788,17 @@ name = "scikit-learn"
 version = "1.7.2"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')",
-    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform == 'darwin')",
+    "python_full_version < '3.11' and sys_platform != 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version < '3.11' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version < '3.11' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 dependencies = [
-    { name = "joblib", marker = "python_full_version < '3.11'" },
-    { name = "numpy", marker = "python_full_version < '3.11'" },
-    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
-    { name = "threadpoolctl", marker = "python_full_version < '3.11'" },
+    { name = "joblib", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "numpy", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "threadpoolctl", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/98/c2/a7855e41c9d285dfe86dc50b250978105dce513d6e459ea66a6aeb0e1e0c/scikit_learn-1.7.2.tar.gz", hash = "sha256:20e9e49ecd130598f1ca38a1d85090e1a600147b9c02fa6f15d69cb53d968fda", size = 7193136, upload-time = "2025-09-09T08:21:29.075Z" }
 wheels = [
@@ -2463,20 +2824,34 @@ name = "scikit-learn"
 version = "1.8.0"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.12' and sys_platform == 'win32'",
-    "python_full_version == '3.11.*' and sys_platform == 'win32'",
-    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
-    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
-    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform == 'darwin')",
-    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform == 'darwin')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 dependencies = [
-    { name = "joblib", marker = "python_full_version >= '3.11'" },
-    { name = "numpy", marker = "python_full_version >= '3.11'" },
-    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
-    { name = "threadpoolctl", marker = "python_full_version >= '3.11'" },
+    { name = "joblib", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "numpy", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "threadpoolctl", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/0e/d4/40988bf3b8e34feec1d0e6a051446b1f66225f8529b9309becaeef62b6c4/scikit_learn-1.8.0.tar.gz", hash = "sha256:9bccbb3b40e3de10351f8f5068e105d0f4083b1a65fa07b6634fbc401a6287fd", size = 7335585, upload-time = "2025-12-10T07:08:53.618Z" }
 wheels = [
@@ -2499,11 +2874,14 @@ name = "scipy"
 version = "1.15.3"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')",
-    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform == 'darwin')",
+    "python_full_version < '3.11' and sys_platform != 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version < '3.11' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version < '3.11' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 dependencies = [
-    { name = "numpy", marker = "python_full_version < '3.11'" },
+    { name = "numpy", marker = "python_full_version < '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/0f/37/6964b830433e654ec7485e45a00fc9a27cf868d622838f6b6d9c5ec0d532/scipy-1.15.3.tar.gz", hash = "sha256:eae3cf522bc7df64b42cad3925c876e1b0b6c35c1337c93e12c0f366f55b0eaf", size = 59419214, upload-time = "2025-05-08T16:13:05.955Z" }
 wheels = [
@@ -2541,17 +2919,31 @@ name = "scipy"
 version = "1.17.1"
 source = { registry = "https://pypi.org/simple" }
 resolution-markers = [
-    "python_full_version >= '3.12' and sys_platform == 'win32'",
-    "python_full_version == '3.11.*' and sys_platform == 'win32'",
-    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
-    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
-    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32')",
-    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.12' and sys_platform == 'darwin')",
-    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version == '3.11.*' and sys_platform == 'darwin')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "(python_full_version >= '3.12' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'linux' and sys_platform != 'win32' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version >= '3.12' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version >= '3.12' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "(python_full_version == '3.11.*' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (python_full_version == '3.11.*' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu')",
+    "python_full_version >= '3.12' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version >= '3.12' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
+    "python_full_version == '3.11.*' and sys_platform != 'emscripten' and sys_platform != 'win32' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu'",
 ]
 dependencies = [
-    { name = "numpy", marker = "python_full_version >= '3.11'" },
+    { name = "numpy", marker = "python_full_version >= '3.11' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/7a/97/5a3609c4f8d58b039179648e62dd220f89864f56f7357f5d4f45c29eb2cc/scipy-1.17.1.tar.gz", hash = "sha256:95d8e012d8cb8816c226aef832200b1d45109ed4464303e997c5b13122b297c0", size = 30573822, upload-time = "2026-02-23T00:26:24.851Z" }
 wheels = [
@@ -2640,6 +3032,27 @@ wheels = [
 ]
 
 [[package]]
+name = "tbb"
+version = "2022.2.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "tcmlib" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/cd/5c/019acaccf0038b8e05b0a54189439d0987891017a84ca43675589f7e460c/tbb-2022.2.0-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:522189f3e370a6b9c92b8a7fbdecf3633f7c53f0ea4eb8d6891a7f5f00c78099", size = 6393815, upload-time = "2025-06-24T13:15:13.482Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/d2/01e2a93f9c644585088188840bf453f23ed1a2838ec51d5ba1ada1ebca71/tbb-2022.2.0-py3-none-win_amd64.whl", hash = "sha256:acbce7632d4d7acc6bdfe9849a57ab1624490198699eb16ea63243cfb4fd4cfa", size = 420638, upload-time = "2025-06-24T13:19:44.515Z" },
+]
+
+[[package]]
+name = "tcmlib"
+version = "1.4.0"
+source = { registry = "https://pypi.org/simple" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/28/9d/97d81fa340b9f1a0e33d6260daeb8bd7bbc2ef5b686be193491de5c9880a/tcmlib-1.4.0-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:b2a2b68c100cc2a6163d394353b3013ab2479e70300b9bc1cb7f7822bcc38a40", size = 2731275, upload-time = "2025-06-24T13:15:40.134Z" },
+    { url = "https://files.pythonhosted.org/packages/91/7b/e30c461a27b97e0090e4db822eeb1d37b310863241f8c3ee56f68df3e76e/tcmlib-1.4.0-py2.py3-none-win_amd64.whl", hash = "sha256:ab24f73c52b224cb744a0c0c28fcef8e51aec3c88aa6b39202c149495d6d2ea0", size = 370349, upload-time = "2025-06-24T13:13:59.825Z" },
+]
+
+[[package]]
 name = "tensorboard"
 version = "2.20.0"
 source = { registry = "https://pypi.org/simple" }
@@ -2674,8 +3087,8 @@ name = "terminado"
 version = "0.18.1"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "ptyprocess", marker = "os_name != 'nt'" },
-    { name = "pywinpty", marker = "(os_name == 'nt' and platform_machine != 'aarch64' and sys_platform == 'linux') or (os_name == 'nt' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (os_name == 'nt' and sys_platform != 'darwin' and sys_platform != 'linux')" },
+    { name = "ptyprocess", marker = "os_name != 'nt' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "pywinpty", marker = "(os_name == 'nt' and platform_machine != 'aarch64' and sys_platform == 'linux') or (os_name == 'nt' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (os_name == 'nt' and sys_platform != 'darwin' and sys_platform != 'linux') or (os_name == 'nt' and sys_platform == 'linux' and extra != 'group-5-3dgcl-cpu') or (os_name == 'nt' and sys_platform == 'darwin' and extra != 'group-5-3dgcl-cpu' and extra != 'group-5-3dgcl-xpu') or (os_name != 'nt' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "tornado" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/8a/11/965c6fd8e5cc254f1fe142d547387da17a8ebfd75a3455f637c663fb38a0/terminado-0.18.1.tar.gz", hash = "sha256:de09f2c4b85de4765f7714688fff57d3e75bad1f909b589fde880460c753fd2e", size = 32701, upload-time = "2024-03-12T14:34:39.026Z" }
@@ -2744,8 +3157,8 @@ dependencies = [
     { name = "filelock", marker = "(platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or sys_platform == 'darwin'" },
     { name = "fsspec", marker = "(platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or sys_platform == 'darwin'" },
     { name = "jinja2", marker = "(platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or sys_platform == 'darwin'" },
-    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform == 'darwin')" },
-    { name = "networkx", version = "3.6.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.11' and sys_platform == 'darwin')" },
+    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "networkx", version = "3.6.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu') or (python_full_version < '3.11' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "sympy", marker = "(platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or sys_platform == 'darwin'" },
     { name = "typing-extensions", marker = "(platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux') or sys_platform == 'darwin'" },
 ]
@@ -2778,8 +3191,8 @@ dependencies = [
     { name = "filelock", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (platform_python_implementation != 'CPython' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
     { name = "fsspec", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (platform_python_implementation != 'CPython' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
     { name = "jinja2", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (platform_python_implementation != 'CPython' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
-    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')" },
-    { name = "networkx", version = "3.6.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version >= '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version >= '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')" },
+    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and platform_machine != 'aarch64' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and platform_python_implementation != 'CPython' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "networkx", version = "3.6.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version < '3.11' and platform_machine != 'aarch64' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (python_full_version >= '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (python_full_version >= '3.11' and sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version < '3.11' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
     { name = "sympy", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (platform_python_implementation != 'CPython' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
     { name = "typing-extensions", marker = "(platform_machine != 'aarch64' and sys_platform == 'linux') or (platform_python_implementation != 'CPython' and sys_platform == 'linux') or (sys_platform != 'darwin' and sys_platform != 'linux')" },
 ]
@@ -2790,6 +3203,62 @@ wheels = [
     { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.2.2%2Bcpu-cp311-cp311-win_amd64.whl", hash = "sha256:88e63c916e3275fa30a220ee736423a95573b96072ded85e5c0171fd8f37a755", upload-time = "2024-03-28T15:19:27Z" },
     { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.2.2%2Bcpu-cp312-cp312-linux_x86_64.whl", hash = "sha256:431a747b5a880cf8e1fb6d58db6bfafa6768cbec76517d046854537c03323edf", upload-time = "2024-03-28T15:19:35Z" },
     { url = "https://download-r2.pytorch.org/whl/cpu/torch-2.2.2%2Bcpu-cp312-cp312-win_amd64.whl", hash = "sha256:2b0cf041f878607a361116945f82ce2dba4b7a747151da7619a63cb5fccb72df", upload-time = "2024-03-28T15:19:43Z" },
+]
+
+[[package]]
+name = "torch"
+version = "2.9.1+xpu"
+source = { registry = "https://download.pytorch.org/whl/xpu" }
+resolution-markers = [
+    "python_full_version >= '3.12' and sys_platform == 'win32'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
+    "python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version >= '3.12' and sys_platform == 'darwin'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
+    "python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin'",
+    "python_full_version < '3.11' and sys_platform != 'darwin'",
+    "python_full_version < '3.11' and sys_platform == 'darwin'",
+]
+dependencies = [
+    { name = "dpcpp-cpp-rt" },
+    { name = "filelock" },
+    { name = "fsspec" },
+    { name = "impi-rt", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
+    { name = "intel-cmplr-lib-rt" },
+    { name = "intel-cmplr-lib-ur" },
+    { name = "intel-cmplr-lic-rt" },
+    { name = "intel-opencl-rt" },
+    { name = "intel-openmp" },
+    { name = "intel-pti" },
+    { name = "intel-sycl-rt" },
+    { name = "jinja2" },
+    { name = "mkl" },
+    { name = "networkx", version = "3.4.2", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and extra == 'group-5-3dgcl-xpu') or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "networkx", version = "3.6.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and extra == 'group-5-3dgcl-xpu') or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "oneccl", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
+    { name = "oneccl-devel", marker = "platform_machine == 'x86_64' and sys_platform == 'linux'" },
+    { name = "onemkl-sycl-blas" },
+    { name = "onemkl-sycl-dft" },
+    { name = "onemkl-sycl-lapack" },
+    { name = "onemkl-sycl-rng" },
+    { name = "onemkl-sycl-sparse" },
+    { name = "pytorch-triton-xpu" },
+    { name = "setuptools", marker = "python_full_version >= '3.12'" },
+    { name = "sympy" },
+    { name = "tbb" },
+    { name = "tcmlib" },
+    { name = "typing-extensions" },
+    { name = "umf" },
+]
+wheels = [
+    { url = "https://download-r2.pytorch.org/whl/xpu/torch-2.9.1%2Bxpu-cp310-cp310-linux_x86_64.whl", hash = "sha256:fb7895c744132d6a8e56ce8434ae1d8355c9bda4e9f58832744ff742d6268eaf", upload-time = "2026-01-26T16:32:08Z" },
+    { url = "https://download-r2.pytorch.org/whl/xpu/torch-2.9.1%2Bxpu-cp310-cp310-win_amd64.whl", hash = "sha256:2f318fb6a4bf1101cc17f35a5371f7c1768b41fceed03628397834e85b3edfdd", upload-time = "2026-01-26T16:32:08Z" },
+    { url = "https://download-r2.pytorch.org/whl/xpu/torch-2.9.1%2Bxpu-cp311-cp311-linux_x86_64.whl", hash = "sha256:da2604a9114a28de71ce654819424d20a246adf644d191ae160837df9731b79e", upload-time = "2026-01-26T16:32:08Z" },
+    { url = "https://download-r2.pytorch.org/whl/xpu/torch-2.9.1%2Bxpu-cp311-cp311-win_amd64.whl", hash = "sha256:c9cedc3fb099366b2e6c563df6578e323564b1b5d40ac27be73c674755343a1d", upload-time = "2026-01-26T16:32:10Z" },
+    { url = "https://download-r2.pytorch.org/whl/xpu/torch-2.9.1%2Bxpu-cp312-cp312-linux_x86_64.whl", hash = "sha256:d5968d78d81c1d01efc1b3bf83d7da3d83161dcc3a9fcf91f500591db1c6c75d", upload-time = "2026-01-26T16:32:14Z" },
+    { url = "https://download-r2.pytorch.org/whl/xpu/torch-2.9.1%2Bxpu-cp312-cp312-win_amd64.whl", hash = "sha256:bee9623254d0f95a1ca115dbd17e9a9d966fdb8ae123e2ada4a9eb2fb8d38db8", upload-time = "2026-01-26T16:32:37Z" },
 ]
 
 [[package]]
@@ -2808,6 +3277,25 @@ wheels = [
 
 [[package]]
 name = "torch-cluster"
+version = "1.6.3"
+source = { registry = "https://data.pyg.org/whl/torch-2.9.1+cpu.html" }
+resolution-markers = [
+    "python_full_version >= '3.12' and sys_platform == 'darwin'",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin'",
+    "python_full_version < '3.11' and sys_platform == 'darwin'",
+]
+dependencies = [
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-xpu') or (python_full_version >= '3.11' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform != 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform != 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+]
+wheels = [
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_cluster-1.6.3-cp310-cp310-macosx_10_9_universal2.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_cluster-1.6.3-cp311-cp311-macosx_10_9_universal2.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_cluster-1.6.3-cp312-cp312-macosx_10_13_universal2.whl" },
+]
+
+[[package]]
+name = "torch-cluster"
 version = "1.6.3+pt22cpu"
 source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }
 resolution-markers = [
@@ -2822,8 +3310,8 @@ resolution-markers = [
     "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')",
 ]
 dependencies = [
-    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')" },
-    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and platform_machine != 'aarch64' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and platform_python_implementation != 'CPython' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and extra == 'group-5-3dgcl-cpu') or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 wheels = [
     { url = "https://data.pyg.org/whl/torch-2.2.0%2Bcpu/torch_cluster-1.6.3%2Bpt22cpu-cp310-cp310-linux_x86_64.whl" },
@@ -2835,19 +3323,48 @@ wheels = [
 ]
 
 [[package]]
+name = "torch-cluster"
+version = "1.6.3+pt29cpu"
+source = { registry = "https://data.pyg.org/whl/torch-2.9.1+cpu.html" }
+resolution-markers = [
+    "python_full_version >= '3.12' and sys_platform == 'win32'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
+    "python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
+    "python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version < '3.11' and sys_platform != 'darwin'",
+]
+dependencies = [
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and sys_platform != 'darwin' and extra == 'group-5-3dgcl-xpu') or (python_full_version >= '3.11' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and sys_platform != 'darwin' and extra == 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+]
+wheels = [
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_cluster-1.6.3%2Bpt29cpu-cp310-cp310-linux_aarch64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_cluster-1.6.3%2Bpt29cpu-cp310-cp310-linux_x86_64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_cluster-1.6.3%2Bpt29cpu-cp310-cp310-win_amd64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_cluster-1.6.3%2Bpt29cpu-cp311-cp311-linux_aarch64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_cluster-1.6.3%2Bpt29cpu-cp311-cp311-linux_x86_64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_cluster-1.6.3%2Bpt29cpu-cp311-cp311-win_amd64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_cluster-1.6.3%2Bpt29cpu-cp312-cp312-linux_aarch64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_cluster-1.6.3%2Bpt29cpu-cp312-cp312-linux_x86_64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_cluster-1.6.3%2Bpt29cpu-cp312-cp312-win_amd64.whl" },
+]
+
+[[package]]
 name = "torch-geometric"
 version = "2.7.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "aiohttp" },
-    { name = "fsspec" },
-    { name = "jinja2" },
-    { name = "numpy" },
-    { name = "psutil" },
-    { name = "pyparsing" },
-    { name = "requests" },
-    { name = "tqdm" },
-    { name = "xxhash" },
+    { name = "aiohttp", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "fsspec", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "jinja2", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "numpy", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "psutil", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "pyparsing", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "requests", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "tqdm", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "xxhash", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/75/63/b210152635902da7fe79fcdd16517fae108f457a0ed22c737e702a9afbae/torch_geometric-2.7.0.tar.gz", hash = "sha256:f9099e4aece1a9f618c84dbaac33a77f43139736698c7e8bddf3301ef1f2e8d4", size = 876725, upload-time = "2025-10-15T20:48:03.443Z" }
 wheels = [
@@ -2863,6 +3380,21 @@ resolution-markers = [
 ]
 wheels = [
     { url = "https://data.pyg.org/whl/torch-2.2.0%2Bcpu/torch_scatter-2.1.2-cp310-cp310-macosx_11_0_x86_64.whl" },
+]
+
+[[package]]
+name = "torch-scatter"
+version = "2.1.2"
+source = { registry = "https://data.pyg.org/whl/torch-2.9.1+cpu.html" }
+resolution-markers = [
+    "python_full_version >= '3.12' and sys_platform == 'darwin'",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin'",
+    "python_full_version < '3.11' and sys_platform == 'darwin'",
+]
+wheels = [
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_scatter-2.1.2-cp310-cp310-macosx_10_9_universal2.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_scatter-2.1.2-cp311-cp311-macosx_10_9_universal2.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_scatter-2.1.2-cp312-cp312-macosx_10_13_universal2.whl" },
 ]
 
 [[package]]
@@ -2890,6 +3422,31 @@ wheels = [
 ]
 
 [[package]]
+name = "torch-scatter"
+version = "2.1.2+pt29cpu"
+source = { registry = "https://data.pyg.org/whl/torch-2.9.1+cpu.html" }
+resolution-markers = [
+    "python_full_version >= '3.12' and sys_platform == 'win32'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
+    "python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
+    "python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version < '3.11' and sys_platform != 'darwin'",
+]
+wheels = [
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_scatter-2.1.2%2Bpt29cpu-cp310-cp310-linux_aarch64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_scatter-2.1.2%2Bpt29cpu-cp310-cp310-linux_x86_64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_scatter-2.1.2%2Bpt29cpu-cp310-cp310-win_amd64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_scatter-2.1.2%2Bpt29cpu-cp311-cp311-linux_aarch64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_scatter-2.1.2%2Bpt29cpu-cp311-cp311-linux_x86_64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_scatter-2.1.2%2Bpt29cpu-cp311-cp311-win_amd64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_scatter-2.1.2%2Bpt29cpu-cp312-cp312-linux_aarch64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_scatter-2.1.2%2Bpt29cpu-cp312-cp312-linux_x86_64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_scatter-2.1.2%2Bpt29cpu-cp312-cp312-win_amd64.whl" },
+]
+
+[[package]]
 name = "torch-sparse"
 version = "0.6.18"
 source = { registry = "https://data.pyg.org/whl/torch-2.2.0+cpu.html" }
@@ -2901,6 +3458,25 @@ dependencies = [
 ]
 wheels = [
     { url = "https://data.pyg.org/whl/torch-2.2.0%2Bcpu/torch_sparse-0.6.18-cp310-cp310-macosx_11_0_x86_64.whl" },
+]
+
+[[package]]
+name = "torch-sparse"
+version = "0.6.18"
+source = { registry = "https://data.pyg.org/whl/torch-2.9.1+cpu.html" }
+resolution-markers = [
+    "python_full_version >= '3.12' and sys_platform == 'darwin'",
+    "python_full_version == '3.11.*' and sys_platform == 'darwin'",
+    "python_full_version < '3.11' and sys_platform == 'darwin'",
+]
+dependencies = [
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-xpu') or (python_full_version >= '3.11' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform != 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and sys_platform == 'darwin' and extra == 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform != 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+]
+wheels = [
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_sparse-0.6.18-cp310-cp310-macosx_11_0_universal2.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_sparse-0.6.18-cp311-cp311-macosx_11_0_universal2.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_sparse-0.6.18-cp312-cp312-macosx_11_0_universal2.whl" },
 ]
 
 [[package]]
@@ -2919,8 +3495,8 @@ resolution-markers = [
     "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')",
 ]
 dependencies = [
-    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux')" },
-    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and platform_machine != 'aarch64' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and platform_machine != 'aarch64' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and platform_python_implementation != 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and platform_python_implementation != 'CPython' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and sys_platform != 'darwin' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu') or (python_full_version >= '3.11' and sys_platform != 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (platform_machine == 'aarch64' and platform_python_implementation == 'CPython' and sys_platform == 'linux' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and extra == 'group-5-3dgcl-cpu') or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 wheels = [
     { url = "https://data.pyg.org/whl/torch-2.2.0%2Bcpu/torch_sparse-0.6.18%2Bpt22cpu-cp310-cp310-linux_x86_64.whl" },
@@ -2929,6 +3505,35 @@ wheels = [
     { url = "https://data.pyg.org/whl/torch-2.2.0%2Bcpu/torch_sparse-0.6.18%2Bpt22cpu-cp311-cp311-win_amd64.whl" },
     { url = "https://data.pyg.org/whl/torch-2.2.0%2Bcpu/torch_sparse-0.6.18%2Bpt22cpu-cp312-cp312-linux_x86_64.whl" },
     { url = "https://data.pyg.org/whl/torch-2.2.0%2Bcpu/torch_sparse-0.6.18%2Bpt22cpu-cp312-cp312-win_amd64.whl" },
+]
+
+[[package]]
+name = "torch-sparse"
+version = "0.6.18+pt29cpu"
+source = { registry = "https://data.pyg.org/whl/torch-2.9.1+cpu.html" }
+resolution-markers = [
+    "python_full_version >= '3.12' and sys_platform == 'win32'",
+    "python_full_version >= '3.12' and sys_platform == 'emscripten'",
+    "python_full_version >= '3.12' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version == '3.11.*' and sys_platform == 'win32'",
+    "python_full_version == '3.11.*' and sys_platform == 'emscripten'",
+    "python_full_version == '3.11.*' and sys_platform != 'darwin' and sys_platform != 'emscripten' and sys_platform != 'win32'",
+    "python_full_version < '3.11' and sys_platform != 'darwin'",
+]
+dependencies = [
+    { name = "scipy", version = "1.15.3", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version < '3.11' and sys_platform != 'darwin' and extra == 'group-5-3dgcl-xpu') or (python_full_version >= '3.11' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+    { name = "scipy", version = "1.17.1", source = { registry = "https://pypi.org/simple" }, marker = "(python_full_version >= '3.11' and sys_platform != 'darwin' and extra == 'group-5-3dgcl-xpu') or (python_full_version < '3.11' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu') or (sys_platform == 'darwin' and extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
+]
+wheels = [
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_sparse-0.6.18%2Bpt29cpu-cp310-cp310-linux_aarch64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_sparse-0.6.18%2Bpt29cpu-cp310-cp310-linux_x86_64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_sparse-0.6.18%2Bpt29cpu-cp310-cp310-win_amd64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_sparse-0.6.18%2Bpt29cpu-cp311-cp311-linux_aarch64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_sparse-0.6.18%2Bpt29cpu-cp311-cp311-linux_x86_64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_sparse-0.6.18%2Bpt29cpu-cp311-cp311-win_amd64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_sparse-0.6.18%2Bpt29cpu-cp312-cp312-linux_aarch64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_sparse-0.6.18%2Bpt29cpu-cp312-cp312-linux_x86_64.whl" },
+    { url = "https://data.pyg.org/whl/torch-2.9.0%2Bcpu/torch_sparse-0.6.18%2Bpt29cpu-cp312-cp312-win_amd64.whl" },
 ]
 
 [[package]]
@@ -2953,7 +3558,7 @@ name = "tqdm"
 version = "4.67.3"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "colorama", marker = "sys_platform == 'win32'" },
+    { name = "colorama", marker = "sys_platform == 'win32' or (extra == 'group-5-3dgcl-cpu' and extra == 'group-5-3dgcl-xpu')" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/09/a9/6ba95a270c6f1fbcd8dac228323f2777d886cb206987444e4bce66338dd4/tqdm-4.67.3.tar.gz", hash = "sha256:7d825f03f89244ef73f1d4ce193cb1774a8179fd96f31d7e1dcde62092b960bb", size = 169598, upload-time = "2026-02-03T17:35:53.048Z" }
 wheels = [
@@ -3036,6 +3641,18 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/ba/19/1b9b0e29f30c6d35cb345486df41110984ea67ae69dddbc0e8a100999493/tzdata-2026.2.tar.gz", hash = "sha256:9173fde7d80d9018e02a662e168e5a2d04f87c41ea174b139fbef642eda62d10", size = 198254, upload-time = "2026-04-24T15:22:08.651Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/ce/e4/dccd7f47c4b64213ac01ef921a1337ee6e30e8c6466046018326977efd95/tzdata-2026.2-py2.py3-none-any.whl", hash = "sha256:bbe9af844f658da81a5f95019480da3a89415801f6cc966806612cc7169bffe7", size = 349321, upload-time = "2026-04-24T15:22:05.876Z" },
+]
+
+[[package]]
+name = "umf"
+version = "0.11.0"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "tcmlib" },
+]
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/b4/3a/63b40f833c7b27ba767e467fdf52cf972cdd149aab72d3d9761ec200fc9f/umf-0.11.0-py2.py3-none-manylinux_2_28_x86_64.whl", hash = "sha256:9f2a6be0de4202fdcdddf9045c54ae6eb4c4afaec38e1871a603db3f72d36bab", size = 329971, upload-time = "2025-06-24T13:19:35.567Z" },
+    { url = "https://files.pythonhosted.org/packages/33/a0/c8d755f08f50ddd99cb4a29a7e950ced7a0903cb72253e57059063609103/umf-0.11.0-py2.py3-none-win_amd64.whl", hash = "sha256:24b2ec23b6716f39dde53d1b29f8de1ec73c33a1e3b137dae9caf0caeaf50201", size = 231697, upload-time = "2025-06-24T13:13:15.432Z" },
 ]
 
 [[package]]
@@ -3214,9 +3831,9 @@ name = "yarl"
 version = "1.23.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
-    { name = "idna" },
-    { name = "multidict" },
-    { name = "propcache" },
+    { name = "idna", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "multidict", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
+    { name = "propcache", marker = "extra == 'group-5-3dgcl-cpu' or extra == 'group-5-3dgcl-xpu'" },
 ]
 sdist = { url = "https://files.pythonhosted.org/packages/23/6e/beb1beec874a72f23815c1434518bfc4ed2175065173fb138c3705f658d4/yarl-1.23.0.tar.gz", hash = "sha256:53b1ea6ca88ebd4420379c330aea57e258408dd0df9af0992e5de2078dc9f5d5", size = 194676, upload-time = "2026-03-01T22:07:53.373Z" }
 wheels = [

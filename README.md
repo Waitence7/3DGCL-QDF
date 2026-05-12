@@ -39,13 +39,28 @@ uv run jupyter notebook examples/sslgraph/pretrain.ipynb
 
 After opening the notebook, choose kernel **Python (3dgcl uv)**. If PyTorch raises `_cuda` / `_C` errors, you are almost certainly on the wrong interpreter (conda `base` + another Python can break torch DLL init on Windows).
 
-The first notebook cell asserts that `sys.executable` lives under `.venv`, clears any **stale cached `torch` modules** (`sys.modules`) after a failed import, and on Windows registers extra DLL directories for CPU wheels when conda `Library\\bin` is present.
+The environment setup cell asserts that `sys.executable` lives under `.venv`, **only clears `torch*` from `sys.modules` when the cached module is broken** (missing `torch._C` after a failed import — never after a healthy import, which would cause `RuntimeError: ... '_has_torch_function' already has a docstring`), and on Windows registers extra DLL directories when conda `Library\\bin` is present.
 
 If you still hit `_C` / `_cuda` errors, use **Kernel → Restart**, then run the first cell once before others.
 
 `numpy` is capped below 2 for compatibility with RDKit binaries. CPU PyTorch is used by default to avoid missing CUDA runtime DLL errors on Windows. The same env also satisfies [`QuantumDeepField_molecule`](https://github.com/masashitsubaki/QuantumDeepField_molecule) training scripts (`torch`, `numpy`, `scipy` only).
 
 Optional visualization for QDF: `uv sync --extra mayavi`. Mayavi often builds from source and may print **Setuptools deprecation warnings about “License classifiers”**—that comes from upstream Mayavi packaging, not this repo. On **Windows**, the Mayavi/VTK wheel build commonly **fails** (e.g. access violation during `tvtk` codegen); omit `--extra mayavi` or install Mayavi/Vtk via **conda**/OS packages instead.
+
+### Accelerators (GPU, Intel XPU, optional DirectML / NPU-oriented stacks)
+
+The helper `dig.sslgraph.utils.pick_torch_device()` resolves the runtime device:
+
+1. `TORCH_DEVICE` if set (examples: `cuda:0`, `xpu:0`, `directml`, `cpu`)
+2. NVIDIA **CUDA**, if drivers + CUDA build are installed (`CUDA_DEVICE_INDEX` optional)
+3. **Apple MPS** when available  
+4. **Intel GPU (XPU)** when `torch.xpu` is registered (install the **`-xpu`** PyTorch stack; this repo locks it as a uv **dependency group** alongside Intel SYCL/TRiton wheels from [pytorch.org/whl/xpu](https://download.pytorch.org/whl/xpu))
+5. **Huawei Ascend** `torch.npu` after the above unless **`TORCH_SKIP_NPU`** is truthy (`1` / `true` / `yes` / `on`); optionally `NPU_DEVICE_INDEX`
+6. **Microsoft DirectML** (Windows, DX12 GPUs — often Intel/AMD/NVIDIA integrated or discrete GPUs are visible here): install [`torch-directml`](https://github.com/microsoft/DirectML) in the same env, then set **`USE_DIRECTML=1`** or **`TORCH_DEVICE=dml`**, optionally `DIRECTML_DEVICE_INDEX`.
+
+Default `uv.lock` still defaults to **CPU** PyTorch (`[tool.uv] default-groups = ["cpu"]`, so plain `uv sync` matches the previous layout). For **Intel XPU**, sync the separate fork: `uv sync --no-default-groups --group xpu` (needs current Intel GPU drivers / runtime per [PyTorch Intel GPU](https://pytorch.org/get-started/locally/)). Switch back to CPU: run `uv sync` again. Optional [Intel Extension for PyTorch](https://github.com/intel/intel-extension-for-pytorch) is not required for upstream `torch+xpu` builds but remains a harmless optional import in `pick_torch_device`. For NVIDIA training, reinstall a CUDA wheel from PyPI / [pytorch.org](https://pytorch.org/get-started/locally/), then rerun `uv pip install`/`uv lock` for matching **torch-geometric** wheels.
+
+Dedicated **Intel AI Boost / Core Ultra tile NPUs** are usually not surfaced as plain `torch.device` backends in stock PyTorch; use vendor OpenVINO/ONNX NPU workflows if you mean that hardware strictly. DirectML above targets the **GPU** DX12 stack, which is separate from those NPUs.
 
 ## Run
 ### 1. Pre-train

@@ -12,6 +12,7 @@ from dig.threedgraph.dataset.dataset import scaffold_split
 from dig.threedgraph.dataset import MoleculeNet, QM
 from dig.sslgraph.utils.seed import setup_seed
 from dig.sslgraph.utils.device import empty_accel_cache
+from dig.sslgraph.utils.dataloader_kw import accelerator_dataloader_kw
 from dig.sslgraph.utils.cosine_annealing_with_warmup import CosineAnnealingWarmUpRestarts
 
 from torch_geometric.loader import DataLoader
@@ -101,7 +102,12 @@ class Pretrain(object):
                 
         
     def evaluate(self, learning_model, encoder, fold_seed=None):
-        pretrain_loader = DataLoader(self.pretrain_dataset, self.batch_size, shuffle=True)
+        pretrain_loader = DataLoader(
+            self.pretrain_dataset,
+            self.batch_size,
+            shuffle=True,
+            **accelerator_dataloader_kw(),
+        )
         gc.collect()
         empty_accel_cache()
         if self.p_optim == 'StepLR':

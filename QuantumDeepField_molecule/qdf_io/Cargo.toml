@@ -1,0 +1,21 @@
+[package]
+name = "qdf_io"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-3.0-only"
+description = "Fast binary shard reader for the QDF preprocessed dataset (PyO3 + mmap)."
+
+[lib]
+name = "qdf_io"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.22", features = ["extension-module"] }
+numpy = "0.22"
+ndarray = "0.16"
+memmap2 = "0.9"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1

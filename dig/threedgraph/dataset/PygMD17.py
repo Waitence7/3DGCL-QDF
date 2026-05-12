@@ -2,6 +2,8 @@ import os.path as osp
 import numpy as np
 from tqdm import tqdm
 import torch
+
+from ._torch_io import load_pt_trusted
 from sklearn.utils import shuffle
 
 from torch_geometric.data import InMemoryDataset, download_url
@@ -60,7 +62,7 @@ class MD17(InMemoryDataset):
 
         super(MD17, self).__init__(self.folder, transform, pre_transform, pre_filter)
 
-        self.data, self.slices = torch.load(self.processed_paths[0])
+        self.data, self.slices = load_pt_trusted(self.processed_paths[0])
 
     @property
     def raw_file_names(self):

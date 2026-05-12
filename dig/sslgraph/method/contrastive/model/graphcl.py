@@ -1,6 +1,6 @@
 from .contrastive import Contrastive
 from dig.sslgraph.method.contrastive.views_fn import NodeAttrMask, EdgePerturbation, \
-    UniformSample, RWSample, RandomView, NodeTranslation
+    UniformSample, RWSample, RandomView, StableBiasedRandomView, NodeTranslation
 import random
 import torch.nn as nn
 
@@ -78,7 +78,15 @@ class GraphCL(Contrastive):
                 canditates = [NodeTranslation(method=method[0], device=self.device),
                               NodeTranslation(method=method[1], device=self.device)]
                 views_fn.append(RandomView(canditates))
-                
+
+            elif aug == 'MMFFrandom_stablebiased':
+                # Most often keep data.pos (min-MMFF / stable); else random among two MMFF slots.
+                stable_prob = getattr(args, 'stable_view_prob', 0.65)
+                method = random.sample(['MMFF1', 'MMFF2', 'MMFF3', 'MMFF4'], 2)
+                canditates = [NodeTranslation(method=method[0], device=self.device),
+                              NodeTranslation(method=method[1], device=self.device)]
+                views_fn.append(StableBiasedRandomView(canditates, stable_prob=stable_prob))
+
             elif aug == 'random3':
                 method = random.choice(['MMFF1', 'MMFF4'])
                 canditates = [UniformSample(ratio=aug_ratio),
@@ -87,7 +95,10 @@ class GraphCL(Contrastive):
                               NodeAttrMask(mask_ratio=aug_ratio)]
                 views_fn.append(RandomView(canditates))
             else:
-                raise Exception("Aug must be from [MMFF1, MMFF2, 'rotation', 'noise', dropN', 'maskN', 'random2', 'random3', 'random4'] or None.")
+                raise Exception(
+                    "Aug must be from [MMFF1..MMFF4, MMFFrandom, MMFFrandom_stablebiased, "
+                    "'rotation', 'noise', 'dropN', 'maskN', 'random', 'random3', ...] or None."
+                )
         
         super(GraphCL, self).__init__(args, objective='NCE',
                                       views_fn=views_fn,

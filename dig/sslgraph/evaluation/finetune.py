@@ -14,14 +14,15 @@ from tqdm import trange, tqdm
 
 from dig.threedgraph.dataset.dataset import scaffold_split
 from dig.threedgraph.dataset import MoleculeNet
+from dig.threedgraph.dataset._torch_io import load_pt_trusted
 from dig.threedgraph.dataset import QM9, QM
 from dig.sslgraph.utils.seed import setup_seed
 from dig.sslgraph.utils.device import empty_accel_cache
+from dig.sslgraph.utils.dataloader_kw import accelerator_dataloader_kw
 from dig.sslgraph.utils.cosine_annealing_with_warmup import CosineAnnealingWarmUpRestarts
 #from dig.sslgraph.utils.parallel import DataParallelModel, DataParallelCriterion
 from dig.sslgraph.utils import Encoder
 from dig.sslgraph.utils.encoders import ShiftedSoftplus
-from dig.threedgraph.method import SchNet
 
 from torch_geometric.loader import DataLoader
 #from torch_geometric.nn.acts import swish
@@ -124,7 +125,7 @@ def eval_reg(model, device, loader, mae=False, target='y'):
     if mae:
         loss = mean_absolute_error(y_true, y_scores)
     else:
-        loss = mean_squared_error(y_true, y_scores, squared=False)
+        loss = np.sqrt(mean_squared_error(y_true, y_scores))
     return loss, y_true, y_scores, smiles
 
 
@@ -134,8 +135,8 @@ class Finetune(object):
         
         if args.dataset == 'esol':
             self.dataset = MoleculeNet(root='dataset/', name='esol')  # regression
-            np.random.seed(args.seed)
-            idx = np.random.choice(np.arange(1128), size=1128, replace=False)
+            rng = np.random.default_rng(args.seed)
+            idx = rng.permutation(len(self.dataset)).tolist()
             self.dataset = self.dataset[idx]
             #print(len(self.dataset))
             self.task_type = 'reg'
@@ -262,12 +263,22 @@ class Finetune(object):
         pred_head = self.proj
         if self.finetune:
             encoder = Encoder(self.args)
-            encoder.load_state_dict(torch.load(self.model_path), strict=False)
+            encoder.load_state_dict(load_pt_trusted(self.model_path), strict=False)
             model = PredictionModel(encoder, self.encoder, self.num_layers, pred_head, self.z_dim, self.out_dim, self.dropout_rate)
             
-        else: 
-            if self.encoder == 'schnet':
-                model = SchNet(cutoff=self.cutoff, num_layers=self.num_layers, hidden_channels=self.z_dim, out_channels=self.out_dim, num_filters=self.num_filters, num_gaussians=self.num_gaussians, dropout_rate=self.dropout_rate)
+        else:
+            # Use the same Encoder wrapper as finetune=True, but with random init.
+            # This keeps XPU-safe geometric ops (e.g., radius_graph fallback path).
+            encoder = Encoder(self.args)
+            model = PredictionModel(
+                encoder,
+                self.encoder,
+                self.num_layers,
+                pred_head,
+                self.z_dim,
+                self.out_dim,
+                self.dropout_rate,
+            )
                 
         num_params = sum(p.numel() for p in model.parameters())
         if self.task_type == 'cls':
@@ -631,10 +642,11 @@ def k_scaffold(n_folds, dataset, batch_size, task_type, seed):
             seed += 1
             continue
             
-        train_loader = DataLoader(train, batch_size, shuffle=True)
-        val_loader = DataLoader(val, batch_size, shuffle=False)
-        test_loader = DataLoader(test, batch_size, shuffle=False)
-                        
+        _dl_kw = accelerator_dataloader_kw()
+        train_loader = DataLoader(train, batch_size, shuffle=True, **_dl_kw)
+        val_loader = DataLoader(val, batch_size, shuffle=False, **_dl_kw)
+        test_loader = DataLoader(test, batch_size, shuffle=False, **_dl_kw)
+
         train_ys = [ data.y for idx, data in enumerate(train_loader) ]
         val_ys = [ data.y for idx, data in enumerate(val_loader) ]
         test_ys = [ data.y for idx, data in enumerate(test_loader) ]
@@ -677,9 +689,25 @@ def k_fold(n_folds, dataset, batch_size, task_type):  # , seed=12345
     for i in range(n_folds):
         if batch_size is None:
             batch_size = len()
-        train_loader = DataLoader(dataset[train_indices[i].long()], batch_size, shuffle=True)
-        val_loader = DataLoader(dataset[val_indices[i].long()], batch_size, shuffle=False)
-        test_loader = DataLoader(dataset[test_indices[i].long()], batch_size, shuffle=False)
+        _dl_kw = accelerator_dataloader_kw()
+        train_loader = DataLoader(
+            dataset[train_indices[i].long()],
+            batch_size,
+            shuffle=True,
+            **_dl_kw,
+        )
+        val_loader = DataLoader(
+            dataset[val_indices[i].long()],
+            batch_size,
+            shuffle=False,
+            **_dl_kw,
+        )
+        test_loader = DataLoader(
+            dataset[test_indices[i].long()],
+            batch_size,
+            shuffle=False,
+            **_dl_kw,
+        )
         print(len(train_indices[0]))
         print(len(val_indices[0]))
         print(len(test_indices[0]))

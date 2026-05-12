@@ -37,6 +37,7 @@ dig/sslgraph/method/contrastive/views_fn/structure.py
 dig/sslgraph/method/contrastive/views_fn/translation.py
 dig/sslgraph/utils/__init__.py
 dig/sslgraph/utils/cosine_annealing_with_warmup.py
+dig/sslgraph/utils/device.py
 dig/sslgraph/utils/encoders.py
 dig/sslgraph/utils/parallel.py
 dig/sslgraph/utils/seed.py

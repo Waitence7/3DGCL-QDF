@@ -6,6 +6,7 @@ from torch_geometric.data import DataLoader
 from sklearn import preprocessing
 
 from dig.sslgraph.utils.device import pick_torch_device
+from dig.sslgraph.utils.dataloader_kw import accelerator_dataloader_kw
 
 
 class LogReg(nn.Module):
@@ -108,7 +109,7 @@ class NodeUnsupervised(object):
         :rtype: (float, float)
         """
         
-        full_loader = DataLoader(self.full_dataset, 1)
+        full_loader = DataLoader(self.full_dataset, 1, **accelerator_dataloader_kw())
         if isinstance(encoder, list):
             params = [{'params': enc.parameters()} for enc in encoder]
         else:
@@ -162,7 +163,7 @@ class NodeUnsupervised(object):
         >>> split_masks = [(train1, val1, test1), (train2, val2, test2), ..., (train20, val20, test20)]
         """
         
-        full_loader = DataLoader(self.full_dataset, 1)
+        full_loader = DataLoader(self.full_dataset, 1, **accelerator_dataloader_kw())
         if isinstance(encoder, list):
             params = [{'params': enc.parameters()} for enc in encoder]
         else:

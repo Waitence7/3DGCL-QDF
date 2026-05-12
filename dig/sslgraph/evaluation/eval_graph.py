@@ -16,6 +16,7 @@ from sklearn.model_selection import GridSearchCV
 from scipy.stats import pearsonr
 
 from dig.sslgraph.utils.device import pick_torch_device
+from dig.sslgraph.utils.dataloader_kw import accelerator_dataloader_kw
 
 from rdkit import Chem
 from rdkit.Chem.Scaffolds import MurckoScaffold
@@ -239,7 +240,12 @@ class GraphUnsupervised(object):
         :rtype: (float, float)
         """
         if finetune:
-            pretrain_loader = DataLoader(self.dataset_pretrain, self.batch_size, shuffle=True)
+            pretrain_loader = DataLoader(
+                self.dataset_pretrain,
+                self.batch_size,
+                shuffle=True,
+                **accelerator_dataloader_kw(),
+            )
             p_optimizer = self.get_optim(self.p_optim)(encoder.parameters(), lr=self.p_lr,
                                                       weight_decay=self.p_weight_decay)
             if self.p_epoch > 0:
@@ -255,24 +261,23 @@ class GraphUnsupervised(object):
                 fold_model = copy.deepcopy(model)
                 f_optimizer = self.get_optim(self.f_optim)(fold_model.parameters(), lr=self.f_lr,
                                                            weight_decay=self.f_weight_decay)
-                if task_type ='cls':
-                with trange(self.f_epoch) as t:
-                    for epoch in t:
-                        t.set_description('Fold %d, finetuning' % (fold))
-                        train_score, train_loss = self.finetune(fold_model, f_optimizer, train_loader)
-                        train_scores.append(train_score)
-                        train_losses.append(train_loss)
-                        val_score, val_loss = self.eval_val(fold_model, val_loader)
-                        val_scores.append(val_score)
-                        val_losses.append(val_loss)
-                        test_score, test_loss = self.eval_val(fold_model, test_loader)
-                        test_scores.append(test_score)
-                        test_losses.append(test_loss)
-                      
-                        t.set_postfix(val_loss='{:.4f}'.format(val_loss),
-                                      test_score='{:.4f}'.format(test_score))
-                      
-            
+                if task_type == 'cls':
+                    with trange(self.f_epoch) as t:
+                        for epoch in t:
+                            t.set_description('Fold %d, finetuning' % (fold))
+                            train_score, train_loss = self.finetune(fold_model, f_optimizer, train_loader)
+                            train_scores.append(train_score)
+                            train_losses.append(train_loss)
+                            val_score, val_loss = self.eval_val(fold_model, val_loader)
+                            val_scores.append(val_score)
+                            val_losses.append(val_loss)
+                            test_score, test_loss = self.eval_val(fold_model, test_loader)
+                            test_scores.append(test_score)
+                            test_losses.append(test_loss)
+
+                            t.set_postfix(val_loss='{:.4f}'.format(val_loss),
+                                          test_score='{:.4f}'.format(test_score))
+
             train_scores, train_losses = torch.tensor(train_scores), torch.tensor(train_losses)
             val_scores, val_losses = torch.tensor(val_scores), torch.tensor(val_losses)
             test_scores, test_losses = torch.tensor(test_scores), torch.tensor(test_losses)
@@ -302,7 +307,12 @@ class GraphUnsupervised(object):
 
 
         else:
-            pretrain_loader = DataLoader(self.dataset_pretrain, self.batch_size, shuffle=True)      
+            pretrain_loader = DataLoader(
+                self.dataset_pretrain,
+                self.batch_size,
+                shuffle=True,
+                **accelerator_dataloader_kw(),
+            )      
 
             if isinstance(encoder, list):
                 params = [{'params': enc.parameters()} for enc in encoder]
@@ -322,7 +332,12 @@ class GraphUnsupervised(object):
                     ## 여기부터 지도학습 ##
                     test_scores = []
                     if self.split == 'scaffold':
-                        loader = DataLoader(self.dataset, self.batch_size, shuffle=False)
+                        loader = DataLoader(
+                            self.dataset,
+                            self.batch_size,
+                            shuffle=False,
+                            **accelerator_dataloader_kw(),
+                        )
                         embed, lbls = self.get_embed(enc.to(self.device), loader)
                         print(embed)
                         print(lbls)
@@ -336,7 +351,12 @@ class GraphUnsupervised(object):
                     else:
 
                         #print(self.dataset)
-                        loader = DataLoader(self.dataset, self.batch_size, shuffle=False)
+                        loader = DataLoader(
+                            self.dataset,
+                            self.batch_size,
+                            shuffle=False,
+                            **accelerator_dataloader_kw(),
+                        )
                         #print(1)
                         embed, lbls = self.get_embed(enc.to(self.device), loader)
                         lbs = np.array(preprocessing.LabelEncoder().fit_transform(lbls))
@@ -611,9 +631,10 @@ def k_scaffold(n_folds, dataset, batch_size):
     i = 0
     while i < n_folds:
         train, val, test = scaffold_split(dataset)
-        train_loader = DataLoader(train, batch_size, shuffle=True)
-        val_loader = DataLoader(val, batch_size, shuffle=False)
-        test_loader = DataLoader(test, batch_size, shuffle=False)
+        _dl_kw = accelerator_dataloader_kw()
+        train_loader = DataLoader(train, batch_size, shuffle=True, **_dl_kw)
+        val_loader = DataLoader(val, batch_size, shuffle=False, **_dl_kw)
+        test_loader = DataLoader(test, batch_size, shuffle=False, **_dl_kw)
         train_ys = [ data.y for idx, data in enumerate(train_loader) ]
         val_ys = [ data.y for idx, data in enumerate(val_loader) ]
         test_ys = [ data.y for idx, data in enumerate(test_loader) ]
@@ -640,9 +661,10 @@ def k_scaffold1(n_folds, dataset, batch_size):
         #print(val.indices)
         if len(val) !=0 and len(test) !=0:
             i+=1
-            train_loader = DataLoader(train, batch_size, shuffle=True)
-            val_loader = DataLoader(val, batch_size, shuffle=False)
-            test_loader = DataLoader(test, batch_size, shuffle=False)
+            _dl_kw = accelerator_dataloader_kw()
+            train_loader = DataLoader(train, batch_size, shuffle=True, **_dl_kw)
+            val_loader = DataLoader(val, batch_size, shuffle=False, **_dl_kw)
+            test_loader = DataLoader(test, batch_size, shuffle=False, **_dl_kw)
             idx = 0
             for idx, data in enumerate(val_loader):
                 if 0 | 1 in data.y:

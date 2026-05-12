@@ -25,12 +25,6 @@ dependencies = [
   "ipykernel>=6.29",
   "rdkit>=2023.9.1",
   "typed-argument-parser>=1.5,<2",
-  # 3DGCL notebooks / dig.sslgraph
-  "torch>=2.2,<2.3",
-  "torch-geometric>=2.5,<2.8",
-  "torch-scatter",
-  "torch-sparse",
-  "torch-cluster",
 ]
 
 [project.optional-dependencies]
@@ -38,25 +32,77 @@ mayavi = [
   "mayavi",
 ]
 
+# Torch / PyG are split into mutually exclusive uv groups (see [tool.uv.conflicts]).
+[dependency-groups]
+cpu = [
+  "torch>=2.2,<2.3",
+  "torch-geometric>=2.5,<2.8",
+  "torch-scatter",
+  "torch-sparse",
+  "torch-cluster",
+]
+# Intel GPU: official PyTorch `+xpu` wheels (Linux/Windows). PyG extensions use the matching +cpu wheel line.
+xpu = [
+  "torch==2.9.1+xpu",
+  # Pulled with torch+xpu; listed so [tool.uv.sources] can pin the XPU wheel index.
+  "pytorch-triton-xpu>=3.5.0,<3.6 ; sys_platform == 'linux' or sys_platform == 'win32'",
+  "torch-geometric>=2.5,<3",
+  "torch-scatter",
+  "torch-sparse",
+  "torch-cluster",
+]
+
+[tool.uv]
+# Keep `uv sync` equivalent to the previous CPU-first layout.
+default-groups = ["cpu"]
+conflicts = [
+  [{ group = "cpu" }, { group = "xpu" }],
+]
+
 [tool.setuptools.packages.find]
 where = ["."]
 include = ["dig*"]
 
-# CPU PyTorch avoids missing CUDA toolkit DLL issues on Windows by default.
 [[tool.uv.index]]
 name = "pytorch-cpu"
 url = "https://download.pytorch.org/whl/cpu"
 explicit = true
 
-# PyTorch Geometric binary wheels must match torch major.minor + CPU/CUDA.
+[[tool.uv.index]]
+name = "pytorch-xpu"
+url = "https://download.pytorch.org/whl/xpu"
+explicit = true
+
+# PyTorch Geometric binary wheels must match torch major.minor (+cpu / +cu line).
 [[tool.uv.index]]
 name = "pyg-cpu"
 url = "https://data.pyg.org/whl/torch-2.2.0+cpu.html"
 format = "flat"
 explicit = true
 
+[[tool.uv.index]]
+name = "pyg-xpu"
+url = "https://data.pyg.org/whl/torch-2.9.1+cpu.html"
+format = "flat"
+explicit = true
+
 [tool.uv.sources]
-torch = { index = "pytorch-cpu" }
-torch-scatter = { index = "pyg-cpu" }
-torch-sparse = { index = "pyg-cpu" }
-torch-cluster = { index = "pyg-cpu" }
+torch = [
+  { index = "pytorch-cpu", group = "cpu" },
+  { index = "pytorch-xpu", group = "xpu" },
+]
+torch-scatter = [
+  { index = "pyg-cpu", group = "cpu" },
+  { index = "pyg-xpu", group = "xpu" },
+]
+torch-sparse = [
+  { index = "pyg-cpu", group = "cpu" },
+  { index = "pyg-xpu", group = "xpu" },
+]
+torch-cluster = [
+  { index = "pyg-cpu", group = "cpu" },
+  { index = "pyg-xpu", group = "xpu" },
+]
+pytorch-triton-xpu = [
+  { index = "pytorch-xpu", group = "xpu" },
+]

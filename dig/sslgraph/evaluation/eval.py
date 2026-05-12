@@ -16,6 +16,7 @@ from sklearn.model_selection import GridSearchCV
 from scipy.stats import pearsonr
 
 from dig.sslgraph.utils.device import pick_torch_device
+from dig.sslgraph.utils.dataloader_kw import accelerator_dataloader_kw
 
 from rdkit import Chem
 from rdkit.Chem.Scaffolds import MurckoScaffold
@@ -110,7 +111,7 @@ def eval_reg(model, device, loader):
     
     y_true = torch.cat(y_true, dim = 0).cpu().numpy().flatten()
     y_scores = torch.cat(y_scores, dim = 0).cpu().numpy().flatten()
-    rmse = mean_squared_error(y_true, y_scores, squared=False)
+    rmse = np.sqrt(mean_squared_error(y_true, y_scores))
     cor = pearsonr(y_true, y_scores)[0]
     print(rmse, cor)
     return rmse, cor
@@ -212,7 +213,12 @@ class GraphUnsupervised(object):
         :rtype: (float, float)
         """
         if finetune:
-            pretrain_loader = DataLoader(self.dataset_pretrain, self.batch_size, shuffle=True)
+            pretrain_loader = DataLoader(
+                self.dataset_pretrain,
+                self.batch_size,
+                shuffle=True,
+                **accelerator_dataloader_kw(),
+            )
             p_optimizer = self.get_optim(self.p_optim)(encoder.parameters(), lr=self.p_lr,
                                                       weight_decay=self.p_weight_decay)
             if self.p_epoch > 0:
@@ -455,9 +461,10 @@ def k_scaffold(n_folds, dataset, batch_size, task_type):
         train, val, test = scaffold_split(dataset)
         if len(val) == 0 or len(test) == 0:
             continue
-        train_loader = DataLoader(train, batch_size, shuffle=True)
-        val_loader = DataLoader(val, batch_size, shuffle=False)
-        test_loader = DataLoader(test, batch_size, shuffle=False)
+        _dl_kw = accelerator_dataloader_kw()
+        train_loader = DataLoader(train, batch_size, shuffle=True, **_dl_kw)
+        val_loader = DataLoader(val, batch_size, shuffle=False, **_dl_kw)
+        test_loader = DataLoader(test, batch_size, shuffle=False, **_dl_kw)
         train_ys = [ data.y for idx, data in enumerate(train_loader) ]
         val_ys = [ data.y for idx, data in enumerate(val_loader) ]
         test_ys = [ data.y for idx, data in enumerate(test_loader) ]

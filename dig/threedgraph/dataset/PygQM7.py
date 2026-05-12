@@ -4,6 +4,7 @@ from tqdm import tqdm
 import torch
 from sklearn.utils import shuffle
 
+from ._torch_io import load_pt_trusted
 from torch_geometric.data import InMemoryDataset, download_url, extract_zip, Data, DataLoader
 
 import os
@@ -50,7 +51,7 @@ class QM7(InMemoryDataset):
                  pre_transform: Optional[Callable] = None,
                  pre_filter: Optional[Callable] = None):
         super().__init__(root, transform, pre_transform, pre_filter)
-        self.data, self.slices = torch.load(self.processed_paths[0])
+        self.data, self.slices = load_pt_trusted(self.processed_paths[0])
 
     def mean(self, target: int) -> float:
         y = torch.cat([self.get(i).y for i in range(len(self))], dim=0)
@@ -95,7 +96,7 @@ class QM7(InMemoryDataset):
                    "install 'rdkit' to alternatively process the raw data."),
                   file=sys.stderr)
 
-            data_list = torch.load(self.raw_paths[0])
+            data_list = load_pt_trusted(self.raw_paths[0])
             data_list = [Data(**data_dict) for data_dict in data_list]
 
             if self.pre_filter is not None:

@@ -3,6 +3,7 @@ from itertools import repeat
 import os, shutil, torch
 import numpy as np
 
+from dig.threedgraph.dataset._torch_io import load_pt_trusted
 from torch_geometric.data import InMemoryDataset, download_url, extract_zip
 from torch_geometric.io import read_tu_data
 
@@ -74,7 +75,7 @@ class TUDatasetExt(InMemoryDataset):
         super(TUDatasetExt, self).__init__(root, transform, pre_transform, pre_filter)
 
         if self.task == "semisupervised":
-            self.data, self.slices = torch.load(self.processed_paths[0])
+            self.data, self.slices = load_pt_trusted(self.processed_paths[0])
             if self.data.x is not None and not use_node_attr:
                 num_node_attributes = self.num_node_attributes
                 self.data.x = self.data.x[:, num_node_attributes:]
@@ -83,7 +84,7 @@ class TUDatasetExt(InMemoryDataset):
                 self.data.edge_attr = self.data.edge_attr[:, num_edge_attributes:]
 
         elif self.task == "unsupervised":
-            self.data, self.slices = torch.load(self.processed_paths[0])
+            self.data, self.slices = load_pt_trusted(self.processed_paths[0])
             if self.data.x is not None and not use_node_attr:
                 num_node_attributes = self.num_node_attributes
                 self.data.x = self.data.x[:, num_node_attributes:]
