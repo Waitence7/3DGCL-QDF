@@ -1,3 +1,4 @@
+import contextlib
 import os
 import torch
 from tqdm import trange
@@ -9,6 +10,30 @@ from torch_geometric.data import Batch, Data
 from dig.sslgraph.method.contrastive.objectives import NCE_loss, JSE_loss
 from dig.sslgraph.utils.encoders import ShiftedSoftplus
 import matplotlib.pyplot as plt
+
+
+def _pretrain_autocast(device: torch.device, enabled: bool):
+    """Cheap mixed-precision forward for pretrain (encoder + projection)."""
+    if not enabled:
+        return contextlib.nullcontext()
+    dt = device.type
+    if dt == "cuda":
+        return torch.amp.autocast(device_type="cuda", dtype=torch.float16)
+    if dt == "xpu":
+        xpu = getattr(torch, "xpu", None)
+        if xpu is None:
+            return contextlib.nullcontext()
+        ac = getattr(getattr(xpu, "amp", None), "autocast", None)
+        if not callable(ac):
+            return contextlib.nullcontext()
+        try:
+            return ac(enabled=True)
+        except TypeError:
+            try:
+                return ac(dtype=torch.bfloat16, enabled=True)
+            except TypeError:
+                return contextlib.nullcontext()
+    return contextlib.nullcontext()
 
 
 class Contrastive(nn.Module):
@@ -126,24 +151,27 @@ class Contrastive(nn.Module):
                 for data in data_loader:
                     optimizer.zero_grad(set_to_none=True)
                     data = data.to(self.device)
-                    if None in self.views_fn: 
-                        # For view fn that returns multiple views
-                        views = []
-                        for v_fn in self.views_fn:
-                            if v_fn is not None:
-                                views += [*v_fn(data)]
-                    else:
-                        views = [v_fn(data) for v_fn in self.views_fn]
-                    
+                    use_amp = bool(getattr(self.args, "p_pretrain_amp", False))
+                    with _pretrain_autocast(self.device, use_amp):
+                        if None in self.views_fn:
+                            # For view fn that returns multiple views
+                            views = []
+                            for v_fn in self.views_fn:
+                                if v_fn is not None:
+                                    views += [*v_fn(data)]
+                        else:
+                            views = [v_fn(data) for v_fn in self.views_fn]
 
-                    zs = []
-                    for view, enc in zip(views, encoders):
-                        z = self._get_embed(enc, view.to(self.device))
-                        zs.append(self.proj_head_g(z))
-                    loss = self.loss_fn(zs, neg_by_crpt=self.neg_by_crpt, tau=self.tau, 
-                                        pc=self.pc)
-                                        
-                                        #E0=views[0].min_energy, E1=views[0].energy, E2=views[1].energy)
+                        zs = []
+                        for view, enc in zip(views, encoders):
+                            z = self._get_embed(enc, view.to(self.device))
+                            zs.append(self.proj_head_g(z))
+                        loss = self.loss_fn(
+                            zs,
+                            neg_by_crpt=self.neg_by_crpt,
+                            tau=self.tau,
+                            pc=self.pc,
+                        )
                     loss.backward()
                     optimizer.step()
                     # detach so we don't keep the per-batch autograd graph alive
@@ -180,6 +208,15 @@ class Contrastive(nn.Module):
         #plt.title('Learning curves for a pre-training model', fontsize = 18) # , y = 1.03
         #plt.legend()
         #plt.show()
+        # Expose collected per-epoch loss as a plain list so external runners
+        # (e.g. examples/sslgraph/bench/pretrain_quality_core.py) can plot it
+        # without re-implementing the whole train loop. ``losses`` here is the
+        # local list built one append per epoch above.
+        try:
+            self.last_epoch_losses = [float(l) for l in losses]
+        except Exception:
+            self.last_epoch_losses = []
+
         if not self.per_epoch_out:
             print('last')
             yield encoder, self.proj_head_g

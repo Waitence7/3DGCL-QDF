@@ -153,7 +153,14 @@ def _select_molnet(name, loader: str):
 
 
 class Finetune(object):
-    
+    # When False, skip the ``eval_reg`` call against the train_loader at the
+    # end of every epoch — saves ~70% of the per-epoch wall time on ESOL since
+    # the train split is by far the largest. ``train_rmse`` is only consumed by
+    # the tqdm postfix display, so dropping it has no effect on best-checkpoint
+    # selection or the returned RMSE / SD / predictions. Opt-in via
+    # ``Finetune(...).eval_train_per_epoch = False`` before ``evaluate()``.
+    eval_train_per_epoch = True
+
     def __init__(self, args, log_interval=1): #, **kwargs):  #reduction='sum'
         loader = getattr(args, 'loader', 'pt')
         if loader not in ('pt', 'shard'):
@@ -286,7 +293,14 @@ class Finetune(object):
         
         
     def evaluate(self, fold_seed=None):
-        #setup_seed(self.seed)
+        # Re-seed at the start of each evaluate() call. Without this, side-to-
+        # side comparisons in the same kernel are confounded by whatever
+        # random/torch state the previous side left behind (e.g. side C's
+        # WeightedMMFFView consumes a different amount of python `random`
+        # than side A's RandomView, so finetune scaffold splits diverge).
+        # Use ``fold_seed`` if provided so caller can sweep seeds explicitly.
+        _seed = fold_seed if fold_seed is not None else self.seed
+        setup_seed(_seed)
         pred_head = self.proj
         if self.finetune:
             encoder = Encoder(self.args)
@@ -429,7 +443,10 @@ class Finetune(object):
                         for epoch in t:
                             t.set_description('Finetune: epoch %d' % (epoch+1))
                             train_reg(fold_model, self.device, train_loader, f_optimizer, mae=self.mae, target=self.target)
-                            train_rmse, _, _, _ = eval_reg(fold_model, self.device, train_loader, mae=self.mae, target=self.target)
+                            if self.eval_train_per_epoch:
+                                train_rmse, _, _, _ = eval_reg(fold_model, self.device, train_loader, mae=self.mae, target=self.target)
+                            else:
+                                train_rmse = float('nan')
                             val_rmse, _, _, _ = eval_reg(fold_model, self.device, val_loader, mae=self.mae, target=self.target)
                             test_rmse, test_true, test_pred, test_smiles=eval_reg(fold_model, self.device, test_loader, mae=self.mae, target=self.target)
                             train_losses.append(train_rmse)
@@ -658,16 +675,59 @@ def checkbinary(yslist):
 
 
 def k_scaffold(n_folds, dataset, batch_size, task_type, seed):
-    
+
     i = 0
-    seed = seed
-    seed = random.randint(0, 1e8)
+    # The previous version did ``seed = random.randint(0, 1e8)`` which threw
+    # away the caller-provided seed and silently re-rolled from the global
+    # ``random`` state. That made every call non-reproducible (even with the
+    # same outer setup_seed) because consumers like WeightedMMFFView consume
+    # different amounts of random state than RandomView, so the global cursor
+    # at this point depends on what side was just finetuned.
+    # Keep the seed the caller passed in.
+    seed = int(seed) if seed is not None else random.randint(0, 10**8)
+    # The original rejection loop below (size <= 25, binary-only, etc.) is
+    # silent. For small datasets like ESOL it can spin many times silently
+    # while users see no output — looks like a hang. Cap the retries and
+    # log every attempt so progress is visible.
+    #
+    # Scaffold splits on ESOL (1128 mols) collapse to val=0 or test=0 with
+    # ~30% probability because a single large scaffold cluster straddles the
+    # 80/10/10 cutoff and key_split's boundary rounding eats one side whole.
+    # We perturb the seed in *large* random jumps so 50 retries cover a wide
+    # seed window (the old ``-= randint(0,22); += 1`` step revisited the
+    # same neighbourhood).
+    rejections_for_fold = 0
+    MAX_REJECTIONS = 100
+    # Adaptive size floor: 25 mols was a fixed magic number suited to larger
+    # downstream benchmarks; for small regression sets we relax it slightly
+    # to roughly 2% of the dataset (≈22 for ESOL → still ≥10 mols).
+    min_split_size = max(5, len(dataset) // 50)
     while i < n_folds:
+        # scaffold_split walks every molecule through RDKit MurckoScaffold;
+        # for ESOL (1128 mols) this takes ~5-10s with no other output, which
+        # users often mistake for a hang between folds. Surface progress here.
+        retry_tag = "" if rejections_for_fold == 0 else f" (retry {rejections_for_fold})"
+        print(f"[k_scaffold] preparing fold {i + 1}/{n_folds}{retry_tag} "
+              f"(scaffold split over {len(dataset)} molecules)...", flush=True)
         train, val, test = scaffold_split(dataset, seed+i)
-        if len(val) <= 25 or len(test) <= 25:
-            seed -= random.randint(0, 22)
-            seed += 1
+        if len(val) <= min_split_size or len(test) <= min_split_size:
+            rejections_for_fold += 1
+            print(f"[k_scaffold] fold {i + 1} split rejected "
+                  f"(train={len(train)}, val={len(val)}, test={len(test)}; "
+                  f"need val&test > {min_split_size}); "
+                  f"retrying with perturbed seed [{rejections_for_fold}/{MAX_REJECTIONS}]",
+                  flush=True)
+            if rejections_for_fold >= MAX_REJECTIONS:
+                raise RuntimeError(
+                    f"k_scaffold: could not produce a balanced split for fold "
+                    f"{i + 1}/{n_folds} after {MAX_REJECTIONS} attempts. "
+                    "Try a different ``--seed`` or reduce ``n_folds``."
+                )
+            # Large jump so retries cover diverse seed regions instead of
+            # cycling through neighbours of the current value.
+            seed += random.randint(50, 10_000)
             continue
+        rejections_for_fold = 0
             
         _dl_kw = accelerator_dataloader_kw()
         train_loader = DataLoader(train, batch_size, shuffle=True, **_dl_kw)

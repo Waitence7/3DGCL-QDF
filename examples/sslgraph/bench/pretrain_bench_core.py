@@ -140,6 +140,28 @@ def run_pretrain_benchmark(
         cfg = build_args(dataset, device, batch_size)
         ds = MoleculeNet(root=root, name=dataset)
 
+        # Optional MMFF weighted view: attach precomputed per-slot weights to
+        # ``ds`` so DataLoader collates ``batch.mmff_weights`` automatically.
+        # Only applied when env ``MMFF_WEIGHTS_PATH`` points at an existing file.
+        weights_path = os.environ.get("MMFF_WEIGHTS_PATH", "").strip()
+        weights_meta: dict[str, Any] | None = None
+        if weights_path:
+            wp = Path(weights_path)
+            if not wp.is_absolute():
+                wp = (REPO_ROOT / wp).resolve()
+            if wp.is_file():
+                from dig.sslgraph.method.contrastive.views_fn.mmff_weights_io import (
+                    load_weights, apply_mmff_weights,
+                )
+                w = load_weights(wp)
+                n_attached, n_missing = apply_mmff_weights(ds, w, verbose=False)
+                weights_meta = {
+                    "path": str(wp), "n_attached": int(n_attached),
+                    "n_missing": int(n_missing), "n_total": int(n_attached + n_missing),
+                }
+            else:
+                weights_meta = {"path": str(wp), "error": "file_not_found"}
+
         dl_kw = dict(accelerator_dataloader_kw())
         if os.environ.get("PIN_MEMORY", "").strip().lower() in ("1", "true", "yes", "on"):
             dl_kw["pin_memory"] = True
@@ -248,9 +270,12 @@ def run_pretrain_benchmark(
             "torch_version": torch.__version__,
             "view_impl_0": view_impl,
             "env_effective": {k: os.environ.get(k) for k in sorted(
-                set(env_overrides) | {"MMFFRANDOM_FAST", "PRETRAIN_AMP", "PIN_MEMORY",
-                                      "DATALOADER_NUM_WORKERS"}
+                set(env_overrides) | {"MMFFRANDOM_FAST", "MMFFRANDOM_WEIGHTED",
+                                      "PRETRAIN_AMP", "PIN_MEMORY",
+                                      "DATALOADER_NUM_WORKERS",
+                                      "MMFF_WEIGHTS_PATH"}
             )},
+            "mmff_weights": weights_meta,
             "totals": totals,
             "epochs_measured": measure_epochs,
             "per_epoch": epoch_rows,
@@ -262,7 +287,9 @@ def run_pretrain_benchmark(
 
 def snapshot_relevant_env() -> dict[str, str | None]:
     keys = (
-        "MMFFRANDOM_FAST", "PRETRAIN_AMP", "PIN_MEMORY",
-        "DATALOADER_NUM_WORKERS", "TORCH_DEVICE", "TORCH_SKIP_NPU",
+        "MMFFRANDOM_FAST", "MMFFRANDOM_WEIGHTED", "PRETRAIN_AMP",
+        "PIN_MEMORY", "DATALOADER_NUM_WORKERS",
+        "MMFF_WEIGHTS_PATH",
+        "TORCH_DEVICE", "TORCH_SKIP_NPU",
     )
     return {k: os.environ.get(k) for k in keys}

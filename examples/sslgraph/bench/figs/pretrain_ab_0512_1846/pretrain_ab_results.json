@@ -1,0 +1,249 @@
+{
+  "ts": "0512_1846",
+  "labels": [
+    "baseline (PyG views)",
+    "optimized (MMFF_FAST + bf16)",
+    "weighted (BOLTZMANN/kT=0.5, bf16)"
+  ],
+  "a_label": "baseline (PyG views)",
+  "b_label": "optimized (MMFF_FAST + bf16)",
+  "c_label": "weighted (BOLTZMANN/kT=0.5, bf16)",
+  "a_overrides": {
+    "MMFFRANDOM_FAST": null,
+    "MMFFRANDOM_WEIGHTED": null,
+    "PRETRAIN_AMP": null
+  },
+  "b_overrides": {
+    "MMFFRANDOM_FAST": "1",
+    "PRETRAIN_AMP": "bf16"
+  },
+  "c_overrides": {
+    "MMFFRANDOM_WEIGHTED": "1",
+    "PRETRAIN_AMP": "bf16",
+    "MMFF_WEIGHTS_PATH": "c:/DGCL/3DGCL/dataset/esol_mmff_weights_boltzmann.pt"
+  },
+  "args": {
+    "dataset": "esol",
+    "root": "dataset/",
+    "batch_size": 400,
+    "warmup": 1,
+    "epochs": 1,
+    "max_iters": 3,
+    "interval": 0.1,
+    "out_dir": "",
+    "no_plot": false,
+    "a_label": "baseline (PyG views)",
+    "a_clear": [],
+    "a_set": [],
+    "b_label": "optimized (MMFF_FAST + bf16)",
+    "b_clear": [],
+    "b_set": [],
+    "c_label": "weighted (BOLTZMANN/kT=0.5, bf16)",
+    "c_clear": [],
+    "c_set": [
+      "MMFFRANDOM_WEIGHTED=1",
+      "PRETRAIN_AMP=bf16",
+      "MMFF_WEIGHTS_PATH=c:/DGCL/3DGCL/dataset/esol_mmff_weights_boltzmann.pt"
+    ]
+  },
+  "run_a": {
+    "device": "xpu:0",
+    "torch_version": "2.9.1+xpu",
+    "view_impl_0": "RandomView",
+    "env_effective": {
+      "DATALOADER_NUM_WORKERS": null,
+      "MMFFRANDOM_FAST": null,
+      "MMFFRANDOM_WEIGHTED": null,
+      "MMFF_WEIGHTS_PATH": null,
+      "PIN_MEMORY": null,
+      "PRETRAIN_AMP": null
+    },
+    "mmff_weights": null,
+    "totals": {
+      "data": 0.08489609987009317,
+      "to_dev": 0.008792000007815659,
+      "views": 2.3152566000353545,
+      "fwd": 2.019719499978237,
+      "bwd": 0.42841569997835904,
+      "step": 0.005422999965958297,
+      "wall": 4.863432199927047,
+      "n_iter": 3.0,
+      "n_graphs": 1128.0,
+      "n_nodes": 28919.0
+    },
+    "epochs_measured": 1,
+    "per_epoch": [
+      {
+        "data": 0.08489609987009317,
+        "to_dev": 0.008792000007815659,
+        "views": 2.3152566000353545,
+        "fwd": 2.019719499978237,
+        "bwd": 0.42841569997835904,
+        "step": 0.005422999965958297,
+        "n_iter": 3.0,
+        "n_graphs": 1128.0,
+        "n_nodes": 28919.0,
+        "wall": 4.863432199927047
+      }
+    ],
+    "dataset": "esol",
+    "n_dataset": 1128,
+    "batch_size": 400,
+    "outer_wall_s": 13.651281300000846,
+    "resource_summary": {
+      "wall_s": 13.422525399946608,
+      "peak_rss_mb": 6956.8359375,
+      "mean_rss_mb": 4401.456739738806,
+      "mean_cpu_pct": 90.54838537397958,
+      "peak_cpu_pct": 100.0,
+      "mean_xpu_pct": 54.785783529432784,
+      "peak_xpu_pct": 170.01380549787626,
+      "n_samples": 134
+    }
+  },
+  "run_b": {
+    "device": "xpu:0",
+    "torch_version": "2.9.1+xpu",
+    "view_impl_0": "FastRandomMMFFView",
+    "env_effective": {
+      "DATALOADER_NUM_WORKERS": null,
+      "MMFFRANDOM_FAST": "1",
+      "MMFFRANDOM_WEIGHTED": null,
+      "MMFF_WEIGHTS_PATH": null,
+      "PIN_MEMORY": null,
+      "PRETRAIN_AMP": "bf16"
+    },
+    "mmff_weights": null,
+    "totals": {
+      "data": 0.14757250004913658,
+      "to_dev": 0.04050989996176213,
+      "views": 0.009552499977871776,
+      "fwd": 0.8033193999435753,
+      "bwd": 0.5174358999356627,
+      "step": 0.0054137001279741526,
+      "wall": 1.525264500058256,
+      "n_iter": 3.0,
+      "n_graphs": 1128.0,
+      "n_nodes": 28919.0
+    },
+    "epochs_measured": 1,
+    "per_epoch": [
+      {
+        "data": 0.14757250004913658,
+        "to_dev": 0.04050989996176213,
+        "views": 0.009552499977871776,
+        "fwd": 0.8033193999435753,
+        "bwd": 0.5174358999356627,
+        "step": 0.0054137001279741526,
+        "n_iter": 3.0,
+        "n_graphs": 1128.0,
+        "n_nodes": 28919.0,
+        "wall": 1.525264500058256
+      }
+    ],
+    "dataset": "esol",
+    "n_dataset": 1128,
+    "batch_size": 400,
+    "outer_wall_s": 4.26162599993404,
+    "resource_summary": {
+      "wall_s": 4.229439100017771,
+      "peak_rss_mb": 7588.14453125,
+      "mean_rss_mb": 7384.419735863095,
+      "mean_cpu_pct": 96.16906392739368,
+      "peak_cpu_pct": 100.0,
+      "mean_xpu_pct": 75.14189984050947,
+      "peak_xpu_pct": 175.765868621905,
+      "n_samples": 42
+    }
+  },
+  "run_c": {
+    "device": "xpu:0",
+    "torch_version": "2.9.1+xpu",
+    "view_impl_0": "WeightedMMFFView",
+    "env_effective": {
+      "DATALOADER_NUM_WORKERS": null,
+      "MMFFRANDOM_FAST": null,
+      "MMFFRANDOM_WEIGHTED": "1",
+      "MMFF_WEIGHTS_PATH": "c:/DGCL/3DGCL/dataset/esol_mmff_weights_boltzmann.pt",
+      "PIN_MEMORY": null,
+      "PRETRAIN_AMP": "bf16"
+    },
+    "mmff_weights": {
+      "path": "c:\\DGCL\\3DGCL\\dataset\\esol_mmff_weights_boltzmann.pt",
+      "n_attached": 1128,
+      "n_missing": 0,
+      "n_total": 1128
+    },
+    "totals": {
+      "data": 0.0630911000771448,
+      "to_dev": 0.011450199875980616,
+      "views": 0.026567400083877146,
+      "fwd": 0.6099338999483734,
+      "bwd": 0.4891373000573367,
+      "step": 0.00388329999987036,
+      "wall": 1.2042974999640137,
+      "n_iter": 3.0,
+      "n_graphs": 1128.0,
+      "n_nodes": 28919.0
+    },
+    "epochs_measured": 1,
+    "per_epoch": [
+      {
+        "data": 0.0630911000771448,
+        "to_dev": 0.011450199875980616,
+        "views": 0.026567400083877146,
+        "fwd": 0.6099338999483734,
+        "bwd": 0.4891373000573367,
+        "step": 0.00388329999987036,
+        "n_iter": 3.0,
+        "n_graphs": 1128.0,
+        "n_nodes": 28919.0,
+        "wall": 1.2042974999640137
+      }
+    ],
+    "dataset": "esol",
+    "n_dataset": 1128,
+    "batch_size": 400,
+    "outer_wall_s": 3.4041431000223383,
+    "resource_summary": {
+      "wall_s": 3.371771200094372,
+      "peak_rss_mb": 8100.36328125,
+      "mean_rss_mb": 8038.27734375,
+      "mean_cpu_pct": 94.93706631353085,
+      "peak_cpu_pct": 100.0,
+      "mean_xpu_pct": 93.4412403830808,
+      "peak_xpu_pct": 166.38278564272383,
+      "n_samples": 33
+    }
+  },
+  "summary_a": {
+    "wall_s": 13.422525399946608,
+    "peak_rss_mb": 6956.8359375,
+    "mean_rss_mb": 4401.456739738806,
+    "mean_cpu_pct": 90.54838537397958,
+    "peak_cpu_pct": 100.0,
+    "mean_xpu_pct": 54.785783529432784,
+    "peak_xpu_pct": 170.01380549787626,
+    "n_samples": 134
+  },
+  "summary_b": {
+    "wall_s": 4.229439100017771,
+    "peak_rss_mb": 7588.14453125,
+    "mean_rss_mb": 7384.419735863095,
+    "mean_cpu_pct": 96.16906392739368,
+    "peak_cpu_pct": 100.0,
+    "mean_xpu_pct": 75.14189984050947,
+    "peak_xpu_pct": 175.765868621905,
+    "n_samples": 42
+  },
+  "summary_c": {
+    "wall_s": 3.371771200094372,
+    "peak_rss_mb": 8100.36328125,
+    "mean_rss_mb": 8038.27734375,
+    "mean_cpu_pct": 94.93706631353085,
+    "peak_cpu_pct": 100.0,
+    "mean_xpu_pct": 93.4412403830808,
+    "peak_xpu_pct": 166.38278564272383,
+    "n_samples": 33
+  }
+}

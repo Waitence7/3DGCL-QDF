@@ -1,0 +1,84 @@
+{
+  "A": {
+    "side": "A",
+    "label": "A baseline (PyG views)",
+    "view_classes": [
+      "RandomView",
+      "RandomView"
+    ],
+    "wall_s": 16.94841360009741,
+    "losses_per_epoch": [
+      16.80132293701172,
+      15.272909164428711,
+      13.57000732421875,
+      12.709648132324219,
+      11.990630149841309
+    ],
+    "model_root": "c:\\DGCL\\3DGCL\\models\\quality_0512_1906\\A",
+    "best_ckpt": "C:\\DGCL\\3DGCL\\models\\quality_0512_1906\\A\\encoder-schnet_pretrain-esol_batch-400_proj-spherenet_cutoff-5.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFrandom_aug_2-MMFFrandom_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0\\enc_best_epoch-5_loss-11.991.pkl",
+    "weights": null,
+    "args_aug_1": "MMFFrandom",
+    "args_aug_2": "MMFFrandom",
+    "args_mmffrandom_impl": null,
+    "p_epoch": 5,
+    "batch_size": 400,
+    "dataset": "esol"
+  },
+  "B": {
+    "side": "B",
+    "label": "B fast (MMFF_FAST)",
+    "view_classes": [
+      "FastRandomMMFFView",
+      "FastRandomMMFFView"
+    ],
+    "wall_s": 5.806971799931489,
+    "losses_per_epoch": [
+      16.801286697387695,
+      15.27273941040039,
+      13.573715209960938,
+      12.710685729980469,
+      11.994089126586914
+    ],
+    "model_root": "c:\\DGCL\\3DGCL\\models\\quality_0512_1906\\B",
+    "best_ckpt": "C:\\DGCL\\3DGCL\\models\\quality_0512_1906\\B\\encoder-schnet_pretrain-esol_batch-400_proj-spherenet_cutoff-5.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFrandom_aug_2-MMFFrandom_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0\\enc_best_epoch-5_loss-11.994.pkl",
+    "weights": null,
+    "args_aug_1": "MMFFrandom",
+    "args_aug_2": "MMFFrandom",
+    "args_mmffrandom_impl": "fast",
+    "p_epoch": 5,
+    "batch_size": 400,
+    "dataset": "esol"
+  },
+  "C": {
+    "side": "C",
+    "label": "C weighted (esol_mmff_weights_qdf)",
+    "view_classes": [
+      "WeightedMMFFView",
+      "WeightedMMFFView"
+    ],
+    "wall_s": 5.739787700003944,
+    "losses_per_epoch": [
+      16.801380157470703,
+      15.270495414733887,
+      13.566829681396484,
+      12.711862564086914,
+      11.988216400146484
+    ],
+    "model_root": "c:\\DGCL\\3DGCL\\models\\quality_0512_1906\\C",
+    "best_ckpt": "C:\\DGCL\\3DGCL\\models\\quality_0512_1906\\C\\encoder-schnet_pretrain-esol_batch-400_proj-spherenet_cutoff-5.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFweighted_aug_2-MMFFweighted_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0\\enc_best_epoch-5_loss-11.988.pkl",
+    "weights": {
+      "path": "c:\\DGCL\\3DGCL\\dataset\\esol_mmff_weights_qdf.pt",
+      "n_attached": 735,
+      "n_missing": 393,
+      "n_total": 1128,
+      "kT": 1.0,
+      "mode": "auto"
+    },
+    "args_aug_1": "MMFFweighted",
+    "args_aug_2": "MMFFweighted",
+    "args_mmffrandom_impl": null,
+    "p_epoch": 5,
+    "batch_size": 400,
+    "dataset": "esol"
+  }
+}

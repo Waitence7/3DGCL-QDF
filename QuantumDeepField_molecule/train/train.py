@@ -167,14 +167,24 @@ class Trainer(object):
 
     def train(self, dataloader):
         losses_E, losses_V = 0, 0
-        for data in dataloader:
+        _empty_cache = None
+        if hasattr(torch, "xpu") and torch.xpu.is_available():
+            _empty_cache = torch.xpu.empty_cache
+        elif torch.cuda.is_available():
+            _empty_cache = torch.cuda.empty_cache
+        for step, data in enumerate(dataloader):
             loss_E = self.model.forward(data, train=True, target='E')
             self.optimize(loss_E, self.optimizer)
             losses_E += loss_E.item()
             loss_V = self.model.forward(data, train=True, target='V')
             self.optimize(loss_V, self.optimizer)
             losses_V += loss_V.item()
+            del loss_E, loss_V, data
+            if _empty_cache is not None and (step % 8) == 7:
+                _empty_cache()
         self.scheduler.step()
+        if _empty_cache is not None:
+            _empty_cache()
         return losses_E, losses_V
 
 
@@ -296,7 +306,6 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     dataset = args.dataset
-    dataset = 'QM9under7atoms_homolumo_eV'  # Force correct dataset
     print(f"Dataset: {dataset}")
     unit = '(' + dataset.split('_')[-1] + ')'
     basis_set = args.basis_set

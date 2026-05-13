@@ -1,7 +1,12 @@
 import torch
 from torch import nn
 from torch.nn import Linear, Embedding
-from torch_geometric.nn.acts import swish
+try:
+    from torch_geometric.nn.acts import swish  # type: ignore  # PyG <= 2.0
+except ImportError:
+    import torch.nn.functional as _F  # PyG >= 2.1 removed torch_geometric.nn.acts
+    def swish(x):
+        return _F.silu(x)
 from torch_geometric.nn.inits import glorot_orthogonal
 from ..geo_ops import radius_graph_device_safe
 from torch_scatter import scatter

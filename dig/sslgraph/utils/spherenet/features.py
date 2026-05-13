@@ -179,7 +179,13 @@ class dist_emb(torch.nn.Module):
         self.reset_parameters()
 
     def reset_parameters(self):
-        torch.arange(1, self.freq.numel() + 1, out=self.freq).mul_(PI)
+        # Cannot use ``out=`` on a leaf nn.Parameter (autograd refuses since
+        # PyTorch 1.8+). Fill in-place under no_grad instead.
+        with torch.no_grad():
+            self.freq.copy_(torch.arange(
+                1, self.freq.numel() + 1,
+                dtype=self.freq.dtype, device=self.freq.device,
+            ).mul_(PI))
 
     def forward(self, dist):
         dist = dist.unsqueeze(-1) / self.cutoff
@@ -282,14 +288,23 @@ def xyz_to_dat(pos, edge_index, num_nodes, use_torsion = False):
     # Calculate distances. # number of edges
     dist = (pos[i] - pos[j]).pow(2).sum(dim=-1).sqrt()
 
-    value = torch.arange(j.size(0), device=j.device)
-    adj_t = SparseTensor(row=i, col=j, value=value, sparse_sizes=(num_nodes, num_nodes))
-    adj_t_row = adj_t[j]
+    # torch_sparse.SparseTensor ops (csr / ind2ptr) only have CPU + CUDA
+    # kernels — they crash on XPU/MPS. Bounce just the index enumeration to
+    # CPU and move the resulting long-index tensors back to the original
+    # device. The downstream position / angle math stays on `pos.device`.
+    _orig_device = pos.device
+    _need_cpu_bounce = _orig_device.type not in ("cpu", "cuda")
+    _idx_dev = torch.device("cpu") if _need_cpu_bounce else _orig_device
+    i_c = i.to(_idx_dev)
+    j_c = j.to(_idx_dev)
+    value = torch.arange(j_c.size(0), device=_idx_dev)
+    adj_t = SparseTensor(row=i_c, col=j_c, value=value, sparse_sizes=(num_nodes, num_nodes))
+    adj_t_row = adj_t[j_c]
     num_triplets = adj_t_row.set_value(None).sum(dim=1).to(torch.long)
 
     # Node indices (k->j->i) for triplets.
-    idx_i = i.repeat_interleave(num_triplets)
-    idx_j = j.repeat_interleave(num_triplets)
+    idx_i = i_c.repeat_interleave(num_triplets)
+    idx_j = j_c.repeat_interleave(num_triplets)
     idx_k = adj_t_row.storage.col()
     mask = idx_i != idx_k
     idx_i, idx_j, idx_k = idx_i[mask], idx_j[mask], idx_k[mask]
@@ -316,6 +331,15 @@ def xyz_to_dat(pos, edge_index, num_nodes, use_torsion = False):
     mask = idx_i_t != idx_k_n       
     idx_i_t, idx_j_t, idx_k_t, idx_k_n, idx_batch_t = idx_i_t[mask], idx_j_t[mask], idx_k_t[mask], idx_k_n[mask], idx_batch_t[mask]
 
+    # Move all long-index tensors back to the position tensor's device so the
+    # subsequent ``pos[...]`` indexing happens on-device.
+    if _need_cpu_bounce:
+        idx_i = idx_i.to(_orig_device); idx_j = idx_j.to(_orig_device)
+        idx_k = idx_k.to(_orig_device); idx_kj = idx_kj.to(_orig_device)
+        idx_ji = idx_ji.to(_orig_device); idx_i_t = idx_i_t.to(_orig_device)
+        idx_j_t = idx_j_t.to(_orig_device); idx_k_t = idx_k_t.to(_orig_device)
+        idx_k_n = idx_k_n.to(_orig_device); idx_batch_t = idx_batch_t.to(_orig_device)
+
     # Calculate torsions.
     if use_torsion:
         pos_j0 = pos[idx_k_t] - pos[idx_j_t]
@@ -328,7 +352,15 @@ def xyz_to_dat(pos, edge_index, num_nodes, use_torsion = False):
         b = (torch.cross(plane1, plane2) * pos_ji).sum(dim=-1) / dist_ji
         torsion1 = torch.atan2(b, a) # -pi to pi
         torsion1[torsion1<=0]+=2*PI # 0 to 2pi
-        torsion = scatter(torsion1,idx_batch_t,reduce='min')
+        # ``torch_scatter.scatter_min`` only ships CPU + CUDA kernels — bounce
+        # to CPU on accelerators that lack it (XPU/MPS) and move back.
+        if torsion1.device.type not in ("cpu", "cuda"):
+            _dev = torsion1.device
+            torsion = scatter(
+                torsion1.cpu(), idx_batch_t.cpu(), reduce='min'
+            ).to(_dev)
+        else:
+            torsion = scatter(torsion1,idx_batch_t,reduce='min')
 
         return dist, angle, torsion, i, j, idx_kj, idx_ji
     

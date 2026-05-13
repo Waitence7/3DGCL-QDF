@@ -1,8 +1,11 @@
 from .contrastive import Contrastive
 from dig.sslgraph.method.contrastive.views_fn import NodeAttrMask, EdgePerturbation, \
     UniformSample, RWSample, RandomView, StableBiasedRandomView, NodeTranslation, \
-    FastRandomMMFFView
-from dig.sslgraph.method.contrastive.views_fn.mmff_fast import env_enabled as _mmff_fast_env
+    FastRandomMMFFView, WeightedMMFFView
+from dig.sslgraph.method.contrastive.views_fn.mmff_fast import (
+    env_enabled as _mmff_fast_env,
+    env_weighted_enabled as _mmff_weighted_env,
+)
 import random
 import torch.nn as nn
 
@@ -77,17 +80,68 @@ class GraphCL(Contrastive):
                
             elif aug == 'MMFFrandom':
                 method = random.sample(['MMFF1', 'MMFF2', 'MMFF3', 'MMFF4'], 2)
-                # ``impl='fast'`` (or env MMFFRANDOM_FAST=1) skips PyG
-                # ``to_data_list``/``from_data_list`` and gathers ``pos``/``energy``
-                # via a single ``index_select`` on the already-batched slabs.
-                # The default 'python' path preserves the original behaviour.
+                # ``impl`` switches:
+                #   * 'python'   - original PyG to_data_list / from_data_list path
+                #                  (default, bit-for-bit unchanged behaviour).
+                #   * 'fast'     - FastRandomMMFFView (uniform over the 2-slot
+                #                  pre-sampled pair, vectorised on device).
+                #   * 'weighted' - WeightedMMFFView (per-graph weighted sample
+                #                  over all 4 MMFF slots; weights come from
+                #                  ``batch.mmff_weights`` if present, otherwise
+                #                  Boltzmann factors of the MMFF energies that
+                #                  already ship with MoleculeNet).
+                # Env shortcuts (only used when impl unset / 'python'):
+                #   MMFFRANDOM_WEIGHTED=1  -> 'weighted'
+                #   MMFFRANDOM_FAST=1      -> 'fast'
                 _impl = getattr(args, 'mmffrandom_impl', 'python')
-                if _impl == 'fast' or (_impl in (None, '', 'python') and _mmff_fast_env()):
+                if _impl in (None, '', 'python'):
+                    if _mmff_weighted_env():
+                        _impl = 'weighted'
+                    elif _mmff_fast_env():
+                        _impl = 'fast'
+                if _impl == 'weighted':
+                    wm = getattr(args, 'mmff_weight_mode', 'auto')
+                    wn = getattr(args, 'mmff_weight_norm', 'auto')
+                    kT = float(getattr(args, 'mmff_weight_kT', 1.0))
+                    slots = getattr(args, 'mmff_slots',
+                                    ('MMFF1', 'MMFF2', 'MMFF3', 'MMFF4'))
+                    views_fn.append(WeightedMMFFView(
+                        slots=slots, kT=kT,
+                        weight_mode=wm, weight_norm=wn,
+                    ))
+                elif _impl == 'fast':
                     views_fn.append(FastRandomMMFFView(method))
                 else:
                     canditates = [NodeTranslation(method=method[0], device=self.device),
                                   NodeTranslation(method=method[1], device=self.device)]
                     views_fn.append(RandomView(canditates))
+
+            elif aug in ('MMFFweighted', 'MMFFweighted_top1', 'MMFFweighted_top2'):
+                # Per-graph weighted choice across MMFF1..MMFF4 (no random.sample
+                # pre-selection). Weights resolved at view time from
+                # ``batch.mmff_weights`` if present, otherwise Boltzmann of
+                # ``maxK_energy``. See ``examples/sslgraph/bench/compute_mmff_weights.py``
+                # for the offline QDF-based weight populator.
+                #   * ``MMFFweighted``      — stochastic multinomial(W)
+                #   * ``MMFFweighted_top1`` — deterministic argmax (best slot)
+                #   * ``MMFFweighted_top2`` — deterministic second-argmax
+                # Pairing top1 (view1) with top2 (view2) avoids the "two i.i.d.
+                # samples often land on the same slot" degeneracy.
+                wm = getattr(args, 'mmff_weight_mode', 'auto')
+                wn = getattr(args, 'mmff_weight_norm', 'auto')
+                kT = float(getattr(args, 'mmff_weight_kT', 1.0))
+                slots = getattr(args, 'mmff_slots',
+                                ('MMFF1', 'MMFF2', 'MMFF3', 'MMFF4'))
+                _pm = 'sample'
+                if aug == 'MMFFweighted_top1':
+                    _pm = 'top1'
+                elif aug == 'MMFFweighted_top2':
+                    _pm = 'top2'
+                views_fn.append(WeightedMMFFView(
+                    slots=slots, kT=kT,
+                    weight_mode=wm, weight_norm=wn,
+                    pick_mode=_pm,
+                ))
 
             elif aug == 'MMFFrandom_stablebiased':
                 # Most often keep data.pos (min-MMFF / stable); else random among two MMFF slots.
@@ -106,8 +160,9 @@ class GraphCL(Contrastive):
                 views_fn.append(RandomView(canditates))
             else:
                 raise Exception(
-                    "Aug must be from [MMFF1..MMFF4, MMFFrandom, MMFFrandom_stablebiased, "
-                    "'rotation', 'noise', 'dropN', 'maskN', 'random', 'random3', ...] or None."
+                    "Aug must be from [MMFF1..MMFF4, MMFFrandom, MMFFweighted, "
+                    "MMFFrandom_stablebiased, 'rotation', 'noise', 'dropN', "
+                    "'maskN', 'random', 'random3', ...] or None."
                 )
         
         super(GraphCL, self).__init__(args, objective='NCE',

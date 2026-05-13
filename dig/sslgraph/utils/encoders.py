@@ -16,7 +16,7 @@ from torch_scatter import scatter
 from typing import Optional, Tuple
 
 from .geo_ops import radius_graph_device_safe
-#from .spherenet import SphereNet
+from .spherenet import SphereNet
 
 class Encoder(torch.nn.Module):
     
