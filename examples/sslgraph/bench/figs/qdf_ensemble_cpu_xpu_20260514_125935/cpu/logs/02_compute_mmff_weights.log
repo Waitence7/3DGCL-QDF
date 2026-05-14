@@ -1,0 +1,3 @@
+[qdf:atomization] populated 83 smiles, skipped 0 (score='-energy', kT=0.5, normalize=zscore, constant_score_molecules=0)
+[fallback:boltzmann] +1040 boltzmann, +0 uniform; final weights=1123 (dataset has 1128 molecules)
+[saved] C:\DGCL\3DGCL\examples\sslgraph\bench\figs\qdf_ensemble_cpu_xpu_20260514_125935\cpu\mmff_weights.pt  (n=1123, property=atomization)

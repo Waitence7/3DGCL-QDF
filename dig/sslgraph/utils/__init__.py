@@ -1,7 +1,7 @@
+from .dataloader_kw import accelerator_dataloader_kw
+from .device import empty_accel_cache, pick_torch_device
 from .encoders import Encoder
 from .seed import setup_seed
-from .device import pick_torch_device, empty_accel_cache
-from .dataloader_kw import accelerator_dataloader_kw
 
 __all__ = [
     "Encoder",

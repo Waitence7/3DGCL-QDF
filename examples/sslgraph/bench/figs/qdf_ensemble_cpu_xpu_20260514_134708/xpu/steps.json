@@ -1,0 +1,20 @@
+[
+  {
+    "step": "01_qdf_mmff_predict",
+    "wall_sec": 15.36016359999985,
+    "returncode": 0,
+    "log": "examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_134708/xpu/logs/01_qdf_mmff_predict.log"
+  },
+  {
+    "step": "02_compute_mmff_weights",
+    "wall_sec": 4.584905300000173,
+    "returncode": 0,
+    "log": "examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_134708/xpu/logs/02_compute_mmff_weights.log"
+  },
+  {
+    "step": "03_compare_pretrain_ab",
+    "wall_sec": 18.53993739999987,
+    "returncode": 0,
+    "log": "examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_134708/xpu/logs/03_compare_pretrain_ab.log"
+  }
+]

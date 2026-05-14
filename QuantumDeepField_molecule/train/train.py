@@ -172,7 +172,20 @@ class Trainer(object):
             _empty_cache = torch.xpu.empty_cache
         elif torch.cuda.is_available():
             _empty_cache = torch.cuda.empty_cache
+        n_batches = len(dataloader)
+        # Large loaders stay silent for a long time on the first batch; log sparse progress.
+        if n_batches > 50:
+            log_every = max(1, n_batches // 25)
+        else:
+            log_every = max(1, n_batches // 2)
+        print(
+            f'  train: {n_batches} batches (progress every ~{log_every}); '
+            f'first batch can take minutes (mmap/workers/XPU compile).',
+            flush=True,
+        )
         for step, data in enumerate(dataloader):
+            if step == 0 or (step + 1) % log_every == 0 or step + 1 == n_batches:
+                print(f'  train: batch {step + 1}/{n_batches}', flush=True)
             loss_E = self.model.forward(data, train=True, target='E')
             self.optimize(loss_E, self.optimizer)
             losses_E += loss_E.item()
@@ -259,6 +272,28 @@ def collate_fn(xs):
     return list(zip(*xs))
 
 
+def _mae_str_to_scalar(mae_str):
+    """Mean MAE over comma-separated targets (e.g. homo,lumo) for early stopping."""
+    try:
+        parts = [float(x.strip()) for x in str(mae_str).split(",") if x.strip()]
+    except ValueError:
+        return float("inf")
+    return sum(parts) / len(parts) if parts else float("inf")
+
+
+def _fmt_duration(sec: float) -> str:
+    """Human-readable duration for logs."""
+    if sec < 0:
+        return "0s"
+    if sec < 60.0:
+        return f"{sec:.1f}s"
+    m, s = divmod(int(round(sec)), 60)
+    if m < 60:
+        return f"{m}m {s}s"
+    h, m = divmod(m, 60)
+    return f"{h}h {m}m {s}s"
+
+
 def mydataloader(dataset, batch_size, num_workers, shuffle=False):
     dataloader = torch.utils.data.DataLoader(
         dataset, batch_size, shuffle=shuffle, num_workers=num_workers,
@@ -303,6 +338,29 @@ if __name__ == "__main__":
              "'rust' / 'rust-pad-only' = optional qdf_io-backed instance patches "
              "(see train/model_patches.py).",
     )
+    parser.add_argument(
+        '--max-train-seconds',
+        type=float,
+        default=None,
+        metavar='SEC',
+        help='Wall-clock budget in seconds (checked between epochs only; '
+             'one epoch can still exceed the budget). '
+             'Example: 3600 ≈ 1 hour wall time. Default: no limit.',
+    )
+    parser.add_argument(
+        '--early-stop-patience',
+        type=int,
+        default=None,
+        metavar='N',
+        help='Stop if mean val MAE does not improve for N consecutive epochs. '
+             'Default: disabled.',
+    )
+    parser.add_argument(
+        '--early-stop-min-delta',
+        type=float,
+        default=0.0,
+        help='Minimum val MAE decrease to count as improvement (default 0).',
+    )
     args = parser.parse_args()
 
     dataset = args.dataset
@@ -325,6 +383,9 @@ if __name__ == "__main__":
     num_workers = args.num_workers
     loader = args.loader
     pad_impl = args.pad_impl
+    max_train_seconds = args.max_train_seconds
+    early_stop_patience = args.early_stop_patience
+    early_stop_min_delta = args.early_stop_min_delta
 
     torch.manual_seed(1729)
 
@@ -425,31 +486,103 @@ if __name__ == "__main__":
           'The result, prediction, and trained model '
           'are saved in the output directory.\n'
           'Wait for a while...')
+    if max_train_seconds is not None:
+        print(f'Wall-clock budget: {max_train_seconds} s (~{max_train_seconds / 3600:.3g} h), '
+              'checked between epochs.')
+    if early_stop_patience is not None:
+        print(f'Early stop patience: {early_stop_patience} epochs '
+              f'(min delta {early_stop_min_delta}).')
 
     start = timeit.default_timer()
+    best_val = float('inf')
+    stagnant = 0
+    stop_reason = None
+    epochs_completed = 0
 
     for epoch in range(iteration):
+        wall_before = timeit.default_timer() - start
+        if max_train_seconds is not None and wall_before >= max_train_seconds:
+            stop_reason = (
+                f'max_train_seconds={max_train_seconds} reached before epoch {epoch}'
+            )
+            break
+
+        t_epoch0 = timeit.default_timer()
+        print(
+            f'Epoch {epoch}: start (train {len(dataloader_train)} batches, '
+            f'val {len(dataloader_val)}, test {len(dataloader_test)})...',
+            flush=True,
+        )
         loss_E, loss_V = trainer.train(dataloader_train)
+        print(f'Epoch {epoch}: train done; running val...', flush=True)
         MAE_val = tester.test(dataloader_val)[0]
+        print(f'Epoch {epoch}: val done; running test...', flush=True)
         MAE_test, prediction = tester.test(dataloader_test)
-        time = timeit.default_timer() - start
+        wall_sec = timeit.default_timer() - start
+        epoch_sec = timeit.default_timer() - t_epoch0
 
         if epoch == 0:
-            minutes = iteration * time / 60
+            minutes = iteration * wall_sec / 60
             hours = int(minutes / 60)
             minutes = int(minutes - 60 * hours)
             print('The training will finish in about',
                   hours, 'hours', minutes, 'minutes.')
+            if max_train_seconds is not None and wall_sec > 0:
+                cap = int(max_train_seconds // wall_sec)
+                print(
+                    f'With --max-train-seconds {max_train_seconds}, expect at most '
+                    f'~{cap} epoch(s) (~{cap * wall_sec / 3600:.2f} h if each epoch stays similar).'
+                )
             print('-'*50)
             print(result)
 
-        result = '\t'.join(map(str, [epoch, time, loss_E, loss_V,
+        result = '\t'.join(map(str, [epoch, wall_sec, loss_E, loss_V,
                                     MAE_val, MAE_test]))
         tester.save_result(result, file_result)
         tester.save_prediction(prediction, file_prediction)
         tester.save_model(model, file_model)
         print(result)
+        print(
+            f"  wall: this_epoch {epoch_sec:.2f}s | cumulative {_fmt_duration(wall_sec)} "
+            f"({wall_sec:.1f}s)"
+        )
+        epochs_completed += 1
 
+        val_scalar = _mae_str_to_scalar(MAE_val)
+        if early_stop_patience is not None:
+            if val_scalar < best_val - early_stop_min_delta:
+                best_val = val_scalar
+                stagnant = 0
+            else:
+                stagnant += 1
+                if stagnant >= early_stop_patience:
+                    stop_reason = (
+                        f'early_stop_patience={early_stop_patience} '
+                        f'(best mean val MAE {best_val:.6g})'
+                    )
+                    break
+
+        if max_train_seconds is not None:
+            wall_after = timeit.default_timer() - start
+            if wall_after >= max_train_seconds:
+                stop_reason = f'max_train_seconds={max_train_seconds} after epoch {epoch}'
+                break
+
+    if stop_reason:
+        print('Stopped early:', stop_reason)
+    total_sec = timeit.default_timer() - start
+    avg = (total_sec / epochs_completed) if epochs_completed else 0.0
+    print(
+        f'Total training wall time: {total_sec:.2f}s ({_fmt_duration(total_sec)}) '
+        f'over {epochs_completed} epoch(s)'
+        + (f', avg {_fmt_duration(avg)} / epoch ({avg:.2f}s)' if epochs_completed else '')
+        + '.'
+    )
+    with open(file_result, 'a', encoding='utf-8') as f:
+        f.write(
+            f'# total_wall_sec={total_sec:.6f}\tepochs_completed={epochs_completed}\t'
+            f'human={_fmt_duration(total_sec)}\tavg_sec_per_epoch={avg:.6f}\n'
+        )
     print('The training has finished.')
 
 

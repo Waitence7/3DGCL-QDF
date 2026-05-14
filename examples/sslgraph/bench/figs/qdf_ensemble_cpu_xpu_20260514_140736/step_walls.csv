@@ -1,0 +1,7 @@
+mode,step,wall_sec,returncode,log
+cpu,01_qdf_mmff_predict,26.727481799999623,0,examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_140736/cpu/logs/01_qdf_mmff_predict.log
+cpu,02_compute_mmff_weights,5.08330369999976,0,examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_140736/cpu/logs/02_compute_mmff_weights.log
+cpu,03_compare_pretrain_ab,576.3094705999997,0,examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_140736/cpu/logs/03_compare_pretrain_ab.log
+xpu,01_qdf_mmff_predict,22.77403400000003,0,examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_140736/xpu/logs/01_qdf_mmff_predict.log
+xpu,02_compute_mmff_weights,5.723966799999744,0,examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_140736/xpu/logs/02_compute_mmff_weights.log
+xpu,03_compare_pretrain_ab,24.305664400000296,0,examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_140736/xpu/logs/03_compare_pretrain_ab.log

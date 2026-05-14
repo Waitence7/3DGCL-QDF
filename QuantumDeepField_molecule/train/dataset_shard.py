@@ -306,25 +306,51 @@ class MyDatasetShard(torch.utils.data.Dataset):
     The shape and dtypes of each returned tuple match those produced by
     ``MyDataset.__getitem__`` so that ``collate_fn`` and the model code in
     ``train.py`` keep working unchanged.
+
+    ``qdf_io.ShardReader`` is not picklable; DataLoader workers (Windows ``spawn``,
+    Linux ``fork`` + spawn in some configs) therefore only pickle ``shard_path``
+    and open a fresh reader per worker via ``__getstate__`` / ``__setstate__``.
     """
 
     def __init__(self, shard_path: str | os.PathLike):
+        self.shard_path = str(shard_path)
+        self._reader = None
+        self._length = None
+        self.n_output = None
+        self.has_property = None
+        self._ensure_reader()
+
+    def _ensure_reader(self) -> None:
+        if self._reader is not None:
+            return
         from qdf_io import ShardReader  # imported lazily so writing a shard
                                         # does not require the Rust build.
 
-        self.shard_path = str(shard_path)
         self._reader = ShardReader(self.shard_path)
         self._length = len(self._reader)
         self.n_output = self._reader.n_output
         self.has_property = self._reader.has_property
 
+    def __getstate__(self):
+        return {'shard_path': self.shard_path}
+
+    def __setstate__(self, state):
+        self.shard_path = state['shard_path']
+        self._reader = None
+        self._length = None
+        self.n_output = None
+        self.has_property = None
+
     def __len__(self) -> int:
-        return self._length
+        self._ensure_reader()
+        return self._length  # type: ignore[return-value]
 
     def __getitem__(self, idx: int) -> tuple:
+        self._ensure_reader()
         return self._reader.get(int(idx))
 
     def __repr__(self) -> str:  # pragma: no cover - for debugging only
+        self._ensure_reader()
         return (f"MyDatasetShard(path={self.shard_path!r}, n={self._length}, "
                 f"has_property={self.has_property}, n_output={self.n_output})")
 

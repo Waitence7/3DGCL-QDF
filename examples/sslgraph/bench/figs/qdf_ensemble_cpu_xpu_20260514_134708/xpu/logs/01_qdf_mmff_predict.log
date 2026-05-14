@@ -1,0 +1,8 @@
+[qdf-mmff] property=atomization  device=xpu
+[qdf-mmff] arch: dim=250 hidden_hk=250 layer_hk=3 op=sum N_out=1
+[qdf-mmff] orbital_dict: orbitaldict_6-31G.pickle  (N_orbitals=60)
+[qdf-mmff] sphere points: (56, 3)  (radius=0.75, grid=0.3)
+[qdf-mmff] loaded checkpoint: model--QM9under14atoms_atomizationenergy_eV--6-31G--radius0.75--grid_interval0.3--dim250--layer_functional3--hidden_HK250--layer_HK3--sum--batch_size4--lr1e-4--lr_decay0.5--step_size200--iteration2000
+[qdf-mmff] esol: scanning 128/1128 molecules x 4 slots = up to 512 forward passes
+[qdf-mmff] done. rows=332  skipped(slots)=180  elapsed=9.9s
+[saved] C:\DGCL\3DGCL\examples\sslgraph\bench\figs\qdf_ensemble_cpu_xpu_20260514_134708\xpu\qdf_mmff_preds.csv

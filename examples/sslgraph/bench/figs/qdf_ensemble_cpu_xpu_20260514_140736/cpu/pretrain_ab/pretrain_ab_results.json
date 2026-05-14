@@ -1,0 +1,182 @@
+{
+  "ts": "0514_2308",
+  "labels": [
+    "baseline (PyG views)",
+    "optimized (MMFF_FAST + bf16)"
+  ],
+  "a_label": "baseline (PyG views)",
+  "b_label": "optimized (MMFF_FAST + bf16)",
+  "c_label": null,
+  "a_overrides": {
+    "MMFFRANDOM_FAST": null,
+    "MMFFRANDOM_WEIGHTED": null,
+    "PRETRAIN_AMP": null
+  },
+  "b_overrides": {
+    "MMFFRANDOM_FAST": "1",
+    "PRETRAIN_AMP": "bf16"
+  },
+  "c_overrides": null,
+  "args": {
+    "dataset": "esol",
+    "root": "dataset/",
+    "batch_size": 96,
+    "warmup": 1,
+    "epochs": 1,
+    "max_iters": 6,
+    "interval": 0.15,
+    "out_dir": "C:\\DGCL\\3DGCL\\examples\\sslgraph\\bench\\figs\\qdf_ensemble_cpu_xpu_20260514_140736\\cpu\\pretrain_ab",
+    "no_plot": false,
+    "a_label": "baseline (PyG views)",
+    "a_clear": [],
+    "a_set": [],
+    "b_label": "optimized (MMFF_FAST + bf16)",
+    "b_clear": [],
+    "b_set": [],
+    "c_label": "",
+    "c_clear": [],
+    "c_set": []
+  },
+  "run_a": {
+    "device": "cpu",
+    "torch_version": "2.9.1+xpu",
+    "view_impl_0": "RandomView",
+    "env_effective": {
+      "DATALOADER_NUM_WORKERS": "0",
+      "MMFFRANDOM_FAST": null,
+      "MMFFRANDOM_WEIGHTED": null,
+      "MMFF_WEIGHTS_PATH": "C:\\DGCL\\3DGCL\\examples\\sslgraph\\bench\\figs\\qdf_ensemble_cpu_xpu_20260514_140736\\cpu\\mmff_weights.pt",
+      "PIN_MEMORY": "0",
+      "PRETRAIN_AMP": null
+    },
+    "mmff_weights": {
+      "path": "C:\\DGCL\\3DGCL\\examples\\sslgraph\\bench\\figs\\qdf_ensemble_cpu_xpu_20260514_140736\\cpu\\mmff_weights.pt",
+      "n_attached": 1128,
+      "n_missing": 0,
+      "n_total": 1128
+    },
+    "totals": {
+      "data": 0.06222740000112026,
+      "to_dev": 0.0011203999988538271,
+      "views": 0.38277200000038647,
+      "fwd": 1.0502768000001197,
+      "bwd": 0.9080409999996846,
+      "step": 0.011702000000241242,
+      "wall": 2.4164528999999675,
+      "n_iter": 6.0,
+      "n_graphs": 576.0,
+      "n_nodes": 14680.0
+    },
+    "epochs_measured": 1,
+    "per_epoch": [
+      {
+        "data": 0.06222740000112026,
+        "to_dev": 0.0011203999988538271,
+        "views": 0.38277200000038647,
+        "fwd": 1.0502768000001197,
+        "bwd": 0.9080409999996846,
+        "step": 0.011702000000241242,
+        "n_iter": 6.0,
+        "n_graphs": 576.0,
+        "n_nodes": 14680.0,
+        "wall": 2.4164528999999675
+      }
+    ],
+    "dataset": "esol",
+    "n_dataset": 1128,
+    "batch_size": 96,
+    "outer_wall_s": 8.61353710000003,
+    "resource_summary": {
+      "wall_s": 8.386713399999735,
+      "peak_rss_mb": 1381.58203125,
+      "mean_rss_mb": 1317.0841619318182,
+      "mean_cpu_pct": 99.271881115197,
+      "peak_cpu_pct": 100.0,
+      "mean_xpu_pct": 0.0,
+      "peak_xpu_pct": 0.0,
+      "n_samples": 55
+    }
+  },
+  "run_b": {
+    "device": "cpu",
+    "torch_version": "2.9.1+xpu",
+    "view_impl_0": "FastRandomMMFFView",
+    "env_effective": {
+      "DATALOADER_NUM_WORKERS": "0",
+      "MMFFRANDOM_FAST": "1",
+      "MMFFRANDOM_WEIGHTED": null,
+      "MMFF_WEIGHTS_PATH": "C:\\DGCL\\3DGCL\\examples\\sslgraph\\bench\\figs\\qdf_ensemble_cpu_xpu_20260514_140736\\cpu\\mmff_weights.pt",
+      "PIN_MEMORY": "0",
+      "PRETRAIN_AMP": "bf16"
+    },
+    "mmff_weights": {
+      "path": "C:\\DGCL\\3DGCL\\examples\\sslgraph\\bench\\figs\\qdf_ensemble_cpu_xpu_20260514_140736\\cpu\\mmff_weights.pt",
+      "n_attached": 1128,
+      "n_missing": 0,
+      "n_total": 1128
+    },
+    "totals": {
+      "data": 0.10410460000002786,
+      "to_dev": 0.0019368999992366298,
+      "views": 0.011813800000709307,
+      "fwd": 1.741165600000386,
+      "bwd": 204.45080739999912,
+      "step": 0.023242800000844,
+      "wall": 206.33362829999987,
+      "n_iter": 6.0,
+      "n_graphs": 576.0,
+      "n_nodes": 14605.0
+    },
+    "epochs_measured": 1,
+    "per_epoch": [
+      {
+        "data": 0.10410460000002786,
+        "to_dev": 0.0019368999992366298,
+        "views": 0.011813800000709307,
+        "fwd": 1.741165600000386,
+        "bwd": 204.45080739999912,
+        "step": 0.023242800000844,
+        "n_iter": 6.0,
+        "n_graphs": 576.0,
+        "n_nodes": 14605.0,
+        "wall": 206.33362829999987
+      }
+    ],
+    "dataset": "esol",
+    "n_dataset": 1128,
+    "batch_size": 96,
+    "outer_wall_s": 560.4202734,
+    "resource_summary": {
+      "wall_s": 560.3904627000002,
+      "peak_rss_mb": 1684.7734375,
+      "mean_rss_mb": 1513.9902369896251,
+      "mean_cpu_pct": 99.97506860352871,
+      "peak_cpu_pct": 100.0,
+      "mean_xpu_pct": 0.0,
+      "peak_xpu_pct": 0.0,
+      "n_samples": 3735
+    }
+  },
+  "run_c": null,
+  "summary_a": {
+    "wall_s": 8.386713399999735,
+    "peak_rss_mb": 1381.58203125,
+    "mean_rss_mb": 1317.0841619318182,
+    "mean_cpu_pct": 99.271881115197,
+    "peak_cpu_pct": 100.0,
+    "mean_xpu_pct": 0.0,
+    "peak_xpu_pct": 0.0,
+    "n_samples": 55
+  },
+  "summary_b": {
+    "wall_s": 560.3904627000002,
+    "peak_rss_mb": 1684.7734375,
+    "mean_rss_mb": 1513.9902369896251,
+    "mean_cpu_pct": 99.97506860352871,
+    "peak_cpu_pct": 100.0,
+    "mean_xpu_pct": 0.0,
+    "peak_xpu_pct": 0.0,
+    "n_samples": 3735
+  },
+  "summary_c": null
+}

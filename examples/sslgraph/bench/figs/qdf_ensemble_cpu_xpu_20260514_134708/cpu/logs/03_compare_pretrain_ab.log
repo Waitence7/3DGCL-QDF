@@ -1,0 +1,24 @@
+=== Host env snapshot (unchanged after this script) ===
+{
+  "MMFFRANDOM_FAST": null,
+  "MMFFRANDOM_WEIGHTED": null,
+  "PRETRAIN_AMP": null,
+  "PIN_MEMORY": "0",
+  "DATALOADER_NUM_WORKERS": "0",
+  "MMFF_WEIGHTS_PATH": "C:\\DGCL\\3DGCL\\examples\\sslgraph\\bench\\figs\\qdf_ensemble_cpu_xpu_20260514_134708\\cpu\\mmff_weights.pt",
+  "TORCH_DEVICE": "cpu",
+  "TORCH_SKIP_NPU": null
+}
+
+>>> [baseline (PyG views)] env overrides: {'MMFFRANDOM_FAST': None, 'MMFFRANDOM_WEIGHTED': None, 'PRETRAIN_AMP': None}
+    wall=8.631s  mean_cpu=99.3%  mean_xpu=0.0%  peak_rss=1447MB  view[0]=RandomView
+
+>>> [optimized (MMFF_FAST + bf16)] env overrides: {'MMFFRANDOM_FAST': '1', 'PRETRAIN_AMP': 'bf16'}
+    wall=701.486s  mean_cpu=99.9%  mean_xpu=0.0%  peak_rss=1706MB  view[0]=FastRandomMMFFView
+
+[saved] C:\DGCL\3DGCL\examples\sslgraph\bench\figs\qdf_ensemble_cpu_xpu_20260514_134708\cpu\pretrain_ab\pretrain_ab_results.json
+[saved] C:\DGCL\3DGCL\examples\sslgraph\bench\figs\qdf_ensemble_cpu_xpu_20260514_134708\cpu\pretrain_ab\bars_pretrain_ab_0514_2247.png
+[saved] C:\DGCL\3DGCL\examples\sslgraph\bench\figs\qdf_ensemble_cpu_xpu_20260514_134708\cpu\pretrain_ab\bars_pretrain_stages_0514_2247.png
+[saved] C:\DGCL\3DGCL\examples\sslgraph\bench\figs\qdf_ensemble_cpu_xpu_20260514_134708\cpu\pretrain_ab\timeseries_cpu_xpu_0514_2247.png
+
+=== Ratio (A wall / B wall) = 0.01x  (higher = B faster) ===

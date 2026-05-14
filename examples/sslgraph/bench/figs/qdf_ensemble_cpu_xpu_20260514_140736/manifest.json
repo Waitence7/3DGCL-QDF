@@ -1,0 +1,85 @@
+{
+  "created_utc": "2026-05-14T14:07:36.230278+00:00",
+  "argv": [
+    "C:\\DGCL\\3DGCL\\examples\\sslgraph\\bench\\ensemble_cpu_xpu_orchestrator.py",
+    "--dataset",
+    "esol",
+    "--root",
+    "dataset/",
+    "--qdf-property",
+    "atomization",
+    "--limit",
+    "128",
+    "--pretrain-batch-size",
+    "96",
+    "--pretrain-max-iters",
+    "6",
+    "--pretrain-epochs",
+    "1",
+    "--pretrain-warmup",
+    "1"
+  ],
+  "args": {
+    "dataset": "esol",
+    "root": "dataset/",
+    "qdf_property": "atomization",
+    "checkpoint": "",
+    "limit": 128,
+    "qdf_batch_size": 8,
+    "weight_kT": 0.5,
+    "weight_normalize": "zscore",
+    "weight_fallback": "boltzmann",
+    "pretrain_batch_size": 96,
+    "pretrain_warmup": 1,
+    "pretrain_epochs": 1,
+    "pretrain_max_iters": 6,
+    "sampler_interval": 0.15,
+    "run_root": null,
+    "no_skip_xpu": false,
+    "force_xpu": false
+  },
+  "run_root": "C:\\DGCL\\3DGCL\\examples\\sslgraph\\bench\\figs\\qdf_ensemble_cpu_xpu_20260514_140736",
+  "torch_version": "2.9.1+xpu",
+  "cpu_steps": [
+    {
+      "step": "01_qdf_mmff_predict",
+      "wall_sec": 26.727481799999623,
+      "returncode": 0,
+      "log": "examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_140736/cpu/logs/01_qdf_mmff_predict.log"
+    },
+    {
+      "step": "02_compute_mmff_weights",
+      "wall_sec": 5.08330369999976,
+      "returncode": 0,
+      "log": "examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_140736/cpu/logs/02_compute_mmff_weights.log"
+    },
+    {
+      "step": "03_compare_pretrain_ab",
+      "wall_sec": 576.3094705999997,
+      "returncode": 0,
+      "log": "examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_140736/cpu/logs/03_compare_pretrain_ab.log"
+    }
+  ],
+  "xpu_steps": [
+    {
+      "step": "01_qdf_mmff_predict",
+      "wall_sec": 22.77403400000003,
+      "returncode": 0,
+      "log": "examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_140736/xpu/logs/01_qdf_mmff_predict.log"
+    },
+    {
+      "step": "02_compute_mmff_weights",
+      "wall_sec": 5.723966799999744,
+      "returncode": 0,
+      "log": "examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_140736/xpu/logs/02_compute_mmff_weights.log"
+    },
+    {
+      "step": "03_compare_pretrain_ab",
+      "wall_sec": 24.305664400000296,
+      "returncode": 0,
+      "log": "examples/sslgraph/bench/figs/qdf_ensemble_cpu_xpu_20260514_140736/xpu/logs/03_compare_pretrain_ab.log"
+    }
+  ],
+  "xpu_skipped": false,
+  "xpu_skip_reason": ""
+}
