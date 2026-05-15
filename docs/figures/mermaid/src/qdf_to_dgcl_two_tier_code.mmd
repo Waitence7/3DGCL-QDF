@@ -1,0 +1,50 @@
+flowchart TB
+  subgraph CODE_QDF["QDF (QuantumDeepField_molecule/)"]
+    direction TB
+    C1["train/preprocess.py\npredict/preprocess.py"]
+    C2["QuantumDeepField_molecule/qdf_io/\n(Rust: parse / batch preprocess / ShardWriter)"]
+    C3["train/train.py\nMyDataset · MyDatasetShard\nQuantumDeepField"]
+    C1 --> C2
+    C1 --> C3
+    subgraph QDF_BENCH["벤치·검증 (QuantumDeepField_molecule/bench/)"]
+      direction LR
+      X1["profile_preprocess.py"]
+      X2["verify_preprocess_backend.py"]
+      X3["convert_to_shard.py · verify_shard.py"]
+      X4["run_pipeline.ipynb 등"]
+    end
+    C1 -.-> X1
+    C1 -.-> X2
+    C1 -.-> X3
+    C3 -.-> X4
+  end
+
+  subgraph CODE_BRIDGE["브리지 (examples/sslgraph/bench/)"]
+    direction TB
+    K1["qdf_mmff_predict.py\n(import train으로 QDF 로드·추론)"]
+    K2["compute_mmff_weights.py"]
+    K3["build_qdf_aux_ensemble.py\n(선택)"]
+    K1 --> K2
+    K1 -.-> K3
+  end
+
+  subgraph CODE_DGCL["DGCL (dig/ + 노트북)"]
+    direction TB
+    M0["dig.threedgraph.dataset.MoleculeNet"]
+    M1["dig.sslgraph…views_fn.mmff_fast\nWeightedMMFFView"]
+    M1b["…views_fn.mmff_weights_io\n(가중치 .pt 로드)"]
+    M2["(선택) dig_io/\n레포 루트 Rust 확장"]
+    M3["…model.graphcl 등\nGraphCL 사전학습"]
+    M4["…views_fn.qdf_aux_io\napply_qdf_aux_from_pt"]
+    M5["examples/sslgraph/pretrain.ipynb\nfinetune.ipynb · downstream.ipynb"]
+    M2 -.-> M0
+    M0 --> M1
+    M1b --> M1
+    M1 --> M3
+    M4 -.-> M3
+    M3 --> M5
+  end
+
+  C3 -.->|"학습 산출 CKPT를\n브리지에서 로드"| K1
+  K2 --> M1b
+  K3 -.-> M4

@@ -1,0 +1,24 @@
+[package]
+name = "dig_io"
+version = "0.1.0"
+edition = "2021"
+license = "GPL-3.0-only"
+description = "Rust kernels for DGCL: contrastive view fns, scaffold bucket math, PyG-compatible shard IO (PyO3)."
+
+[lib]
+name = "dig_io"
+crate-type = ["cdylib"]
+
+[dependencies]
+pyo3 = { version = "0.22", features = ["extension-module"] }
+numpy = "0.22"
+ndarray = "0.16"
+memmap2 = "0.9"
+rayon = "1.10"
+rand = "0.8"
+rand_chacha = "0.3"
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1

@@ -1,0 +1,126 @@
+{
+  "A": {
+    "side": "A",
+    "label": "A baseline (PyG views)",
+    "view_classes": [
+      "RandomView",
+      "RandomView"
+    ],
+    "wall_s": 9.286696048999147,
+    "losses_per_epoch": [
+      12.152769088745117,
+      10.979636192321777,
+      10.141422271728516,
+      9.58330249786377,
+      9.266990661621094
+    ],
+    "model_root": "/home/ubuntu/3DGCL/models/quality_homolumo_0514_0603/A",
+    "best_ckpt": "/home/ubuntu/3DGCL/models/quality_homolumo_0514_0603/A/encoder-gin_pretrain-esol_batch-400_proj-spherenet_cutoff-3.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFrandom_aug_2-MMFFrandom_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0/enc_best_epoch-5_loss-9.267.pkl",
+    "weights": null,
+    "args_aug_1": "MMFFrandom",
+    "args_aug_2": "MMFFrandom",
+    "args_mmffrandom_impl": null,
+    "p_epoch": 5,
+    "p_epoch_requested": 7,
+    "batch_size": 400,
+    "dataset": "esol",
+    "p_pretrain_amp": true,
+    "pretrain_encoder": "gin",
+    "pretrain_cutoff": 3.0,
+    "aug_2_effective": "MMFFrandom",
+    "esol_qm78_filter": null,
+    "qdf_aux": null
+  },
+  "B": {
+    "side": "B",
+    "label": "B top1 + MMFFrandom (mixed views)",
+    "view_classes": [
+      "WeightedMMFFView",
+      "RandomView"
+    ],
+    "wall_s": 8.488256058000843,
+    "losses_per_epoch": [
+      22.089706420898438,
+      17.866069793701172,
+      15.607702255249023,
+      14.068119049072266,
+      13.085294723510742,
+      12.378852844238281,
+      11.808479309082031
+    ],
+    "model_root": "/home/ubuntu/3DGCL/models/quality_homolumo_0514_0603/B",
+    "best_ckpt": "/home/ubuntu/3DGCL/models/quality_homolumo_0514_0603/B/encoder-gin_pretrain-esol_batch-400_proj-spherenet_cutoff-3.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFweighted_top1_aug_2-MMFFrandom_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0/enc_best_epoch-7_loss-11.808.pkl",
+    "weights": {
+      "path": "/home/ubuntu/3DGCL/esol_mmff_weights_qdf_homolumo.pt",
+      "n_attached": 1128,
+      "n_missing": 0,
+      "n_total": 1128,
+      "kT": 0.3,
+      "mode": "auto"
+    },
+    "args_aug_1": "MMFFweighted_top1",
+    "args_aug_2": "MMFFrandom",
+    "args_mmffrandom_impl": null,
+    "p_epoch": 7,
+    "p_epoch_requested": 7,
+    "batch_size": 400,
+    "dataset": "esol",
+    "p_pretrain_amp": true,
+    "pretrain_encoder": "gin",
+    "pretrain_cutoff": 3.0,
+    "aug_2_effective": "MMFFrandom",
+    "esol_qm78_filter": null,
+    "qdf_aux": {
+      "path": "/home/ubuntu/3DGCL/esol_qdf_aux_homolumo.pt",
+      "lambda": 0.05,
+      "n_attached": 735,
+      "n_nan": 393
+    }
+  },
+  "C": {
+    "side": "C",
+    "label": "C weighted (esol_mmff_weights_qdf_homolumo)",
+    "view_classes": [
+      "WeightedMMFFView",
+      "WeightedMMFFView"
+    ],
+    "wall_s": 3.158073594000598,
+    "losses_per_epoch": [
+      22.089706420898438,
+      17.866069793701172,
+      15.607702255249023,
+      14.068119049072266,
+      13.085294723510742,
+      12.378852844238281,
+      11.808479309082031
+    ],
+    "model_root": "/home/ubuntu/3DGCL/models/quality_homolumo_0514_0603/C",
+    "best_ckpt": "/home/ubuntu/3DGCL/models/quality_homolumo_0514_0603/C/encoder-gin_pretrain-esol_batch-400_proj-spherenet_cutoff-3.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFweighted_top1_aug_2-MMFFweighted_top2_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0/enc_best_epoch-7_loss-11.808.pkl",
+    "weights": {
+      "path": "/home/ubuntu/3DGCL/esol_mmff_weights_qdf_homolumo.pt",
+      "n_attached": 1128,
+      "n_missing": 0,
+      "n_total": 1128,
+      "kT": 0.3,
+      "mode": "auto"
+    },
+    "args_aug_1": "MMFFweighted_top1",
+    "args_aug_2": "MMFFweighted_top2",
+    "args_mmffrandom_impl": null,
+    "p_epoch": 7,
+    "p_epoch_requested": 7,
+    "batch_size": 400,
+    "dataset": "esol",
+    "p_pretrain_amp": true,
+    "pretrain_encoder": "gin",
+    "pretrain_cutoff": 3.0,
+    "aug_2_effective": "MMFFweighted_top2",
+    "esol_qm78_filter": null,
+    "qdf_aux": {
+      "path": "/home/ubuntu/3DGCL/esol_qdf_aux_homolumo.pt",
+      "lambda": 0.05,
+      "n_attached": 735,
+      "n_nan": 393
+    }
+  }
+}

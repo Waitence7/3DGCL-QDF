@@ -1,0 +1,50 @@
+{
+  "A": {
+    "side": "A",
+    "view_class": "RandomView",
+    "n_calls": 20,
+    "n_graphs": 128,
+    "total_decisions": 2560,
+    "no_match": 0,
+    "slot_counts": [
+      0,
+      1286,
+      0,
+      1274
+    ],
+    "slot_freq": [
+      0.0,
+      0.50234375,
+      0.0,
+      0.49765625
+    ],
+    "kl_to_uniform_bits": 1.0000158499820335,
+    "per_graph_entropy_bits_mean": 0.9602312543612549,
+    "n_slots_used": 2,
+    "elapsed_s": 2.2430575719990884
+  },
+  "C": {
+    "side": "C",
+    "view_class": "WeightedMMFFView",
+    "n_calls": 20,
+    "n_graphs": 128,
+    "total_decisions": 2560,
+    "no_match": 0,
+    "slot_counts": [
+      880,
+      380,
+      340,
+      960
+    ],
+    "slot_freq": [
+      0.34375,
+      0.1484375,
+      0.1328125,
+      0.375
+    ],
+    "kl_to_uniform_bits": 0.14445845556311815,
+    "per_graph_entropy_bits_mean": -1.4428232973175173e-12,
+    "n_slots_used": 4,
+    "elapsed_s": 0.4510100519983098
+  }
+}

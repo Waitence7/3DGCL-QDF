@@ -1,0 +1,74 @@
+{
+  "A": {
+    "side": "A",
+    "view_class": "RandomView",
+    "n_calls": 40,
+    "n_graphs": 160,
+    "total_decisions": 6400,
+    "no_match": 0,
+    "slot_counts": [
+      0,
+      3226,
+      0,
+      3174
+    ],
+    "slot_freq": [
+      0.0,
+      0.5040625,
+      0.0,
+      0.4959375
+    ],
+    "kl_to_uniform_bits": 1.0000476207342495,
+    "per_graph_entropy_bits_mean": 0.983733770748243,
+    "n_slots_used": 2,
+    "elapsed_s": 4.733139256000868
+  },
+  "B": {
+    "side": "B",
+    "view_class": "WeightedMMFFView",
+    "n_calls": 40,
+    "n_graphs": 160,
+    "total_decisions": 6400,
+    "no_match": 0,
+    "slot_counts": [
+      2040,
+      800,
+      1280,
+      2280
+    ],
+    "slot_freq": [
+      0.31875,
+      0.125,
+      0.2,
+      0.35625
+    ],
+    "kl_to_uniform_bits": 0.10436556227893205,
+    "per_graph_entropy_bits_mean": -1.4428232973175177e-12,
+    "n_slots_used": 4,
+    "elapsed_s": 0.8462419679999584
+  },
+  "C": {
+    "side": "C",
+    "view_class": "WeightedMMFFView",
+    "n_calls": 40,
+    "n_graphs": 160,
+    "total_decisions": 6400,
+    "no_match": 0,
+    "slot_counts": [
+      2040,
+      800,
+      1280,
+      2280
+    ],
+    "slot_freq": [
+      0.31875,
+      0.125,
+      0.2,
+      0.35625
+    ],
+    "kl_to_uniform_bits": 0.10436556227893205,
+    "per_graph_entropy_bits_mean": -1.4428232973175177e-12,
+    "n_slots_used": 4,
+    "elapsed_s": 0.847040210996056
+  }
+}

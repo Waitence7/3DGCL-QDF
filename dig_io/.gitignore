@@ -1,0 +1,6 @@
+target/
+.venv/
+Cargo.lock
+*.pyd
+*.so
+__pycache__/

@@ -1,0 +1,249 @@
+{
+  "ts": "0512_1833",
+  "labels": [
+    "baseline (PyG views)",
+    "optimized (MMFF_FAST + bf16)",
+    "weighted (QDF gap, bf16)"
+  ],
+  "a_label": "baseline (PyG views)",
+  "b_label": "optimized (MMFF_FAST + bf16)",
+  "c_label": "weighted (QDF gap, bf16)",
+  "a_overrides": {
+    "MMFFRANDOM_FAST": null,
+    "MMFFRANDOM_WEIGHTED": null,
+    "PRETRAIN_AMP": null
+  },
+  "b_overrides": {
+    "MMFFRANDOM_FAST": "1",
+    "PRETRAIN_AMP": "bf16"
+  },
+  "c_overrides": {
+    "MMFFRANDOM_WEIGHTED": "1",
+    "PRETRAIN_AMP": "bf16",
+    "MMFF_WEIGHTS_PATH": "dataset/esol_mmff_weights_qdf.pt"
+  },
+  "args": {
+    "dataset": "esol",
+    "root": "dataset/",
+    "batch_size": 400,
+    "warmup": 0,
+    "epochs": 1,
+    "max_iters": 2,
+    "interval": 0.1,
+    "out_dir": "",
+    "no_plot": false,
+    "a_label": "baseline (PyG views)",
+    "a_clear": [],
+    "a_set": [],
+    "b_label": "optimized (MMFF_FAST + bf16)",
+    "b_clear": [],
+    "b_set": [],
+    "c_label": "weighted (QDF gap, bf16)",
+    "c_clear": [],
+    "c_set": [
+      "MMFFRANDOM_WEIGHTED=1",
+      "PRETRAIN_AMP=bf16",
+      "MMFF_WEIGHTS_PATH=dataset/esol_mmff_weights_qdf.pt"
+    ]
+  },
+  "run_a": {
+    "device": "xpu:0",
+    "torch_version": "2.9.1+xpu",
+    "view_impl_0": "RandomView",
+    "env_effective": {
+      "DATALOADER_NUM_WORKERS": null,
+      "MMFFRANDOM_FAST": null,
+      "MMFFRANDOM_WEIGHTED": null,
+      "MMFF_WEIGHTS_PATH": null,
+      "PIN_MEMORY": null,
+      "PRETRAIN_AMP": null
+    },
+    "mmff_weights": null,
+    "totals": {
+      "data": 0.2801888999529183,
+      "to_dev": 0.005829499918036163,
+      "views": 1.2807260999688879,
+      "fwd": 2.1886941000120714,
+      "bwd": 1.0042022000998259,
+      "step": 0.21593519998714328,
+      "wall": 4.975802000029944,
+      "n_iter": 2.0,
+      "n_graphs": 800.0,
+      "n_nodes": 20271.0
+    },
+    "epochs_measured": 1,
+    "per_epoch": [
+      {
+        "data": 0.2801888999529183,
+        "to_dev": 0.005829499918036163,
+        "views": 1.2807260999688879,
+        "fwd": 2.1886941000120714,
+        "bwd": 1.0042022000998259,
+        "step": 0.21593519998714328,
+        "n_iter": 2.0,
+        "n_graphs": 800.0,
+        "n_nodes": 20271.0,
+        "wall": 4.975802000029944
+      }
+    ],
+    "dataset": "esol",
+    "n_dataset": 1128,
+    "batch_size": 400,
+    "outer_wall_s": 5.859860699973069,
+    "resource_summary": {
+      "wall_s": 5.529520799987949,
+      "peak_rss_mb": 5187.046875,
+      "mean_rss_mb": 3123.98203125,
+      "mean_cpu_pct": 86.44587224949113,
+      "peak_cpu_pct": 100.0,
+      "mean_xpu_pct": 37.9085732948674,
+      "peak_xpu_pct": 153.2022293494484,
+      "n_samples": 55
+    }
+  },
+  "run_b": {
+    "device": "xpu:0",
+    "torch_version": "2.9.1+xpu",
+    "view_impl_0": "FastRandomMMFFView",
+    "env_effective": {
+      "DATALOADER_NUM_WORKERS": null,
+      "MMFFRANDOM_FAST": "1",
+      "MMFFRANDOM_WEIGHTED": null,
+      "MMFF_WEIGHTS_PATH": null,
+      "PIN_MEMORY": null,
+      "PRETRAIN_AMP": "bf16"
+    },
+    "mmff_weights": null,
+    "totals": {
+      "data": 0.1567301000468433,
+      "to_dev": 0.004225400043651462,
+      "views": 0.03616609994787723,
+      "fwd": 0.8570260000415146,
+      "bwd": 0.6660214000148699,
+      "step": 0.0032387999817728996,
+      "wall": 1.723579400102608,
+      "n_iter": 2.0,
+      "n_graphs": 800.0,
+      "n_nodes": 20053.0
+    },
+    "epochs_measured": 1,
+    "per_epoch": [
+      {
+        "data": 0.1567301000468433,
+        "to_dev": 0.004225400043651462,
+        "views": 0.03616609994787723,
+        "fwd": 0.8570260000415146,
+        "bwd": 0.6660214000148699,
+        "step": 0.0032387999817728996,
+        "n_iter": 2.0,
+        "n_graphs": 800.0,
+        "n_nodes": 20053.0,
+        "wall": 1.723579400102608
+      }
+    ],
+    "dataset": "esol",
+    "n_dataset": 1128,
+    "batch_size": 400,
+    "outer_wall_s": 1.7721521999919787,
+    "resource_summary": {
+      "wall_s": 1.7419931999174878,
+      "peak_rss_mb": 5707.453125,
+      "mean_rss_mb": 5527.84512867647,
+      "mean_cpu_pct": 96.81095411744923,
+      "peak_cpu_pct": 100.0,
+      "mean_xpu_pct": 53.39725972553931,
+      "peak_xpu_pct": 167.5823745419391,
+      "n_samples": 17
+    }
+  },
+  "run_c": {
+    "device": "xpu:0",
+    "torch_version": "2.9.1+xpu",
+    "view_impl_0": "WeightedMMFFView",
+    "env_effective": {
+      "DATALOADER_NUM_WORKERS": null,
+      "MMFFRANDOM_FAST": null,
+      "MMFFRANDOM_WEIGHTED": "1",
+      "MMFF_WEIGHTS_PATH": "dataset/esol_mmff_weights_qdf.pt",
+      "PIN_MEMORY": null,
+      "PRETRAIN_AMP": "bf16"
+    },
+    "mmff_weights": {
+      "path": "C:\\DGCL\\3DGCL\\dataset\\esol_mmff_weights_qdf.pt",
+      "n_attached": 735,
+      "n_missing": 393,
+      "n_total": 1128
+    },
+    "totals": {
+      "data": 0.19755010004155338,
+      "to_dev": 0.004479299997910857,
+      "views": 0.647048500017263,
+      "fwd": 0.4335892000235617,
+      "bwd": 0.3542329999618232,
+      "step": 0.004802500014193356,
+      "wall": 1.6418789000017568,
+      "n_iter": 2.0,
+      "n_graphs": 800.0,
+      "n_nodes": 20284.0
+    },
+    "epochs_measured": 1,
+    "per_epoch": [
+      {
+        "data": 0.19755010004155338,
+        "to_dev": 0.004479299997910857,
+        "views": 0.647048500017263,
+        "fwd": 0.4335892000235617,
+        "bwd": 0.3542329999618232,
+        "step": 0.004802500014193356,
+        "n_iter": 2.0,
+        "n_graphs": 800.0,
+        "n_nodes": 20284.0,
+        "wall": 1.6418789000017568
+      }
+    ],
+    "dataset": "esol",
+    "n_dataset": 1128,
+    "batch_size": 400,
+    "outer_wall_s": 1.7125433000037447,
+    "resource_summary": {
+      "wall_s": 1.6780051999958232,
+      "peak_rss_mb": 6152.5703125,
+      "mean_rss_mb": 6017.207275390625,
+      "mean_cpu_pct": 96.27215526003364,
+      "peak_cpu_pct": 100.0,
+      "mean_xpu_pct": 48.8586288892549,
+      "peak_xpu_pct": 162.18051033486125,
+      "n_samples": 16
+    }
+  },
+  "summary_a": {
+    "wall_s": 5.529520799987949,
+    "peak_rss_mb": 5187.046875,
+    "mean_rss_mb": 3123.98203125,
+    "mean_cpu_pct": 86.44587224949113,
+    "peak_cpu_pct": 100.0,
+    "mean_xpu_pct": 37.9085732948674,
+    "peak_xpu_pct": 153.2022293494484,
+    "n_samples": 55
+  },
+  "summary_b": {
+    "wall_s": 1.7419931999174878,
+    "peak_rss_mb": 5707.453125,
+    "mean_rss_mb": 5527.84512867647,
+    "mean_cpu_pct": 96.81095411744923,
+    "peak_cpu_pct": 100.0,
+    "mean_xpu_pct": 53.39725972553931,
+    "peak_xpu_pct": 167.5823745419391,
+    "n_samples": 17
+  },
+  "summary_c": {
+    "wall_s": 1.6780051999958232,
+    "peak_rss_mb": 6152.5703125,
+    "mean_rss_mb": 6017.207275390625,
+    "mean_cpu_pct": 96.27215526003364,
+    "peak_cpu_pct": 100.0,
+    "mean_xpu_pct": 48.8586288892549,
+    "peak_xpu_pct": 162.18051033486125,
+    "n_samples": 16
+  }
+}

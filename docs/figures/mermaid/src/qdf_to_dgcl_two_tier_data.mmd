@@ -1,0 +1,34 @@
+flowchart TB
+  subgraph DATA_QDF["QDF 쪽 아티팩트"]
+    direction LR
+    D1["QuantumDeepField_molecule/dataset/**/\n{train,val,test}.txt"]
+    D2["(선택)\n…/orbitaldict_*.pickle"]
+    D3["전처리 출력 트리\n*.npy 및/또는 *_shard.bin"]
+    D4["QDF 학습 산출\nQuantumDeepField_molecule/output/model--*.pkl 등"]
+    D1 --> D3
+    D2 --> D3
+    D3 --> D4
+  end
+
+  subgraph DATA_BRIDGE["브리지 아티팩트 (DGCL 그래프 + QDF 신호)"]
+    direction LR
+    B0["MoleculeNet 원천\n(예: ESOL)"]
+    B1["MMFF 슬롯 좌표\n(PyG Data 필드)"]
+    B2["예:\ndataset/esol_qdf_mmff_preds_atomization.csv\n또는 …_homolumo.csv"]
+    B3["예:\ndataset/esol_mmff_weights_qdf.pt 등"]
+    B4["예:\ndataset/esol_qdf_aux_ensemble.pt"]
+    B0 --> B1
+    B1 --> B2 --> B3
+    B2 -.-> B4
+  end
+
+  subgraph DATA_DGCL["DGCL 쪽 아티팩트"]
+    direction LR
+    G1["사전학습 체크포인트\nexamples/sslgraph/models/… 등"]
+    G2["파인튜닝·다운스트림 산출물\n예측 CSV 등"]
+    G1 --> G2
+  end
+
+  D4 -->|"체크포인트 로드 후\nMMFF 좌표에서 추론"| B2
+  B3 -->|"슬롯 샘플링 가중"| G1
+  B4 -.->|"보조 타깃 λ>0"| G1

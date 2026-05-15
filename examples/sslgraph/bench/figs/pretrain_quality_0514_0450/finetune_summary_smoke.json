@@ -1,0 +1,32 @@
+{
+  "A": {
+    "side": "A",
+    "label": "A baseline (PyG views)",
+    "ckpt": "/home/ubuntu/3DGCL/models/quality_0514_0450/A/encoder-gin_pretrain-esol_batch-400_proj-spherenet_cutoff-3.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFrandom_aug_2-MMFFrandom_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0/enc_best_epoch-5_loss-9.267.pkl",
+    "rmse_mean": 0.9536944267471185,
+    "rmse_sd": 0.09755072417634147,
+    "grid_size": 1,
+    "wall_s": 13.951961243998085,
+    "f_epoch": 18,
+    "n_times": 1,
+    "n_folds": 2,
+    "dataset": "esol",
+    "esol_qm78_filter": null,
+    "test_max_atoms": 14
+  },
+  "C": {
+    "side": "C",
+    "label": "C weighted (esol_mmff_weights_qdf_atomization)",
+    "ckpt": "/home/ubuntu/3DGCL/models/quality_0514_0450/C/encoder-gin_pretrain-esol_batch-400_proj-spherenet_cutoff-3.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFweighted_top1_aug_2-MMFFweighted_top2_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0/enc_best_epoch-5_loss-9.267.pkl",
+    "rmse_mean": 0.9536944267471185,
+    "rmse_sd": 0.09755072417634147,
+    "grid_size": 1,
+    "wall_s": 14.671977178004454,
+    "f_epoch": 18,
+    "n_times": 1,
+    "n_folds": 2,
+    "dataset": "esol",
+    "esol_qm78_filter": null,
+    "test_max_atoms": 14
+  }
+}

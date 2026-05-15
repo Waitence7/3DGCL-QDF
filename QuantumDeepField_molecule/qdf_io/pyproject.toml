@@ -1,0 +1,23 @@
+[build-system]
+requires = ["maturin>=1.7,<2"]
+build-backend = "maturin"
+
+[project]
+name = "qdf_io"
+version = "0.1.0"
+description = "Fast binary shard reader for the QDF preprocessed dataset (Rust + PyO3)."
+requires-python = ">=3.10,<3.13"
+classifiers = [
+  "Programming Language :: Rust",
+  "Programming Language :: Python :: 3",
+]
+# numpy is a runtime dependency because we return numpy arrays.
+dependencies = [
+  "maturin>=1.13.3",
+  "numpy>=1.23,<2",
+]
+
+[tool.maturin]
+python-source = "python"
+module-name = "qdf_io._native"
+features = ["pyo3/extension-module"]

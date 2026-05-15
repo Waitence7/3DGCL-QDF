@@ -1,0 +1,3 @@
+side,label,view,pretrain_wall_s,pretrain_last_loss,rmse_mean,rmse_sd,finetune_wall_s,slots_used,kl_to_uniform_bits,per_graph_entropy_bits_mean
+A,A baseline (RandomView),"RandomView,RandomView",9.778851914998086,9.266990661621094,0.9536944267471185,0.09755072417634147,14.633450394001557,2,1.0000158499820335,0.9602312543612549
+C,C weighted (top1 vs top2),"WeightedMMFFView,WeightedMMFFView",2.286583333996532,9.266990661621094,0.9536944267471185,0.09755072417634147,14.685330584004987,4,0.14445845556311815,-1.4428232973175173e-12

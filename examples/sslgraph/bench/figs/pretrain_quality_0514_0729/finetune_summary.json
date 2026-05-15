@@ -1,0 +1,47 @@
+{
+  "A": {
+    "side": "A",
+    "label": "A baseline (PyG views)",
+    "ckpt": "/home/ubuntu/3DGCL/models/quality_0514_0729/A/encoder-schnet_pretrain-esol_batch-400_proj-schnet_cutoff-3.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFrandom_aug_2-MMFFrandom_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0/enc_best_epoch-5_loss-12.987.pkl",
+    "rmse_mean": 0.8423548747566918,
+    "rmse_sd": 0.15255097329345163,
+    "grid_size": 1,
+    "wall_s": 69.06285512199975,
+    "f_epoch": 18,
+    "n_times": 1,
+    "n_folds": 2,
+    "dataset": "esol",
+    "esol_qm78_filter": null,
+    "test_max_atoms": 14
+  },
+  "B": {
+    "side": "B",
+    "label": "B top1 + MMFFrandom (mixed views)",
+    "ckpt": "/home/ubuntu/3DGCL/models/quality_0514_0729/B/encoder-schnet_pretrain-esol_batch-400_proj-schnet_cutoff-3.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFweighted_top1_aug_2-MMFFrandom_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0/enc_best_epoch-35_loss-111.456.pkl",
+    "rmse_mean": 1.669194728516339,
+    "rmse_sd": 0.40944228250574277,
+    "grid_size": 1,
+    "wall_s": 853.5471676709931,
+    "f_epoch": 80,
+    "n_times": 2,
+    "n_folds": 3,
+    "dataset": "esol",
+    "esol_qm78_filter": null,
+    "test_max_atoms": 14
+  },
+  "C": {
+    "side": "C",
+    "label": "C weighted (esol_mmff_weights_qdf_atomization)",
+    "ckpt": "/home/ubuntu/3DGCL/models/quality_0514_0729/C/encoder-schnet_pretrain-esol_batch-400_proj-schnet_cutoff-3.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFweighted_top1_aug_2-MMFFweighted_top2_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0/enc_best_epoch-35_loss-111.456.pkl",
+    "rmse_mean": 1.6691950984543384,
+    "rmse_sd": 0.40944295798755903,
+    "grid_size": 1,
+    "wall_s": 868.7821459940023,
+    "f_epoch": 80,
+    "n_times": 2,
+    "n_folds": 3,
+    "dataset": "esol",
+    "esol_qm78_filter": null,
+    "test_max_atoms": 14
+  }
+}

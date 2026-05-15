@@ -1,0 +1,203 @@
+{
+  "A": {
+    "side": "A",
+    "view_class": "RandomView+RandomView",
+    "view_classes": [
+      "RandomView",
+      "RandomView"
+    ],
+    "views_per_round": 2,
+    "n_calls": 40,
+    "n_graphs": 160,
+    "total_decisions": 12800,
+    "no_match": 0,
+    "slot_counts": [
+      3190,
+      3196,
+      0,
+      6414
+    ],
+    "slot_freq": [
+      0.24921875,
+      0.2496875,
+      0.0,
+      0.50109375
+    ],
+    "kl_to_uniform_bits": 0.5010975194610997,
+    "per_graph_entropy_bits_mean": 1.4871469455354605,
+    "n_slots_used": 3,
+    "view0": {
+      "total_decisions": 6400,
+      "no_match": 0,
+      "slot_counts": [
+        0,
+        3196,
+        0,
+        3204
+      ],
+      "slot_freq": [
+        0.0,
+        0.499375,
+        0.0,
+        0.500625
+      ],
+      "kl_to_uniform_bits": 1.0000011271086793,
+      "per_graph_entropy_bits_mean": 0.9832610653554088,
+      "n_slots_used": 2
+    },
+    "view1": {
+      "total_decisions": 6400,
+      "no_match": 0,
+      "slot_counts": [
+        3190,
+        0,
+        0,
+        3210
+      ],
+      "slot_freq": [
+        0.4984375,
+        0.0,
+        0.0,
+        0.5015625
+      ],
+      "kl_to_uniform_bits": 1.0000070444237301,
+      "per_graph_entropy_bits_mean": 0.9847508989067142,
+      "n_slots_used": 2
+    },
+    "elapsed_s": 9.376286699000048
+  },
+  "B": {
+    "side": "B",
+    "view_class": "WeightedMMFFView+RandomView",
+    "view_classes": [
+      "WeightedMMFFView",
+      "RandomView"
+    ],
+    "views_per_round": 2,
+    "n_calls": 40,
+    "n_graphs": 160,
+    "total_decisions": 12800,
+    "no_match": 0,
+    "slot_counts": [
+      2680,
+      4227,
+      1120,
+      4773
+    ],
+    "slot_freq": [
+      0.209375,
+      0.330234375,
+      0.0875,
+      0.372890625
+    ],
+    "kl_to_uniform_bits": 0.16161064399937836,
+    "per_graph_entropy_bits_mean": 1.217927382023151,
+    "n_slots_used": 4,
+    "view0": {
+      "total_decisions": 6400,
+      "no_match": 0,
+      "slot_counts": [
+        2680,
+        1000,
+        1120,
+        1600
+      ],
+      "slot_freq": [
+        0.41875,
+        0.15625,
+        0.175,
+        0.25
+      ],
+      "kl_to_uniform_bits": 0.11561841835682266,
+      "per_graph_entropy_bits_mean": -1.4428232973175177e-12,
+      "n_slots_used": 4
+    },
+    "view1": {
+      "total_decisions": 6400,
+      "no_match": 0,
+      "slot_counts": [
+        0,
+        3227,
+        0,
+        3173
+      ],
+      "slot_freq": [
+        0.0,
+        0.50421875,
+        0.0,
+        0.49578125
+      ],
+      "kl_to_uniform_bits": 1.0000513543566023,
+      "per_graph_entropy_bits_mean": 0.9837676546548366,
+      "n_slots_used": 2
+    },
+    "elapsed_s": 5.93858970200381
+  },
+  "C": {
+    "side": "C",
+    "view_class": "WeightedMMFFView+WeightedMMFFView",
+    "view_classes": [
+      "WeightedMMFFView",
+      "WeightedMMFFView"
+    ],
+    "views_per_round": 2,
+    "n_calls": 40,
+    "n_graphs": 160,
+    "total_decisions": 12800,
+    "no_match": 0,
+    "slot_counts": [
+      3680,
+      2440,
+      2880,
+      3800
+    ],
+    "slot_freq": [
+      0.2875,
+      0.190625,
+      0.225,
+      0.296875
+    ],
+    "kl_to_uniform_bits": 0.02280178150549508,
+    "per_graph_entropy_bits_mean": 0.9999999999971146,
+    "n_slots_used": 4,
+    "view0": {
+      "total_decisions": 6400,
+      "no_match": 0,
+      "slot_counts": [
+        2680,
+        1000,
+        1120,
+        1600
+      ],
+      "slot_freq": [
+        0.41875,
+        0.15625,
+        0.175,
+        0.25
+      ],
+      "kl_to_uniform_bits": 0.11561841835682266,
+      "per_graph_entropy_bits_mean": -1.4428232973175177e-12,
+      "n_slots_used": 4
+    },
+    "view1": {
+      "total_decisions": 6400,
+      "no_match": 0,
+      "slot_counts": [
+        1000,
+        1440,
+        1760,
+        2200
+      ],
+      "slot_freq": [
+        0.15625,
+        0.225,
+        0.275,
+        0.34375
+      ],
+      "kl_to_uniform_bits": 0.055593656744587945,
+      "per_graph_entropy_bits_mean": -1.4428232973175177e-12,
+      "n_slots_used": 4
+    },
+    "elapsed_s": 1.5400924850036972
+  }
+}

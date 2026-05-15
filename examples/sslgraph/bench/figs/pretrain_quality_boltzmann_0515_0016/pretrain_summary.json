@@ -1,0 +1,131 @@
+{
+  "A": {
+    "side": "A",
+    "label": "A baseline (PyG views)",
+    "view_classes": [
+      "RandomView",
+      "RandomView"
+    ],
+    "wall_s": 14.643967167998198,
+    "losses_per_epoch": [
+      12.152769088745117,
+      10.979636192321777,
+      10.141422271728516,
+      9.58330249786377,
+      9.266990661621094
+    ],
+    "model_root": "/home/ubuntu/3DGCL/models/quality_boltzmann_0515_0016/A",
+    "best_ckpt": "/home/ubuntu/3DGCL/models/quality_boltzmann_0515_0016/A/encoder-gin_pretrain-esol_batch-400_proj-spherenet_cutoff-3.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFrandom_aug_2-MMFFrandom_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0/enc_best_epoch-5_loss-9.267.pkl",
+    "ckpt_sha256": "fd3a49cc066ce729e06cb45ad94e747ceb60c3d0e6ff61281197747f2d6ec987",
+    "weights": null,
+    "args_aug_1": "MMFFrandom",
+    "args_aug_2": "MMFFrandom",
+    "args_mmffrandom_impl": null,
+    "p_epoch": 5,
+    "p_epoch_requested": 7,
+    "batch_size": 400,
+    "dataset": "esol",
+    "p_pretrain_amp": true,
+    "pretrain_encoder": "gin",
+    "pretrain_cutoff": 3.0,
+    "aug_2_effective": "MMFFrandom",
+    "esol_qm78_filter": null,
+    "qdf_aux": null
+  },
+  "B": {
+    "side": "B",
+    "label": "B top1 + MMFFrandom (mixed views)",
+    "view_classes": [
+      "WeightedMMFFView",
+      "RandomView"
+    ],
+    "wall_s": 16.51224345600349,
+    "losses_per_epoch": [
+      2606.552001953125,
+      2501.276611328125,
+      2429.73291015625,
+      2344.43505859375,
+      2311.904541015625,
+      2275.0302734375,
+      2232.58203125
+    ],
+    "model_root": "/home/ubuntu/3DGCL/models/quality_boltzmann_0515_0016/B",
+    "best_ckpt": "/home/ubuntu/3DGCL/models/quality_boltzmann_0515_0016/B/encoder-gin_pretrain-esol_batch-400_proj-spherenet_cutoff-3.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFweighted_aug_2-MMFFrandom_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0/enc_best_epoch-7_loss-2232.582.pkl",
+    "ckpt_sha256": "f6aa25ff4d04664ce4772dc0eec3ff1cc7c7383bb1e8e1564d954c7c262a51a0",
+    "weights": {
+      "path": "/home/ubuntu/3DGCL/dataset/esol_mmff_weights_qdf_atomization.pt",
+      "n_attached": 1128,
+      "n_missing": 0,
+      "n_total": 1128,
+      "kT": 0.5,
+      "mode": "auto"
+    },
+    "args_aug_1": "MMFFweighted",
+    "args_aug_2": "MMFFrandom",
+    "args_mmffrandom_impl": null,
+    "p_epoch": 7,
+    "p_epoch_requested": 7,
+    "batch_size": 400,
+    "dataset": "esol",
+    "p_pretrain_amp": true,
+    "pretrain_encoder": "gin",
+    "pretrain_cutoff": 3.0,
+    "aug_2_effective": "MMFFrandom",
+    "esol_qm78_filter": null,
+    "qdf_aux": {
+      "path": "/home/ubuntu/3DGCL/dataset/esol_qdf_aux_atomization.pt",
+      "lambda": 0.05,
+      "n_attached": 735,
+      "n_nan": 393,
+      "ensemble_k": 1
+    }
+  },
+  "C": {
+    "side": "C",
+    "label": "C weighted (esol_mmff_weights_qdf_atomization)",
+    "view_classes": [
+      "WeightedMMFFView",
+      "WeightedMMFFView"
+    ],
+    "wall_s": 11.002306149996002,
+    "losses_per_epoch": [
+      2606.552001953125,
+      2508.771728515625,
+      2419.921875,
+      2349.87939453125,
+      2319.646240234375,
+      2275.23095703125,
+      2238.210205078125
+    ],
+    "model_root": "/home/ubuntu/3DGCL/models/quality_boltzmann_0515_0016/C",
+    "best_ckpt": "/home/ubuntu/3DGCL/models/quality_boltzmann_0515_0016/C/encoder-gin_pretrain-esol_batch-400_proj-spherenet_cutoff-3.0_layers-2_filter-128_gau-50_z_dim-32_lr-0.001_aug_1-MMFFweighted_aug_2-MMFFweighted_aug_ratio-0.25_tau-0.2_optim-ExponentialLR_weight_decay-0_expo_gamma-0.95_dropout-0.0/enc_best_epoch-7_loss-2238.210.pkl",
+    "ckpt_sha256": "2e322efe4def96c6e0bb7d93d03a9229eee604b5e1cef19f1fdf1e74242978c7",
+    "weights": {
+      "path": "/home/ubuntu/3DGCL/dataset/esol_mmff_weights_qdf_atomization.pt",
+      "n_attached": 1128,
+      "n_missing": 0,
+      "n_total": 1128,
+      "kT": 0.5,
+      "mode": "auto"
+    },
+    "args_aug_1": "MMFFweighted",
+    "args_aug_2": "MMFFweighted",
+    "args_mmffrandom_impl": null,
+    "p_epoch": 7,
+    "p_epoch_requested": 7,
+    "batch_size": 400,
+    "dataset": "esol",
+    "p_pretrain_amp": true,
+    "pretrain_encoder": "gin",
+    "pretrain_cutoff": 3.0,
+    "aug_2_effective": "MMFFweighted",
+    "esol_qm78_filter": null,
+    "qdf_aux": {
+      "path": "/home/ubuntu/3DGCL/dataset/esol_qdf_aux_atomization.pt",
+      "lambda": 0.05,
+      "n_attached": 735,
+      "n_nan": 393,
+      "ensemble_k": 1
+    }
+  }
+}
