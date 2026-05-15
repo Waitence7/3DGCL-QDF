@@ -539,6 +539,9 @@ mod preprocess_core {
     /// ``-matmul(exp(-d^2), atomic_numbers)`` where ``distance_matrix`` is
     /// shape (n_field, n_atoms) and ``atomic_numbers`` is (n_atoms, 1).
     /// Returns (n_field, 1).
+    ///
+    /// Used by [`process_one_legacy`] and unit tests; the optimized hot path
+    /// prefers [`potential_from_field_atoms`].
     pub fn potential(
         distance_matrix: &Array2<f64>,
         atomic_numbers: &Array2<i64>,
@@ -556,6 +559,49 @@ mod preprocess_core {
             for j in 0..n_atoms {
                 let d = dm[row + j];
                 let g = (-d * d).exp();
+                sum += g * (an_slice[j] as f64);
+            }
+            so[i] = -sum;
+        }
+        out
+    }
+
+    /// Same result as ``potential(distance_matrix(field, atomic_coords), atomic_numbers)``
+    /// without allocating the (n_field × n_atoms) atom–field distance matrix.
+    ///
+    /// Matches ``distance_matrix`` zero handling: ``d == 0`` is treated like ``d = 1e6``
+    /// for the Gaussian weight (``exp(-d²)`` → effectively zero).
+    pub fn potential_from_field_atoms(
+        field: &Array2<f64>,
+        atomic_coords: &Array2<f64>,
+        atomic_numbers: &Array2<i64>,
+    ) -> Array2<f64> {
+        let n_field = field.nrows();
+        let n_atoms = atomic_coords.nrows();
+        assert_eq!(atomic_numbers.shape(), &[n_atoms, 1]);
+        let f = field.as_slice().expect("field contiguous");
+        let ac = atomic_coords.as_slice().expect("atomic_coords contiguous");
+        let an_slice = atomic_numbers.as_slice().expect("an contiguous");
+        let mut out = Array2::<f64>::zeros((n_field, 1));
+        let so = out.as_slice_mut().expect("out contiguous");
+        for i in 0..n_field {
+            let ix = i * 3;
+            let x1 = f[ix];
+            let y1 = f[ix + 1];
+            let z1 = f[ix + 2];
+            let mut sum = 0.0f64;
+            for j in 0..n_atoms {
+                let jx = j * 3;
+                let dx = x1 - ac[jx];
+                let dy = y1 - ac[jx + 1];
+                let dz = z1 - ac[jx + 2];
+                let d2 = dx * dx + dy * dy + dz * dz;
+                let d = d2.sqrt();
+                let g = if d == 0.0 {
+                    (-(1e6_f64 * 1e6_f64)).exp()
+                } else {
+                    (-d2).exp()
+                };
                 sum += g * (an_slice[j] as f64);
             }
             so[i] = -sum;
@@ -614,6 +660,25 @@ mod preprocess_core {
         sphere: &Array2<f64>,
     ) -> MolOut {
         let field = create_field(sphere, atomic_coords);
+        let pot_f64 = potential_from_field_atoms(&field, atomic_coords, atomic_numbers);
+        let dm_orb_f64 = distance_matrix(&field, orbital_coords);
+        MolOut {
+            n_field: field.nrows(),
+            dm_orbital: to_f32(&dm_orb_f64),
+            potential: to_f32(&pot_f64),
+        }
+    }
+
+    /// Same outputs as [`process_one`], using the pre-optimization path that
+    /// materializes the full atom–field distance matrix before the potential.
+    /// Exposed for A/B benchmarks against [`process_one`].
+    pub fn process_one_legacy(
+        atomic_coords: &Array2<f64>,
+        orbital_coords: &Array2<f64>,
+        atomic_numbers: &Array2<i64>,
+        sphere: &Array2<f64>,
+    ) -> MolOut {
+        let field = create_field(sphere, atomic_coords);
         let dm_atoms = distance_matrix(&field, atomic_coords);
         let pot_f64 = potential(&dm_atoms, atomic_numbers);
         let dm_orb_f64 = distance_matrix(&field, orbital_coords);
@@ -621,6 +686,66 @@ mod preprocess_core {
             n_field: field.nrows(),
             dm_orbital: to_f32(&dm_orb_f64),
             potential: to_f32(&pot_f64),
+        }
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+        use ndarray::arr2;
+
+        #[test]
+        fn potential_from_field_matches_distance_matrix_path() {
+            let atomic_coords = arr2(&[
+                [0.0_f64, 0.0, 0.0],
+                [1.5, 0.0, 0.0],
+            ]);
+            let sphere = arr2(&[
+                [0.1, 0.0, 0.0],
+                [0.0, 0.2, 0.0],
+            ]);
+            let field = create_field(&sphere, &atomic_coords);
+            let an = arr2(&[[1_i64], [6]]);
+            let dm = distance_matrix(&field, &atomic_coords);
+            let pot_dm = potential(&dm, &an);
+            let pot_fused = potential_from_field_atoms(&field, &atomic_coords, &an);
+            assert_eq!(pot_dm.dim(), pot_fused.dim());
+            let a = pot_dm.as_slice().expect("c");
+            let b = pot_fused.as_slice().expect("c");
+            for (x, y) in a.iter().zip(b.iter()) {
+                assert!((x - y).abs() < 1e-12, "pot mismatch: {} vs {}", x, y);
+            }
+        }
+
+        #[test]
+        fn process_one_matches_legacy_outputs() {
+            let atomic_coords = arr2(&[
+                [0.0_f64, 0.0, 0.0],
+                [1.5, 0.0, 0.0],
+            ]);
+            let sphere = arr2(&[
+                [0.1, 0.0, 0.0],
+                [0.0, 0.2, 0.0],
+            ]);
+            let orbital_coords = arr2(&[
+                [0.0_f64, 0.0, 0.0],
+                [1.5, 0.0, 0.0],
+                [0.0, 0.0, 0.0],
+            ]);
+            let an = arr2(&[[1_i64], [6]]);
+            let a = process_one(&atomic_coords, &orbital_coords, &an, &sphere);
+            let b = process_one_legacy(&atomic_coords, &orbital_coords, &an, &sphere);
+            assert_eq!(a.n_field, b.n_field);
+            let da = a.dm_orbital.as_slice().expect("c");
+            let db = b.dm_orbital.as_slice().expect("c");
+            for (x, y) in da.iter().zip(db.iter()) {
+                assert!(((*x as f64) - (*y as f64)).abs() < 1e-5f64, "dm {}", x);
+            }
+            let pa = a.potential.as_slice().expect("c");
+            let pb = b.potential.as_slice().expect("c");
+            for (x, y) in pa.iter().zip(pb.iter()) {
+                assert!(((*x as f64) - (*y as f64)).abs() < 1e-5f64, "pot {}", x);
+            }
         }
     }
 }
@@ -706,6 +831,62 @@ fn preprocess_batch_rust<'py>(
     });
 
     // Repack into Python arrays.
+    let mut results = Vec::with_capacity(outputs.len());
+    for out in outputs.into_iter() {
+        results.push((
+            out.dm_orbital.into_pyarray_bound(py),
+            out.potential.into_pyarray_bound(py),
+            out.n_field,
+        ));
+    }
+    Ok(results)
+}
+
+/// Same as [`preprocess_batch_rust`] but runs [`preprocess_core::process_one_legacy`]
+/// per molecule (atom–field distance matrix fully materialized). For benchmarks only.
+#[pyfunction]
+fn preprocess_batch_rust_legacy<'py>(
+    py: Python<'py>,
+    atomic_coords_list: Vec<PyReadonlyArray2<'py, f64>>,
+    orbital_coords_list: Vec<PyReadonlyArray2<'py, f64>>,
+    atomic_numbers_list: Vec<PyReadonlyArray2<'py, i64>>,
+    sphere: PyReadonlyArray2<'py, f64>,
+) -> PyResult<Vec<(Bound<'py, numpy::PyArray2<f32>>, Bound<'py, numpy::PyArray2<f32>>, usize)>> {
+    use rayon::prelude::*;
+
+    let n = atomic_coords_list.len();
+    if n != orbital_coords_list.len() || n != atomic_numbers_list.len() {
+        return Err(PyValueError::new_err(format!(
+            "input list lengths differ: atomic_coords={}, orbital_coords={}, atomic_numbers={}",
+            n,
+            orbital_coords_list.len(),
+            atomic_numbers_list.len(),
+        )));
+    }
+
+    struct Inp {
+        ac: ndarray::Array2<f64>,
+        oc: ndarray::Array2<f64>,
+        an: ndarray::Array2<i64>,
+    }
+
+    let mut inputs: Vec<Inp> = Vec::with_capacity(n);
+    for i in 0..n {
+        inputs.push(Inp {
+            ac: atomic_coords_list[i].as_array().to_owned(),
+            oc: orbital_coords_list[i].as_array().to_owned(),
+            an: atomic_numbers_list[i].as_array().to_owned(),
+        });
+    }
+    let sphere_owned = sphere.as_array().to_owned();
+
+    let outputs: Vec<preprocess_core::MolOut> = py.allow_threads(|| {
+        inputs
+            .par_iter()
+            .map(|m| preprocess_core::process_one_legacy(&m.ac, &m.oc, &m.an, &sphere_owned))
+            .collect()
+    });
+
     let mut results = Vec::with_capacity(outputs.len());
     for out in outputs.into_iter() {
         results.push((
@@ -1066,5 +1247,6 @@ fn _native(m: &Bound<'_, PyModule>) -> PyResult<()> {
     m.add_function(wrap_pyfunction!(concat_f32_axis1, m)?)?;
     m.add_function(wrap_pyfunction!(preprocess_molecule_rust, m)?)?;
     m.add_function(wrap_pyfunction!(preprocess_batch_rust, m)?)?;
+    m.add_function(wrap_pyfunction!(preprocess_batch_rust_legacy, m)?)?;
     Ok(())
 }

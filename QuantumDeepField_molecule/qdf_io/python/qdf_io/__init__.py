@@ -72,6 +72,17 @@ def _load_native():
         from . import _native as mod
 
         if hasattr(mod, "ShardWriter"):
+            # In-tree ``_native*.pyd`` can be stale (Jupyter lock) while
+            # ``cargo build --release`` produced a newer ``qdf_io.dll``. Prefer
+            # DLL/sidecar when the package binary lacks ``preprocess_batch_rust_legacy``.
+            if not hasattr(mod, "preprocess_batch_rust_legacy"):
+                sys.modules.pop(native_fqname, None)
+                for path in (fresh_native_sidecar_path(), *dev_native_dll_paths()):
+                    mod2 = _try_exec_native(native_fqname, path)
+                    if mod2 is not None and hasattr(mod2, "preprocess_batch_rust_legacy"):
+                        return mod2
+                from . import _native as mod
+
             return mod
     except ImportError as e:
         first_err = e
@@ -103,6 +114,7 @@ concat_f32_axis1 = _mod.concat_f32_axis1
 concat_i64 = _mod.concat_i64
 format_info = _mod.format_info
 preprocess_batch_rust = _mod.preprocess_batch_rust
+preprocess_batch_rust_legacy = getattr(_mod, "preprocess_batch_rust_legacy", None)
 preprocess_molecule_rust = _mod.preprocess_molecule_rust
 
 __all__ = [
@@ -114,6 +126,7 @@ __all__ = [
     "concat_i64",
     "format_info",
     "preprocess_batch_rust",
+    "preprocess_batch_rust_legacy",
     "preprocess_molecule_rust",
     "fresh_native_sidecar_path",
     "dev_native_dll_paths",

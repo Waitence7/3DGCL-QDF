@@ -16,6 +16,12 @@ Rust backend (requires ``qdf_io`` built via maturin):
     .\.venv\Scripts\python.exe QuantumDeepField_molecule\bench\profile_preprocess.py \
         --dataset QM9under14atoms_atomizationenergy_eV --split train --limit 500 \
         --backend rust --rust-batch-size 64
+
+Rust **legacy** (pre-fused atom distance matrix path; same outputs, for A/B timing):
+
+    .\.venv\Scripts\python.exe QuantumDeepField_molecule\bench\profile_preprocess.py \
+        --dataset QM9under14atoms_atomizationenergy_eV --split train --limit 500 \
+        --backend rust-legacy --rust-batch-size 64
 """
 
 from __future__ import annotations
@@ -59,16 +65,17 @@ def main():
                         help="Also dump a cProfile top-25 report.")
     parser.add_argument(
         "--backend",
-        choices=["numpy", "rust"],
+        choices=["numpy", "rust", "rust-legacy"],
         default="numpy",
         help="Which geometry backend to benchmark. 'numpy' mirrors train/preprocess.py; "
-             "'rust' benchmarks qdf_io.preprocess_batch_rust in Rayon batches.",
+             "'rust' uses qdf_io.preprocess_batch_rust; 'rust-legacy' uses "
+             "preprocess_batch_rust_legacy (materialized atom–field distance matrix).",
     )
     parser.add_argument(
         "--rust-batch-size",
         type=int,
         default=64,
-        help="Molecule batch size for --backend rust.",
+        help="Molecule batch size for --backend rust / rust-legacy.",
     )
     args = parser.parse_args()
 
@@ -99,18 +106,36 @@ def main():
     save_dir = Path(save_dir_ctx.name)
     print(f"Temp save dir: {save_dir}")
 
-    if args.backend == "rust":
+    rust_batch_fn = None
+    if args.backend in ("rust", "rust-legacy"):
         try:
             import qdf_io  # noqa: WPS433
         except Exception as e:  # pragma: no cover
             sys.exit(
-                "backend=rust requires the qdf_io native extension. "
+                "backend=rust or rust-legacy requires the ``qdf_io`` native extension. "
                 "Build it from QuantumDeepField_molecule/qdf_io with:\n"
                 "  maturin develop --release\n"
                 f"Original import error: {e}"
             )
         if args.rust_batch_size < 1:
             sys.exit("--rust-batch-size must be >= 1")
+        rust_batch_fn = (
+            qdf_io.preprocess_batch_rust_legacy
+            if args.backend == "rust-legacy"
+            else qdf_io.preprocess_batch_rust
+        )
+        if args.backend == "rust-legacy" and rust_batch_fn is None:
+            sys.exit(
+                "rust-legacy requires ``preprocess_batch_rust_legacy`` in the qdf_io native module "
+                "(your ``_native*.pyd`` is probably stale).\n\n"
+                "Rebuild using the **same** Python executable that runs this script, from\n"
+                "  QuantumDeepField_molecule/qdf_io\n"
+                f"  {sys.executable} -m maturin develop --release\n\n"
+                "If maturin picks a different venv, set PYO3_PYTHON to the interpreter above, or run\n"
+                "  cargo build --release\n"
+                "and rely on ``qdf_io`` loading ``target/release/qdf_io.dll`` (see package __init__). "
+                "Close Jupyter while rebuilding if Windows locks the .pyd."
+            )
 
     def run_loop():
         rust_buf: list[dict] = []
@@ -123,7 +148,7 @@ def main():
             timings["rust_pack_inputs"] += time.perf_counter() - t
 
             t = time.perf_counter()
-            outs = qdf_io.preprocess_batch_rust(ac_list, oc_list, an_list, sphere64)
+            outs = rust_batch_fn(ac_list, oc_list, an_list, sphere64)
             timings["rust_preprocess_batch"] += time.perf_counter() - t
             timings_count["rust_preprocess_batch"] += 1
 
@@ -213,7 +238,7 @@ def main():
                 flush_rust_chunk(rust_buf)
                 rust_buf.clear()
 
-        if args.backend == "rust" and rust_buf:
+        if args.backend in ("rust", "rust-legacy") and rust_buf:
             flush_rust_chunk(rust_buf)
 
     if args.cprofile:
@@ -233,7 +258,7 @@ def main():
     sphere_once = timings.pop("sphere_once")
     print(f"sphere_once           : {sphere_once*1000:8.3f} ms (once per dataset)")
     print(f"backend               : {args.backend}")
-    if args.backend == "rust":
+    if args.backend in ("rust", "rust-legacy"):
         print(f"rust_batch_size       : {args.rust_batch_size}")
     rows = sorted(timings.items(), key=lambda kv: -kv[1])
     sum_steps = sum(timings.values())

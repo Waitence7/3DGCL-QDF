@@ -1,0 +1,36 @@
+%%{init: {'theme': 'neutral', 'flowchart': {'curve': 'basis'}}}%%
+flowchart TB
+  O(["ensemble_cpu_xpu_orchestrator.py"])
+  O --> R["figs/qdf_ensemble_cpu_xpu_<timestamp>/"]
+  O --> X{"torch.xpu.is_available()?"}
+  X -->|No| SK["XPU branch skipped<br/>(reason in SUMMARY.md)"]
+  X -->|Yes| SEQ["Run CPU pass then XPU pass"]
+
+  subgraph CPUm["CPU mode — cpu/"]
+    Ec["TORCH_DEVICE=cpu<br/>TORCH_DISABLE_XPU_DEFAULT=1"]
+    A1c["1) qdf_mmff_predict.py --device cpu"]
+    A2c["2) compute_mmff_weights.py --source qdf"]
+    A3c["3) compare_pretrain_ab.py"]
+    Ec --> A1c --> A2c --> A3c
+  end
+
+  subgraph XPUm["XPU mode — xpu/"]
+    Ex["TORCH_DEVICE=xpu"]
+    B1x["1) qdf_mmff_predict.py --device xpu"]
+    B2x["2) compute_mmff_weights.py"]
+    B3x["3) compare_pretrain_ab.py"]
+    Ex --> B1x --> B2x --> B3x
+  end
+
+  SEQ --> CPUm
+  SEQ --> XPUm
+
+  subgraph ART["Outputs"]
+    P1["compare_wall_by_step.png"]
+    P2["compare_resources.png"]
+    J["manifest.json · steps.json"]
+    L["cpu/logs · xpu/logs"]
+  end
+
+  A3c --> ART
+  B3x --> ART
